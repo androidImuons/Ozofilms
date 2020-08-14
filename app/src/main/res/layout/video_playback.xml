@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout"></include>
+    <!--Mobile Data Selection-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+
+        android:background="@drawable/text_background_strip">
+
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:drawableLeft="@drawable/ic_network"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/mobile_data_selection"
+            android:textColor="@color/white"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/imgArrowVide"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+
+
+    </RelativeLayout>
+
+    <!--Video Qauality-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+
+
+        android:background="@drawable/text_background_strip">
+
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:drawableLeft="@drawable/ic_video_quality_svg"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/video_quality"
+            android:textColor="@color/white"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/imgArrowVideoQuality"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>
