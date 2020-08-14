@@ -141,8 +141,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
-
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
