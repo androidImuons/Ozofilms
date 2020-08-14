@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout"></include>
+    <!--Radio Button Standard-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/text_background_strip"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/Text"
+                android:layout_marginLeft="@dimen/margin_from_left"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/standard"></com.example.oops.custom.OTTTextView>
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/Text"
+                android:layout_marginLeft="@dimen/margin_from_left"
+
+                android:layout_marginTop="5dp"
+                android:text="@string/download_faster_and_less_storage"></com.example.oops.custom.OTTTextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonStandard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/margin_from_right"
+                android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+        </LinearLayout>
+    </LinearLayout>
+    <!--Radio Button  Higher-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/text_background_strip"
+        android:orientation="horizontal">
+
+        <LinearLayout android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/Text"
+                android:layout_marginLeft="@dimen/margin_from_left"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/higher"></com.example.oops.custom.OTTTextView>
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/Text"
+                android:layout_marginLeft="@dimen/margin_from_left"
+                android:text="@string/use_more_storage"></com.example.oops.custom.OTTTextView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonHigher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/margin_from_right"
+                android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

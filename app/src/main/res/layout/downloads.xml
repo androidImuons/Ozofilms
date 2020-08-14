@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+    <include
+        layout="@layout/header_layout"></include>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+
+        android:background="@drawable/text_background_strip">
+
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:drawableLeft="@drawable/ic_bell"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/wi_fi_only"
+            android:textColor="@color/white"
+
+            />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/switch_wifi"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:src="@drawable/ic_next"></Switch>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+
+
+        android:background="@drawable/text_background_strip">
+
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:drawableLeft="@drawable/ic_network"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/storage_location"
+            android:textColor="@color/white"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:id="@+id/imgArrowStorageLocation"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

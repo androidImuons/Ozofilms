@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_margin="@dimen/margin_more_screen"
+        android:background="@drawable/header_background"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/oops_logo"></androidx.appcompat.widget.AppCompatImageView>
+
+    </RelativeLayout>
+    <!--App Setting-->
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/app_setting"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/app_setting"
+        android:textColor="@color/white" />
+    <!--Subscribe-->
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/ic_subscribe"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/subscribe"
+        android:textColor="@color/white" />
+    <!--  Rate Us -->
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/ic_rate_us"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/rate_us"
+        android:textColor="@color/white" />
+    <!-- Support / Help-->
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/ic_support"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/support_help"
+        android:textColor="@color/white" />
+    <!--Legal-->
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/ic_legal"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/legal"
+        android:textColor="@color/white" />
+    <!--  LogOut  -->
+
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/text_background_strip"
+        android:drawableLeft="@drawable/ic_logout"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:text="@string/logout"
+        android:textColor="@color/white" />
+
+        <com.example.oops.custom.OTTTextView
+            style="@style/Text"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="5dp"
+          android:id="@+id/txtVersion"
+            android:layout_centerVertical="true"
+            android:text="@string/version"></com.example.oops.custom.OTTTextView>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout"></include>
+    <!--  English  -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/text_background_strip"
+        android:orientation="horizontal">
+        <com.example.oops.custom.OTTTextView
+            style="@style/Text"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:text="@string/english"></com.example.oops.custom.OTTTextView>
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButtonEnglish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+
+    </RelativeLayout>
+    <!--   Hindi -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_background_strip"
+        android:orientation="horizontal">
+        <com.example.oops.custom.OTTTextView
+            style="@style/Text"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:text="@string/hindi"></com.example.oops.custom.OTTTextView>
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButtonHindi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/text_background_strip"
+        android:orientation="horizontal">
+        <com.example.oops.custom.OTTTextView
+            style="@style/Text"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:text="@string/marathi"></com.example.oops.custom.OTTTextView>
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/radioButtonMarathi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+
+    </RelativeLayout>
+
+</LinearLayout>

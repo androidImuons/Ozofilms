@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Video Quality-->
+    <dimen name="margin_from_left">25dp</dimen>
+    <dimen name="margin_from_right">10dp</dimen>
+    <dimen name="margin_more_screen">25dp</dimen>
+
+
+</resources>
