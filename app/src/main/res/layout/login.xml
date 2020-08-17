@@ -26,57 +26,86 @@
         <LinearLayout
 
             android:layout_width="match_parent"
-            android:layout_height="370dp"
+            android:layout_height="250dp"
             android:layout_marginTop="50dp"
-            android:background="@drawable/rectangular"
+            android:background="@drawable/pink_border"
             android:orientation="vertical">
 
             <com.example.oops.custom.OTTTextView
                 style="@style/TextInCenter"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:text="@string/member_login"></com.example.oops.custom.OTTTextView>
 <!--UserName-->
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                android:layout_height="60dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/whitebackgroundrectangular"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="60dp"
-                   ></androidx.appcompat.widget.AppCompatImageView>
 
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_pink_patch"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_man"></androidx.appcompat.widget.AppCompatImageView>
+                </LinearLayout>
+
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/editTextUserName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+
+
+                    android:hint="@string/username" />
             </LinearLayout>
 
-            <!--            Password-->
+
+            <!--           Password-->
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                android:layout_height="60dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/whitebackgroundrectangular"
                 android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="40dp"
-                    android:layout_height="60dp"
-                    ></androidx.appcompat.widget.AppCompatImageView>
-            </LinearLayout>
 
-            <com.example.oops.custom.OTTButton
-                android:layout_width="match_parent"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginLeft="20dp"
-                android:textSize="@dimen/login_button_size"
-                android:textColor="@color/white"
-                android:layout_height="60dp"
-                android:textAllCaps="false"
-                android:text="@string/login"
-                android:background="@drawable/redrectangular"></com.example.oops.custom.OTTButton>
+                <LinearLayout
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/ic_pink_patch"
+                    android:gravity="center">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_lock"></androidx.appcompat.widget.AppCompatImageView>
+                </LinearLayout>
+
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/editTextPassWord"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:hint="@string/password" />
+            </LinearLayout>
 
 
 <LinearLayout

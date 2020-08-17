@@ -31,7 +31,7 @@ public class OTTEditText extends AppCompatEditText {
     }
 
     private void applyCustomFont(Context context) {
-        Typeface customFont= FontCache.getTypeface(context,"futura light bt.ttf");
+        Typeface customFont= FontCache.getTypeface(context,"futura_n.ttf");
         setTypeface(customFont);
     }
 }

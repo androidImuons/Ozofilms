@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_margin="@dimen/margin_more_screen"
-        android:background="@drawable/header_background"
+        android:background="@drawable/more_action_top_image"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView

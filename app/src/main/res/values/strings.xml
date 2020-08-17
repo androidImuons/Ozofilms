@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Oops</string>
+    <string name="app_name">TEEVOREEL</string>
     <!--Video Quality-->
     <string name="video_quality">Video Quality</string>
     <string name="standard">Standard</string>
@@ -53,20 +53,22 @@
     <string name="member_login">MEMBER LOGIN</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login"> Login</string>
     <string name="remember_me">Remember me?</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="dont_have_account">Don\'t have a account?</string>
     <string name="register_here">REGISTER HERE</string>
 
 <!--    Register-->
-    <string name="register">Register</string>
+    <string name="register">REGISTER</string>
     <string name="name">Name:</string>
     <string name="emailid">Email Id:</string>
     <string name="country">Country:</string>
     <string name="ph_no">Ph.No:</string>
-    <string name="agree_term_conditon">I Agree the terms and condition</string>
+    <string name="agree_term_conditon"> I Agree the terms and condition</string>
     <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account?</string>
+    <string name="signin">Sign in</string>
 
     <!--Profile-->
 <string name="profile_name">Name <sup>*</sup></string>
@@ -74,7 +76,15 @@
     <string name="profile_email_no_manadatory">Email (Not Mandatory)</string>
     <string name="profile_password">password <sup>*</sup></string>
     <string name="profile_confirm_password">Confirm Password</string>
+    <string name="register_now">REGISTER NOW</string>
 <!--    <string name=""-->
+    <!--Enter Mpin-->
+    <string name="enter_pin">ENTER PIN</string>
+    <string name="submit">SUBMIT</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="update">Update</string>
+
+
 
 
 
