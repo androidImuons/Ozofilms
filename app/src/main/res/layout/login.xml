@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="100dp"
+
+        android:layout_marginRight="@dimen/margin_from_left">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/oops_logo"></androidx.appcompat.widget.AppCompatImageView>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="370dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rectangular"
+            android:orientation="vertical">
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/TextInCenter"
+                android:layout_marginTop="40dp"
+                android:text="@string/member_login"></com.example.oops.custom.OTTTextView>
+<!--UserName-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/whitebackgroundrectangular"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="60dp"
+                   ></androidx.appcompat.widget.AppCompatImageView>
+
+            </LinearLayout>
+
+            <!--            Password-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/whitebackgroundrectangular"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_height="60dp"
+                    ></androidx.appcompat.widget.AppCompatImageView>
+            </LinearLayout>
+
+            <com.example.oops.custom.OTTButton
+                android:layout_width="match_parent"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="@dimen/login_button_size"
+                android:textColor="@color/white"
+                android:layout_height="60dp"
+                android:textAllCaps="false"
+                android:text="@string/login"
+                android:background="@drawable/redrectangular"></com.example.oops.custom.OTTButton>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+      android:textColor="@color/white"
+        android:buttonTint="@color/white"
+        android:text="@string/remember_me"
+        />
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:gravity="right"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="@string/forgot_password"></com.example.oops.custom.OTTTextView>
+</LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_from_left"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:orientation="horizontal">
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/dont_have_account"></com.example.oops.custom.OTTTextView>
+<com.example.oops.custom.OTTButton
+    android:layout_width="wrap_content"
+    android:layout_height="30dp"
+    android:textColor="@color/white"
+    android:layout_marginLeft="10dp"
+    android:textSize="10sp"
+    android:padding="8dp"
+    android:background="@drawable/redrectangular"
+       android:text="@string/register_here"></com.example.oops.custom.OTTButton>
+    </LinearLayout>
+</LinearLayout>

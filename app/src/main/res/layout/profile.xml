@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+        <FrameLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="@dimen/margin_from_right"
+            >
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:background="@drawable/rectangular"
+                android:layout_height="300dp"
+                android:orientation="vertical">
+                <!--Full Name-->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    app:hintTextColor="@color/white"
+
+                    android:textColorHint="@color/white">
+
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextFullName"
+                        android:background="@null"
+                        android:singleLine="true"
+
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionNext"
+                        android:hint="@string/profile_name"
+                        style="@style/EdiTText"></com.example.oops.custom.OTTEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+                <!--       Mobile No     -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    app:hintTextColor="@color/white"
+                    android:textColorHint="@color/white">
+
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextMobile"
+                        android:hint="@string/mobile_no"
+                        android:background="@null"
+                        android:singleLine="true"
+                        android:inputType="phone"
+                        android:imeOptions="actionNext"
+                        style="@style/EdiTText"></com.example.oops.custom.OTTEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!--     Email    -->
+                <!--message-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@null"
+                    android:textColorHint="@color/white"
+                    app:hintTextColor="@color/white">
+
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTexEmail"
+                        style="@style/EdiTText"
+                        android:hint="@string/email"
+                        android:imeOptions="actionNext"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"></com.example.oops.custom.OTTEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    app:hintTextColor="@color/white"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textColorHint="@color/white">
+
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextMessage"
+                        android:inputType="text"
+                        android:layout_marginBottom="10dp"
+                        android:imeOptions="actionDone"
+                        android:maxLines="4"
+
+                        android:hint="@string/message"
+                        android:background="@null"
+                        style="@style/EdiTText"></com.example.oops.custom.OTTEditText>
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.example.oops.custom.OTTButton
+                android:layout_marginTop="270dp"
+                android:layout_width="150dp"
+                android:background="@drawable/button_background"
+                android:id="@+id/submitIssue"
+                android:textColor="@color/white"
+                android:layout_marginLeft="30dp"
+                android:textAllCaps="false"
+                android:layout_marginBottom="30dp"
+                android:layout_height="50dp"
+                android:text="@string/submit_issue"></com.example.oops.custom.OTTButton>
+        </FrameLayout>
+    </ScrollView>
+</LinearLayout>
