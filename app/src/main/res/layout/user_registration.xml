@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activity.UserRegistration">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -24,8 +25,8 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="20dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
                 android:src="@drawable/oops_logo"></androidx.appcompat.widget.AppCompatImageView>
 
             <LinearLayout
@@ -42,6 +43,7 @@
                     android:text="@string/register"></com.example.oops.custom.OTTTextView>
                 <!--Name-->
                 <LinearLayout
+                    android:id="@+id/userName"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
@@ -114,6 +116,7 @@
                     android:layout_height="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
+                    android:visibility="gone"
                     android:layout_marginRight="20dp"
                     android:background="@drawable/whitebackgroundrectangular"
                     android:orientation="horizontal">
@@ -173,6 +176,8 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
                         android:background="@null"
+                        android:inputType="phone"
+                        android:maxLength="10"
                         android:hint="@string/ph_no" />
                 </LinearLayout>
                 <!--           Password-->
@@ -206,6 +211,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
                         android:background="@null"
+                        android:inputType="textPassword"
                         android:hint="@string/password" />
                 </LinearLayout>
 
@@ -219,29 +225,31 @@
                     android:buttonTint="@color/white"
                     android:text="@string/agree_term_conditon"
                     android:textColor="@color/white" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <com.example.oops.custom.OTTTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="22dp"
-                        android:text="Already have an account?"
                         android:layout_marginTop="10dp"
+                        android:text="Already have an account?"
                         android:textColor="@color/white"
 
                         ></com.example.oops.custom.OTTTextView>
+
                     <com.example.oops.custom.OTTTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="4dp"
-                        android:text="@string/signin"
                         android:layout_marginTop="10dp"
-
-                        android:textColor="@color/login_button_color"
                         android:layout_marginRight="20dp"
-                        ></com.example.oops.custom.OTTTextView>
+
+                        android:text="@string/signin"
+                        android:textColor="@color/login_button_color"></com.example.oops.custom.OTTTextView>
 
                 </LinearLayout>
 
@@ -256,6 +264,7 @@
                 android:layout_marginTop="550dp"
                 android:layout_marginBottom="30dp"
                 android:background="@drawable/button_background"
+                android:onClick="register"
                 android:text="@string/create_account"
                 android:textAllCaps="false"
                 android:textColor="@color/white"></com.example.oops.custom.OTTButton>

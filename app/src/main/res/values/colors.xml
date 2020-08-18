@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="white">#fff</color>
+    <color name="dark_graw">#212121</color>
+    <color name="colorPrimary20">#e4e1f2</color>
+    <color name="colorPrimary10">#108B161C</color>
+    <color name="colorPrimaryDark">#560d0e</color>
     <color name="login_button_color">#F05744</color>
 </resources>

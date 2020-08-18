@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    tools:context=".activity.Login"
     android:orientation="vertical">
 
 
@@ -67,9 +68,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:background="@null"
-                    android:hint="@string/username"
+                    android:hint="@string/emailid"
 
-                    android:inputType="textPersonName" />
+                    android:inputType="textEmailAddress" />
             </LinearLayout>
 
 
@@ -116,6 +117,7 @@
                 android:layout_marginRight="20dp"
                 android:background="@drawable/redrectangular"
                 android:text="@string/login"
+                android:onClick="login"
                 android:textAllCaps="false"
                 android:textColor="@color/white"></com.example.oops.custom.OTTButton>
 
@@ -130,6 +132,7 @@
 
                 <CheckBox
                     android:id="@+id/checkBox2"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/white"
@@ -173,6 +176,7 @@
             android:layout_marginLeft="10dp"
             android:background="@drawable/redrectangular"
             android:padding="8dp"
+            android:onClick="register"
             android:text="@string/register_here"
             android:textColor="@color/white"
             android:textSize="10sp"></com.example.oops.custom.OTTButton>
