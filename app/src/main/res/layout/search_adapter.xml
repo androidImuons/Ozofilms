@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="150dp"
+            android:scaleType="fitXY"
+            android:layout_height="150dp"
+            app:srcCompat="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
+      <com.example.oops.custom.OTTTextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textColor="@color/white"
+          android:text="Name"></com.example.oops.custom.OTTTextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="150dp"
+                android:scaleType="fitXY"
+
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
+            <com.example.oops.custom.OTTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Name"></com.example.oops.custom.OTTTextView>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="150dp"
+                android:scaleType="fitXY"
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
+            <com.example.oops.custom.OTTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="Name"></com.example.oops.custom.OTTTextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

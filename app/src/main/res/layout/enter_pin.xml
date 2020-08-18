@@ -58,22 +58,26 @@
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
                 <com.example.oops.custom.OTTEditText
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
                 <com.example.oops.custom.OTTEditText
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
 
                 <com.example.oops.custom.OTTEditText
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
+                    android:inputType="number"
                     android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
             </LinearLayout>
 

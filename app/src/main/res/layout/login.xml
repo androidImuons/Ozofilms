@@ -26,7 +26,7 @@
         <LinearLayout
 
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="300dp"
             android:layout_marginTop="50dp"
             android:background="@drawable/pink_border"
             android:orientation="vertical">
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
                 android:text="@string/member_login"></com.example.oops.custom.OTTTextView>
-<!--UserName-->
+            <!--UserName-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -67,9 +67,9 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:background="@null"
+                    android:hint="@string/username"
 
-
-                    android:hint="@string/username" />
+                    android:inputType="textPersonName" />
             </LinearLayout>
 
 
@@ -104,37 +104,48 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
                     android:background="@null"
-                    android:hint="@string/password" />
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <com.example.oops.custom.OTTButton
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/redrectangular"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/white"></com.example.oops.custom.OTTButton>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/white"
+                    android:text="@string/remember_me"
+                    android:textColor="@color/white" />
+
+                <com.example.oops.custom.OTTTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:text="@string/forgot_password"
+                    android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
             </LinearLayout>
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-      android:textColor="@color/white"
-        android:buttonTint="@color/white"
-        android:text="@string/remember_me"
-        />
-    <com.example.oops.custom.OTTTextView
-        android:layout_width="match_parent"
-        android:gravity="right"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="@string/forgot_password"></com.example.oops.custom.OTTTextView>
-</LinearLayout>
-
-
         </LinearLayout>
-
-
 
 
     </FrameLayout>
@@ -142,26 +153,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_from_left"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="@dimen/margin_from_left"
+        android:gravity="center"
         android:orientation="horizontal">
+
         <com.example.oops.custom.OTTTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:text="@string/dont_have_account"
+            android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+
+        <com.example.oops.custom.OTTButton
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/redrectangular"
+            android:padding="8dp"
+            android:text="@string/register_here"
             android:textColor="@color/white"
-            android:text="@string/dont_have_account"></com.example.oops.custom.OTTTextView>
-<com.example.oops.custom.OTTButton
-    android:layout_width="wrap_content"
-    android:layout_height="30dp"
-    android:textColor="@color/white"
-    android:layout_marginLeft="10dp"
-    android:textSize="10sp"
-    android:padding="8dp"
-    android:background="@drawable/redrectangular"
-       android:text="@string/register_here"></com.example.oops.custom.OTTButton>
+            android:textSize="10sp"></com.example.oops.custom.OTTButton>
     </LinearLayout>
 </LinearLayout>
