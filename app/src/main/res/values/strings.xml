@@ -59,7 +59,7 @@
     <string name="dont_have_account">Don\'t have a account?</string>
     <string name="register_here">REGISTER HERE</string>
 
-<!--    Register-->
+    <!--    Register-->
     <string name="register">REGISTER</string>
     <string name="name">Name:</string>
     <string name="emailid">Email Id:</string>
@@ -71,21 +71,37 @@
     <string name="signin">Sign in</string>
 
     <!--Profile-->
-<string name="profile_name">Name <sup>*</sup></string>
+    <string name="profile_name">Name <sup>*</sup></string>
     <string name="profile_mobile_no">Mobile No <sup>*</sup></string>
     <string name="profile_email_no_manadatory">Email (Not Mandatory)</string>
     <string name="profile_password">password <sup>*</sup></string>
     <string name="profile_confirm_password">Confirm Password</string>
     <string name="register_now">REGISTER NOW</string>
-<!--    <string name=""-->
+    <!--    <string name=""-->
     <!--Enter Mpin-->
     <string name="enter_pin">ENTER PIN</string>
     <string name="submit">SUBMIT</string>
     <string name="have_an_account">Have an account?</string>
     <string name="update">Update</string>
-
-
-
+    <!--    Video Player-->
+    <string name="four_more_shoot">Four More Shoot Please!</string>
+    <string name="eighteen">18+</string>
+    <string name="rates">Rates</string>
+    <string name="video_type">Erotic | Suspense | Love</string>
+    <string name="storyline">Storyline</string>
+    <string name="cast">Cast</string>
+    <string name="director">Director</string>
+    <string name="episode">Episodes</string>
+<!--   Dashboard -->
+    <string name="most_viewed">Most Viewed</string>
+    <string name="romantic">Romantic</string>
+    <string name="webseries">Web Series</string>
+    <string name="home">Home</string>
+    <string name="explore">Explore</string>
+    <string name="favourite">Favourite</string>
+    <string name="more">More</string>
+<!--    Serach here-->
+<string name="search">Search Here</string>
 
 
 </resources>

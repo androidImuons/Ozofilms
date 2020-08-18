@@ -44,7 +44,7 @@ android:textColor="@color/white"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
-            app:srcCompat="@drawable/ic_mail"></androidx.appcompat.widget.AppCompatImageView>
+            app:srcCompat="@drawable/download"></androidx.appcompat.widget.AppCompatImageView>
 
 
     </LinearLayout>
