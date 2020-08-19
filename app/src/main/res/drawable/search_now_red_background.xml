@@ -3,16 +3,16 @@
     android:shape="rectangle">
 
 
-    <padding
-        android:bottom="2dp"
-        android:left="2dp"
-        android:right="2dp"
-        android:top="2dp"/>
+<!--    <padding-->
+<!--        android:bottom="2dp"-->
+<!--        android:left="2dp"-->
+<!--        android:right="2dp"-->
+<!--        android:top="2dp"/>-->
     <corners
         android:bottomLeftRadius="10dp"
-        android:bottomRightRadius="10dp"
+
         android:topLeftRadius="10dp"
-        android:topRightRadius="10dp"/>
+       />
     <solid
         android:color="@color/login_button_color"></solid>
 </shape>

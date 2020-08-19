@@ -75,8 +75,9 @@
     <string name="profile_mobile_no">Mobile No <sup>*</sup></string>
     <string name="profile_email_no_manadatory">Email (Not Mandatory)</string>
     <string name="profile_password">password <sup>*</sup></string>
-    <string name="profile_confirm_password">Confirm Password</string>
+    <string name="profile_confirm_password">Confirm Password <sup>*</sup></string>
     <string name="register_now">REGISTER NOW</string>
+
     <!--    <string name=""-->
     <!--Enter Mpin-->
     <string name="enter_pin">ENTER PIN</string>
@@ -102,6 +103,11 @@
     <string name="more">More</string>
 <!--    Serach here-->
 <string name="search">Search Here</string>
-
+<!--Change PassWord-->
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="userid">Userid</string>
+    <string name="change_password">Change Password</string>
+    <string name="confirm_password">Confirm Password</string>
 
 </resources>

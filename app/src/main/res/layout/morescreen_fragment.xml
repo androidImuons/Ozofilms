@@ -95,6 +95,7 @@
     <com.example.oops.custom.OTTTextView
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:id="@+id/txtLogout"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_from_left"
         android:layout_marginTop="5dp"

@@ -59,6 +59,7 @@
                         android:drawableLeft="@drawable/ic_man"
                         android:drawablePadding="15dp"
                         android:singleLine="true"
+                        android:id="@+id/editTextName"
                         android:gravity="center_vertical"
                         android:inputType="textPersonName"
                         android:textColorHint="@color/white"
@@ -89,6 +90,7 @@
                         android:gravity="center_vertical"
                         android:singleLine="true"
                         android:inputType="number"
+                        android:id="@+id/editTextMobielNumber"
                         android:textColorHint="@color/white"
                         android:hint="@string/profile_mobile_no"
                         android:textColor="@color/white"
@@ -118,6 +120,7 @@
                         android:gravity="center_vertical"
                         android:textColorHint="@color/white"
                         android:singleLine="true"
+                        android:id="@+id/editTextEmail"
                         android:inputType="textEmailAddress"
                         android:hint="@string/profile_email_no_manadatory"
                         android:textColor="@color/white"
@@ -144,10 +147,11 @@
                         android:drawableLeft="@drawable/ic_lock"
                         android:drawablePadding="15dp"
                         android:gravity="center_vertical"
+                        android:id="@+id/editTextPassWord"
                         android:singleLine="true"
                         android:inputType="textPassword"
                         android:textColorHint="@color/white"
-                        android:hint="@string/password"
+                        android:hint="@string/profile_password"
                         android:textColor="@color/white"
 
                         />
@@ -171,6 +175,7 @@
                         android:drawableLeft="@drawable/ic_smart_key"
                         android:drawablePadding="15dp"
                         android:inputType="textPassword"
+                        android:id="@+id/editTextConfirmPassword"
                         android:gravity="center_vertical"
                         android:textColorHint="@color/white"
                         android:hint="@string/profile_confirm_password"
@@ -189,7 +194,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="30dp"
 android:textAllCaps="false"
-
+android:onClick="update"
                 android:layout_height="50dp"
                 android:text="@string/update"></com.example.oops.custom.OTTButton>
 

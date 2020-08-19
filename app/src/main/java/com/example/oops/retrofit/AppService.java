@@ -1,8 +1,12 @@
 package com.example.oops.retrofit;
 
 
+import android.graphics.drawable.Animatable2;
+
 import com.example.oops.EntityClass.LoginEntity;
+import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
+import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 
 import retrofit2.Call;
@@ -18,6 +22,7 @@ public interface AppService {
     Call<RegistrationResponse> LoginApi(@Body LoginEntity loginEntity);
  @POST("user/registration")
     Call<RegistrationResponse> RegisterApiCall(@Body RegistrationEntity loginEntity);
-
-
+//Logout
+    @POST("User/Logout")
+Call<LogoutResponse>  LogoutApiCall(@Body LogoutEntity logoutEntity);
 }
