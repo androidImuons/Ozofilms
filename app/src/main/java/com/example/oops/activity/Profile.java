@@ -70,48 +70,51 @@ public class Profile extends AppCompatActivity {
             editTextMobielNumber.setError("Please enter phone number");
         else if (seditTextPassWord.isEmpty())
             editTextPassWord.setText("Please enter password");
-        else    if (seditTextConfirmPassword.isEmpty() && !seditTextConfirmPassword.equals(seditTextPassWord))
-                editTextConfirmPassword.setText("Please enter correct password");
-//            else
-//                callApi(seditTextName,seditTextMobielNumber,seditTextEmail,seditTextPassWord,seditTextConfirmPassword);
+        else    if (seditTextConfirmPassword.isEmpty())
+                editTextConfirmPassword.setText("Please enter confirm password");
+        else if (!seditTextConfirmPassword.equals(seditTextPassWord))
+        editTextConfirmPassword.setText("Please valid password");
+            else
+                callApi(seditTextEmail,seditTextMobielNumber);
 
     }
 
-//    private void callApi(String name, String phone, String email, String password, String confirmpassword) {
-//        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-//            final Dialog dialog = ViewUtils.getProgressBar(Profile.this);
-//            AppCommon.getInstance(this).setNonTouchableFlags(this);
-//            AppService apiService = ServiceGenerator.createService(AppService.class);
-//
-//            Call call = apiService.ProfileApi(new ProfileEntity( name, phone,email,password,confirmpassword));
-//            call.enqueue(new Callback() {
-//                @Override
-//                public void onResponse(Call call, Response response) {
-//                    AppCommon.getInstance(Profile.this).clearNonTouchableFlags(Profile.this);
-//                    dialog.dismiss();
-////                    RegistrationResponse change  to ProfileApiResPonse
-//                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
-//                    if (authResponse != null) {
-//                        Log.i("Response::", new Gson().toJson(authResponse));
-//                        if (authResponse.getSuccess() == 200) {
-////                           Response
-//                        } else {
-//                            Toast.makeText(Profile.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        AppCommon.getInstance(Profile.this).showDialog(Profile.this, "Server Error");
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call call, Throwable t) {
-//                    dialog.dismiss();
-//                    AppCommon.getInstance(Profile.this).clearNonTouchableFlags(Profile.this);
-//                    // loaderView.setVisibility(View.GONE);
-//                    Toast.makeText(Profile.this, "Server Error", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//
-//    }
+    private void callApi( String email, String phone) {
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            final Dialog dialog = ViewUtils.getProgressBar(Profile.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class);
+
+            Call call = apiService.ProfileApi(new ProfileEntity( AppCommon.getInstance(this).getID(), AppCommon.getInstance(this).getUserId(),email,phone));
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(Profile.this).clearNonTouchableFlags(Profile.this);
+                    dialog.dismiss();
+//                    RegistrationResponse change  to ProfileApiResPonse
+                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Response::", new Gson().toJson(authResponse));
+                        if (authResponse.getSuccess() == 200) {
+                            Toast.makeText(Profile.this,"Profile Updated",Toast.LENGTH_SHORT).show();
+//                           Response
+                        } else {
+                            Toast.makeText(Profile.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(Profile.this).showDialog(Profile.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(Profile.this).clearNonTouchableFlags(Profile.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(Profile.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
 }

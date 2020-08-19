@@ -3,31 +3,31 @@ package com.example.oops.EntityClass;
 import java.io.Serializable;
 
 public class ProfileEntity implements Serializable {
+    int id;
 
-    String name , phone,email,password,confirmpassword;
+    String userId , email,phone;
 
-    public ProfileEntity(String name, String phone, String email, String password, String confirmpassword) {
-        this.name = name;
-        this.phone = phone;
+    public ProfileEntity(int id, String userId, String email, String phone) {
+        this.id = id;
+        this.userId = userId;
         this.email = email;
-        this.password = password;
-        this.confirmpassword = confirmpassword;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {
@@ -38,19 +38,11 @@ public class ProfileEntity implements Serializable {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getConfirmpassword() {
-        return confirmpassword;
-    }
-
-    public void setConfirmpassword(String confirmpassword) {
-        this.confirmpassword = confirmpassword;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
