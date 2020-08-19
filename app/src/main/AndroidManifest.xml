@@ -29,6 +29,8 @@
         <activity android:name=".activity.Login"/>
         <activity android:name=".activity.UserRegistration"/>
         <activity android:name=".activity.ChangePassword"></activity>
+        <activity android:name=".activity.Dashboard"/>
+        <activity android:name=".activity.Profile"/>
 
 
     </application>

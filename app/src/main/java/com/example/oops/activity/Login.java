@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void register(View view) {
-        startActivity(new Intent(this , Login.class));
+        startActivity(new Intent(this , UserRegistration.class));
     }
     private void callApi(String email, String password) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -64,7 +64,7 @@ public class Login extends AppCompatActivity {
                             AppCommon.getInstance(Login.this).setToken(authResponse.getData().getToken());
                             AppCommon.getInstance(Login.this).setUserLogin(authResponse.getData().getUserId(), true);
 
-                             startActivity(new Intent(Login.this, ChangePassword.class));
+                             startActivity(new Intent(Login.this, Dashboard.class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             Toast.makeText(Login.this,authResponse.getMsg(), Toast.LENGTH_SHORT).show();

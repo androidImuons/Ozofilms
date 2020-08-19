@@ -87,7 +87,7 @@ public class UserRegistration extends AppCompatActivity {
                         if (authResponse.getSuccess() == 200) {
                             AppCommon.getInstance(UserRegistration.this).setToken(authResponse.getData().getToken());
                             AppCommon.getInstance(UserRegistration.this).setUserLogin(authResponse.getData().getUserId(), true);
-                           // startActivity(new Intent(UserRegistration.this, .class));
+                            startActivity(new Intent(UserRegistration.this,Dashboard .class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             Toast.makeText(UserRegistration.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
