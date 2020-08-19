@@ -6,6 +6,7 @@ import android.graphics.drawable.Animatable2;
 import com.example.oops.EntityClass.ChangePasswordEntitiy;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.LogoutEntity;
+import com.example.oops.EntityClass.ProfileEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
@@ -29,4 +30,6 @@ Call<LogoutResponse>  LogoutApiCall(@Body LogoutEntity logoutEntity);
 //    Change Password
     @POST("user/changePassword")
     Call<RegistrationResponse> ChangePasswordApi(@Body ChangePasswordEntitiy changePasswordEntitiy);
+    @POST("user/editProfile")
+    Call<RegistrationResponse> ProfileApi(@Body ProfileEntity profileEntity);
 }
