@@ -75,47 +75,47 @@ public class Support_Help extends AppCompatActivity {
 
     }
 
-    private void callApi(String name, String mobile,String email,String message) {
-        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            final Dialog dialog = ViewUtils.getProgressBar(Support_Help.this);
-            AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class);
-//            Change
-            Call call = apiService.SupportApi(new SupportHelpEntity( name, mobile,email,message));
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(Support_Help.this).clearNonTouchableFlags(Support_Help.this);
-                    dialog.dismiss();
-                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
-                    if (authResponse != null) {
-                        Log.i("Response::", new Gson().toJson(authResponse));
-                        if (authResponse.getSuccess() == 200) {
-
-                            // startActivity(new Intent(Login.this, .class));
-                            // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
-                        } else {
-                            Toast.makeText(Support_Help.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        AppCommon.getInstance(Support_Help.this).showDialog(Support_Help.this, "Server Error");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
-                    AppCommon.getInstance(Support_Help.this).clearNonTouchableFlags(Support_Help.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Support_Help.this, "Server Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    private void callApi(String name, String mobile,String email,String message) {
+//        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+//            final Dialog dialog = ViewUtils.getProgressBar(Support_Help.this);
+//            AppCommon.getInstance(this).setNonTouchableFlags(this);
+//            AppService apiService = ServiceGenerator.createService(AppService.class);
+////            Change
+//            Call call = apiService.SupportApi(new SupportHelpEntity( name, mobile,email,message));
+//            call.enqueue(new Callback() {
+//                @Override
+//                public void onResponse(Call call, Response response) {
+//                    AppCommon.getInstance(Support_Help.this).clearNonTouchableFlags(Support_Help.this);
+//                    dialog.dismiss();
+//                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
+//                    if (authResponse != null) {
+//                        Log.i("Response::", new Gson().toJson(authResponse));
+//                        if (authResponse.getSuccess() == 200) {
+//
+//                            // startActivity(new Intent(Login.this, .class));
+//                            // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
+//                        } else {
+//                            Toast.makeText(Support_Help.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    } else {
+//                        AppCommon.getInstance(Support_Help.this).showDialog(Support_Help.this, "Server Error");
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call call, Throwable t) {
+//                    dialog.dismiss();
+//                    AppCommon.getInstance(Support_Help.this).clearNonTouchableFlags(Support_Help.this);
+//                    // loaderView.setVisibility(View.GONE);
+//                    Toast.makeText(Support_Help.this, "Server Error", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//
+//
+//        } else {
+//            // no internet
+//            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 
 }

@@ -65,7 +65,7 @@ public class MoreScreenFragment extends Fragment {
                 AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());
                 AppService apiService = ServiceGenerator.createService(AppService.class);
 //            Change
-                Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getToken()));
+                Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getID(),AppCommon.getInstance(getActivity()).getUserId()));
                 call.enqueue(new Callback() {
                     @Override
                     public void onResponse(Call call, Response response) {

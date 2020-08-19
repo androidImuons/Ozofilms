@@ -46,12 +46,12 @@ public class Login extends AppCompatActivity {
     public void register(View view) {
         startActivity(new Intent(this , Login.class));
     }
-    private void callApi(String emailId, String password) {
+    private void callApi(String email, String password) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             final Dialog dialog = ViewUtils.getProgressBar(Login.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.LoginApi(new LoginEntity( emailId, password));
+            Call call = apiService.LoginApi(new LoginEntity( email, password));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -63,10 +63,11 @@ public class Login extends AppCompatActivity {
                         if (authResponse.getSuccess() == 200) {
                             AppCommon.getInstance(Login.this).setToken(authResponse.getData().getToken());
                             AppCommon.getInstance(Login.this).setUserLogin(authResponse.getData().getUserId(), true);
-                            // startActivity(new Intent(Login.this, .class));
+
+                             startActivity(new Intent(Login.this, ChangePassword.class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(Login.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Login.this,authResponse.getMsg(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         AppCommon.getInstance(Login.this).showDialog(Login.this, authResponse.getMsg());

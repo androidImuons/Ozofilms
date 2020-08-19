@@ -11,18 +11,21 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.oops.R;
 import com.example.oops.adapter.ViewPagerAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Dashboard extends AppCompatActivity {
     ViewPager viewPager;
     LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
 

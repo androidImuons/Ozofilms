@@ -3,13 +3,30 @@ package com.example.oops.EntityClass;
 import java.io.Serializable;
 
 public class ChangePasswordEntitiy implements Serializable {
-    String oldPassword,newPassword,confirmPassword;
+    String userid,oldPassword,newPassword;
+    int id;
 
-
-    public ChangePasswordEntitiy(String oldPassword, String newPassword, String confirmPassword) {
+    public ChangePasswordEntitiy(int id, String userid, String oldPassword, String newPassword) {
+        this.id = id;
+        this.userid = userid;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;
-        this.confirmPassword = confirmPassword;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
     }
 
     public String getOldPassword() {
@@ -26,13 +43,5 @@ public class ChangePasswordEntitiy implements Serializable {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
-    }
-
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 }

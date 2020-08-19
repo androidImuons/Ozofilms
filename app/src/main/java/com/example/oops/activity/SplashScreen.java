@@ -27,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
                 try {
                     sleep(2000);
                     if (AppCommon.getInstance(SplashScreen.this).isUserLogIn()) {
-                        startActivity(new Intent(SplashScreen.this, Profile.class));
+                        startActivity(new Intent(SplashScreen.this, ChangePassword.class));
                     } else {
                         startActivity(new Intent(SplashScreen.this, Login.class));
                     }

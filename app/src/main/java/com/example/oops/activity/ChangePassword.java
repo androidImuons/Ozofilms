@@ -35,11 +35,11 @@ public class ChangePassword extends AppCompatActivity {
     @BindView(R.id.editTextOldPassword)
     AppCompatEditText editTextOldPassword;
     String sOldPassword;
-    @BindView(R.id.editTextNewPassWord)
+    @BindView(R.id.editTextNewPassword)
     AppCompatEditText editTextNewPassWord;
     String sNewPassword;
-    @BindView(R.id.imgBackPressed)
-    AppCompatImageView imgBackPressed;
+//    @BindView(R.id.imgBackPressed)
+//    AppCompatImageView imgBackPressed;
     @BindView(R.id.editTextConfirmPassword)
     AppCompatEditText editTextConfirmPassword;
     String sConfirmPassword;
@@ -50,15 +50,14 @@ public class ChangePassword extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.changepassword);
-        ButterKnife.bind(this);
-        initView();
+     ButterKnife.bind(this);
+      initView();
     }
 
     private void initView() {
         txtHeading.setText(getString(R.string.change_password));
     }
-    @OnClick(R.id.imgBackPressed)
-    public  void setImgBackPressed(View view) { onBackPressed(); }
+
 
     public  void update (View view){
         sConfirmPassword  = editTextConfirmPassword.getText().toString().trim();
@@ -66,22 +65,28 @@ public class ChangePassword extends AppCompatActivity {
         sNewPassword = editTextNewPassWord.getText().toString().trim();
 
          if(sOldPassword.isEmpty())
-            editTextOldPassword.setText("Please enter old password");
+//            editTextOldPassword.setText("Please enter old password");
+        Toast.makeText(ChangePassword.this,"Please enter old password",Toast.LENGTH_SHORT).show();
         else if(sNewPassword.isEmpty())
-            editTextNewPassWord.setText("Please enter new password");
-        else if(sConfirmPassword.isEmpty() && !sConfirmPassword.equals(sNewPassword))
-            editTextConfirmPassword.setText("Please enter correct password");
+
+        Toast.makeText(ChangePassword.this,"Please enter new password",Toast.LENGTH_SHORT).show();
+        else if(sConfirmPassword.isEmpty())
+            Toast.makeText(ChangePassword.this,"Please enter confirm password",Toast.LENGTH_SHORT).show();
+        else if( !sConfirmPassword.equals(sNewPassword)){
+             Toast.makeText(ChangePassword.this,"Please enter valid password",Toast.LENGTH_SHORT).show();
+         }
+
         else
-            callApi(sOldPassword,sNewPassword,sConfirmPassword);
+            callApi(sOldPassword,sNewPassword);
 
     }
 
-    private void callApi(String oldPassword, String newPassword,String confirmPassword) {
+    private void callApi(String oldPassword,String newPassword) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             final Dialog dialog = ViewUtils.getProgressBar(ChangePassword.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy(oldPassword,newPassword,confirmPassword));
+            AppService apiService = ServiceGenerator.createService(AppService.class,AppCommon.getInstance(this).getToken());
+            Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy(AppCommon.getInstance(this).getID(),AppCommon.getInstance(this).getUserId(),oldPassword,newPassword));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -91,6 +96,7 @@ public class ChangePassword extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getSuccess() == 200) {
+                            Toast.makeText(ChangePassword.this,"Password Change",Toast.LENGTH_LONG).show();
 //                          Response
                         } else {
                             Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();

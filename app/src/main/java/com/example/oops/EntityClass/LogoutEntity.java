@@ -1,17 +1,27 @@
 package com.example.oops.EntityClass;
 
 public class LogoutEntity {
-    String token;
+    int id;
+    String userId;
 
-    public LogoutEntity(String token) {
-        this.token = token;
+    public LogoutEntity(int id, String userId) {
+        this.id = id;
+        this.userId = userId;
     }
 
-    public String getToken() {
-        return token;
+    public int getId() {
+        return id;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

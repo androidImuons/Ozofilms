@@ -3,6 +3,7 @@ package com.example.oops.retrofit;
 
 import android.graphics.drawable.Animatable2;
 
+import com.example.oops.EntityClass.ChangePasswordEntitiy;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
@@ -23,6 +24,9 @@ public interface AppService {
  @POST("user/registration")
     Call<RegistrationResponse> RegisterApiCall(@Body RegistrationEntity loginEntity);
 //Logout
-    @POST("User/Logout")
+    @POST("user/Logout")
 Call<LogoutResponse>  LogoutApiCall(@Body LogoutEntity logoutEntity);
+//    Change Password
+    @POST("user/changePassword")
+    Call<RegistrationResponse> ChangePasswordApi(@Body ChangePasswordEntitiy changePasswordEntitiy);
 }
