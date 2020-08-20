@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.oops.R;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class VideoPlay extends AppCompatActivity {
     @BindView(R.id.txtVideoHeading)
@@ -41,5 +42,6 @@ public class VideoPlay extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_player);
+        ButterKnife.bind(this);
     }
 }

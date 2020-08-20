@@ -24,10 +24,12 @@
             android:id="@+id/radioButtonEnglish"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:onClick="onRadioButtonClicked"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+            android:buttonTint="@drawable/radiobuttoncustom"></androidx.appcompat.widget.AppCompatRadioButton>
 
     </RelativeLayout>
     <!--   Hindi -->
@@ -49,10 +51,11 @@
             android:id="@+id/radioButtonHindi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+            android:buttonTint="@drawable/radiobuttoncustom"></androidx.appcompat.widget.AppCompatRadioButton>
 
     </RelativeLayout>
 
@@ -73,10 +76,11 @@
             android:id="@+id/radioButtonMarathi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="onRadioButtonClicked"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:buttonTint="@color/white"></androidx.appcompat.widget.AppCompatRadioButton>
+            android:buttonTint="@drawable/radiobuttoncustom"></androidx.appcompat.widget.AppCompatRadioButton>
 
     </RelativeLayout>
 

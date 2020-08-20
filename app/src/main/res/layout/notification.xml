@@ -35,6 +35,9 @@
             android:id="@+id/imgArrowVide"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
+            android:buttonTint="@color/login_button_color"
+            android:trackTint="@color/white"
+            android:thumbTint="@color/login_button_color"
             android:src="@drawable/ic_next"></Switch>
 
 

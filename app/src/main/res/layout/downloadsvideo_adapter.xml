@@ -12,8 +12,9 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:id="@+id/imgDownload"
             android:layout_weight="1"
             android:background="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
 
@@ -29,6 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Abcd"
+                android:id="@+id/txtName"
 android:textColor="@color/white"
                 android:textSize="18sp"></com.example.oops.custom.OTTTextView>
 
@@ -36,14 +38,15 @@ android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 android:textColor="@color/white"
-                android:text="Abcdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"></com.example.oops.custom.OTTTextView>
-
+                android:id="@+id/txtDescription"
+                android:text="Abcddddddddddddff"></com.example.oops.custom.OTTTextView>
 
         </LinearLayout>
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
+            android:id="@+id/downloadImage"
             app:srcCompat="@drawable/download"></androidx.appcompat.widget.AppCompatImageView>
 
 

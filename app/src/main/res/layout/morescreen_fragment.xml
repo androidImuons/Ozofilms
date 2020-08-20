@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
+        android:id="@+id/txtAppSetting"
         android:layout_marginLeft="@dimen/margin_from_left"
         android:layout_marginTop="10dp"
         android:background="@drawable/text_background_strip"
@@ -74,6 +75,7 @@
         android:background="@drawable/text_background_strip"
         android:drawableLeft="@drawable/ic_support"
         android:drawablePadding="10dp"
+        android:id="@+id/txtSupportHelp"
         android:gravity="center_vertical"
         android:text="@string/support_help"
         android:textColor="@color/white" />
@@ -84,6 +86,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_from_left"
         android:layout_marginTop="5dp"
+        android:id="@+id/txtLegal"
         android:background="@drawable/text_background_strip"
         android:drawableLeft="@drawable/ic_legal"
         android:drawablePadding="10dp"

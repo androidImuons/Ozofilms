@@ -66,11 +66,12 @@
 
                     <com.example.oops.custom.OTTTextView
                         android:layout_width="40dp"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
 android:id="@+id/txtContentType"
-
-                        android:background="@drawable/video_player_red_background"
                         android:gravity="center"
+android:layout_gravity="center_vertical"
+                        android:background="@drawable/video_player_red_background"
+
                         android:text="@string/eighteen"
                         android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
 

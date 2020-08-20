@@ -19,6 +19,8 @@ import com.example.oops.R;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
+import com.example.oops.activity.AppSetting;
+import com.example.oops.activity.LegalActivity;
 import com.example.oops.activity.Login;
 import com.example.oops.activity.Support_Help;
 import com.example.oops.retrofit.AppService;
@@ -27,6 +29,8 @@ import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +39,14 @@ import retrofit2.Response;
 public class MoreScreenFragment extends Fragment {
     @BindView(R.id.txtLogout)
     AppCompatTextView txtLogout;
+@BindView(R.id.txtAppSetting)
+AppCompatTextView txtAppSetting;
+@BindView(R.id.txtSupportHelp)
+AppCompatTextView txtSupportHelp;
+@BindView(R.id.txtLegal)
+AppCompatTextView txtLegal;
+@BindView(R.id.txtVersion)
+AppCompatTextView txtVersion;
 
     public MoreScreenFragment() {
         // Required empty public constructor
@@ -46,7 +58,8 @@ public class MoreScreenFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.morescreen_fragment, container, false);
-        ButterKnife.bind(this, view);
+       ButterKnife.bind(this, view);
+        txtVersion.setText("Version "+"Dynamic Value");
         txtLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,17 +67,29 @@ public class MoreScreenFragment extends Fragment {
 
             }
         });
+
         return view;
 
     }
-
+    @OnClick(R.id.txtAppSetting)
+    public  void setTxtAppSetting(){
+        startActivity(new Intent(getActivity(), AppSetting.class));
+    }
+    @OnClick(R.id.txtSupportHelp)
+    public  void  setTxtSupportHelp(){
+        startActivity(new Intent(getActivity(), Support_Help.class));
+    }
+@OnClick(R.id.txtLegal)
+public  void setTxtLegal(){
+        startActivity(new Intent(getActivity(), LegalActivity.class));
+}
     private void logoutUser() {
 
             if (AppCommon.getInstance(getActivity()).isConnectingToInternet(getActivity())) {
                 final Dialog dialog = ViewUtils.getProgressBar(getActivity());
                 AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());
                 AppService apiService = ServiceGenerator.createService(AppService.class);
-//            Change
+
                 Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getID(),AppCommon.getInstance(getActivity()).getUserId()));
                 call.enqueue(new Callback() {
                     @Override

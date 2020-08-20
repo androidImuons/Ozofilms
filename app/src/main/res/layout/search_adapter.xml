@@ -20,12 +20,15 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="150dp"
             android:scaleType="fitXY"
+            android:id="@+id/searchRelatedImage"
             android:layout_height="150dp"
             app:srcCompat="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
       <com.example.oops.custom.OTTTextView
           android:layout_width="wrap_content"
+          android:layout_marginTop="3dp"
           android:layout_height="wrap_content"
           android:textColor="@color/white"
+          android:id="@+id/txtName"
           android:text="Name"></com.example.oops.custom.OTTTextView>
 
         </LinearLayout>

@@ -3,11 +3,8 @@
     android:shape="rectangle">
 
 
-<!--    <padding-->
-<!--        android:bottom="2dp"-->
-<!--        android:left="2dp"-->
-<!--        android:right="2dp"-->
-<!--        android:top="2dp"/>-->
+
+
     <corners
         android:bottomLeftRadius="10dp"
 
