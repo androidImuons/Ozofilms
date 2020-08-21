@@ -40,6 +40,38 @@
 
     </RelativeLayout>
 
+    <!--change password-->
+
+    <RelativeLayout
+        android:id="@+id/changepassword"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+
+        android:background="@drawable/text_background_strip">
+
+        <com.example.oops.custom.OTTTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="@string/change_password"
+            android:textColor="@color/white"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margin_from_right"
+            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+
+
+    </RelativeLayout>
+
     <!--Language-->
 
     <RelativeLayout

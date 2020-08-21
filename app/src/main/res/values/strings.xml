@@ -73,7 +73,7 @@
     <!--Profile-->
     <string name="profile_name">Name <sup>*</sup></string>
     <string name="profile_mobile_no">Mobile No <sup>*</sup></string>
-    <string name="profile_email_no_manadatory">Email (Not Mandatory)</string>
+    <string name="profile_email_no_manadatory">Email</string>
     <string name="profile_password">password <sup>*</sup></string>
     <string name="profile_confirm_password">Confirm Password <sup>*</sup></string>
     <string name="register_now">REGISTER NOW</string>
@@ -109,5 +109,8 @@
     <string name="userid">Userid</string>
     <string name="change_password">Change Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="r_u_sure_logout_message">Are you sure you want to Logout?</string>
+    <string name="ok">OK</string>
+    <string name="Cancel">Cancel</string>
 
 </resources>

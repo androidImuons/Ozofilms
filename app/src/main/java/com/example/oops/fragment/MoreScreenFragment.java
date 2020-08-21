@@ -1,7 +1,11 @@
 package com.example.oops.fragment;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatTextView;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.SupportHelpEntity;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
@@ -83,51 +88,80 @@ AppCompatTextView txtVersion;
 public  void setTxtLegal(){
         startActivity(new Intent(getActivity(), LegalActivity.class));
 }
+
+
     private void logoutUser() {
 
-            if (AppCommon.getInstance(getActivity()).isConnectingToInternet(getActivity())) {
-                final Dialog dialog = ViewUtils.getProgressBar(getActivity());
-                AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());
-                AppService apiService = ServiceGenerator.createService(AppService.class);
 
-                Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getID(),AppCommon.getInstance(getActivity()).getUserId()));
-                call.enqueue(new Callback() {
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        adb.setTitle(getResources().getString(R.string.app_name));
+        adb.setIcon(R.mipmap.ic_launcher_round);
+        adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+        adb.setPositiveButton(getResources().getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
-                    public void onResponse(Call call, Response response) {
-                        AppCommon.getInstance(MoreScreenFragment.this.getContext()).clearNonTouchableFlags(MoreScreenFragment.this.getActivity());
-                        dialog.dismiss();
-                        RegistrationResponse authResponse = (RegistrationResponse) response.body();
-                        if (authResponse != null) {
-                            Log.i("Response::", new Gson().toJson(authResponse));
-                            if (authResponse.getSuccess() == 200) {
-                                AppCommon.getInstance(getActivity()).clearPreference();
-                                startActivity(new Intent(getActivity(), Login.class));
-                                getActivity().finishAffinity();
-                                Toast.makeText(getActivity(), "Logout Successfully", Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
 
-                            } else {
-                                Toast.makeText(getActivity(), authResponse.getMsg(), Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            AppCommon.getInstance(MoreScreenFragment.this.getContext()).showDialog(MoreScreenFragment.this.getActivity(), "Server Error");
-                        }
+                       callApi();
+                        //startActivity(new Intent());
+                        // finishAffinity();
                     }
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-                        dialog.dismiss();
-                        AppCommon.getInstance(MoreScreenFragment.this.getContext()).clearNonTouchableFlags(MoreScreenFragment.this.getActivity());
-                        // loaderView.setVisibility(View.GONE);
-                        Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
-                    }
                 });
-
-
-            } else {
-                // no internet
-                Toast.makeText(getActivity(), "Please check your internet", Toast.LENGTH_SHORT).show();
+        adb.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
+        });
+        adb.show();
+
         }
+
+    private void callApi() {
+        if (AppCommon.getInstance(getActivity()).isConnectingToInternet(getActivity())) {
+            final Dialog dialog = ViewUtils.getProgressBar(getActivity());
+            AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());
+            AppService apiService = ServiceGenerator.createService(AppService.class);
+            Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getId(),AppCommon.getInstance(getActivity()).getUserId()));
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(MoreScreenFragment.this.getContext()).clearNonTouchableFlags(MoreScreenFragment.this.getActivity());
+                    dialog.dismiss();
+                    LogoutResponse authResponse = (LogoutResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Response::", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            AppCommon.getInstance(getActivity()).clearPreference();
+                            startActivity(new Intent(getActivity(), Login.class));
+                            getActivity().finishAffinity();
+                            Toast.makeText(getActivity(), "Logout Successfully", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(getActivity(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(MoreScreenFragment.this.getContext()).showDialog(MoreScreenFragment.this.getActivity(), "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(MoreScreenFragment.this.getContext()).clearNonTouchableFlags(MoreScreenFragment.this.getActivity());
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(getActivity(), "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 
 }

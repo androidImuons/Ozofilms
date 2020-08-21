@@ -63,7 +63,8 @@ public class Login extends AppCompatActivity {
                         if (authResponse.getSuccess() == 200) {
                             AppCommon.getInstance(Login.this).setToken(authResponse.getData().getToken());
                             AppCommon.getInstance(Login.this).setUserLogin(authResponse.getData().getUserId(), true);
-
+                            AppCommon.getInstance(Login.this).setId(authResponse.getData().getId());
+                            AppCommon.getInstance(Login.this).setUserObject(new Gson().toJson(authResponse.getData()));
                              startActivity(new Intent(Login.this, Dashboard.class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {

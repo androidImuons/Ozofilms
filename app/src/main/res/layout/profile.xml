@@ -134,6 +134,7 @@
                     android:layout_width="wrap_content"
                     android:background="@drawable/text_bg_ttrip"
                     android:layout_height="40dp"
+                    android:visibility="gone"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
 
@@ -162,6 +163,7 @@
                     android:layout_width="wrap_content"
                     android:background="@drawable/text_bg_ttrip"
                     android:layout_height="40dp"
+                    android:visibility="gone"
                     android:layout_marginTop="10dp"
                     android:orientation="vertical">
 

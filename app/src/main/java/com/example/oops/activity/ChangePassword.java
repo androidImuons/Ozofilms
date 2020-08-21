@@ -84,7 +84,7 @@ public class ChangePassword extends AppCompatActivity {
             final Dialog dialog = ViewUtils.getProgressBar(ChangePassword.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
-            Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy(AppCommon.getInstance(this).getID(), AppCommon.getInstance(this).getUserId(), oldPassword, newPassword));
+            Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy( AppCommon.getInstance(this).getUserId(), oldPassword, newPassword , AppCommon.getInstance(this).getId()));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -94,7 +94,8 @@ public class ChangePassword extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getSuccess() == 200) {
-                            Toast.makeText(ChangePassword.this, "Password Change", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_LONG).show();
+                            onBackPressed();
 //                          Response
                         } else {
                             Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();

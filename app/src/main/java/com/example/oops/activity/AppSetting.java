@@ -3,6 +3,7 @@ package com.example.oops.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,8 @@ public class AppSetting extends AppCompatActivity {
     AppCompatImageView imgArrowDownloads;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
+    @BindView(R.id.changepassword)
+    RelativeLayout changepassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,5 +74,10 @@ public  void setImgBackPressed(){
     @OnClick(R.id.imgArrowDownloads)
     public void setImgArrowDownloads() {
         startActivity(new Intent(AppSetting.this, Downloads.class));
+    }
+
+    @OnClick(R.id.changepassword)
+    void setChangepassword(){
+        startActivity(new Intent(this , ChangePassword.class));
     }
 }

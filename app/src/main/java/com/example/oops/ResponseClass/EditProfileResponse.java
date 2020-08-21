@@ -1,9 +1,10 @@
 package com.example.oops.ResponseClass;
 
+import com.example.oops.DataClass.EditData;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class LogoutResponse {
+public class EditProfileResponse {
     @SerializedName("code")
     @Expose
     private Integer code;
@@ -12,7 +13,7 @@ public class LogoutResponse {
     private String message;
     @SerializedName("data")
     @Expose
-    private Object data;
+    private EditData data;
 
     public Integer getCode() {
         return code;
@@ -30,11 +31,11 @@ public class LogoutResponse {
         this.message = message;
     }
 
-    public Object getData() {
+    public EditData getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(EditData data) {
         this.data = data;
     }
 }
