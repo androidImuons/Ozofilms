@@ -8,4 +8,6 @@
     <color name="colorPrimary10">#108B161C</color>
     <color name="colorPrimaryDark">#560d0e</color>
     <color name="login_button_color">#F05744</color>
+    <color name="gray_50">#7f7f7f</color>
+    <color name="gray_300">#e5e5e5</color>
 </resources>

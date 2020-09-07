@@ -12,12 +12,19 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 
 import com.example.oops.R;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -211,7 +218,6 @@ public class AppCommon {
         SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
         return prefs.getString(MyPreference.TokenValue, "");
     }
-/*
 
     public DraweeController getDraweeController(SimpleDraweeView mImageView, String vendorImg, int i) {
         Uri uri = Uri.parse(vendorImg);
@@ -226,7 +232,6 @@ public class AppCommon {
                 .setImageRequest(request)
                 .build();
     }
-*/
 
 
 

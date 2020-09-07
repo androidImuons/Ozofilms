@@ -44,14 +44,14 @@ import retrofit2.Response;
 public class MoreScreenFragment extends Fragment {
     @BindView(R.id.txtLogout)
     AppCompatTextView txtLogout;
-@BindView(R.id.txtAppSetting)
-AppCompatTextView txtAppSetting;
-@BindView(R.id.txtSupportHelp)
-AppCompatTextView txtSupportHelp;
-@BindView(R.id.txtLegal)
-AppCompatTextView txtLegal;
-@BindView(R.id.txtVersion)
-AppCompatTextView txtVersion;
+    @BindView(R.id.txtAppSetting)
+    AppCompatTextView txtAppSetting;
+    @BindView(R.id.txtSupportHelp)
+    AppCompatTextView txtSupportHelp;
+    @BindView(R.id.txtLegal)
+    AppCompatTextView txtLegal;
+    @BindView(R.id.txtVersion)
+    AppCompatTextView txtVersion;
 
     public MoreScreenFragment() {
         // Required empty public constructor
@@ -63,8 +63,8 @@ AppCompatTextView txtVersion;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.morescreen_fragment, container, false);
-       ButterKnife.bind(this, view);
-        txtVersion.setText("Version "+"Dynamic Value");
+        ButterKnife.bind(this, view);
+        txtVersion.setText("Version " + "Dynamic Value");
         txtLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,18 +76,21 @@ AppCompatTextView txtVersion;
         return view;
 
     }
+
     @OnClick(R.id.txtAppSetting)
-    public  void setTxtAppSetting(){
+    public void setTxtAppSetting() {
         startActivity(new Intent(getActivity(), AppSetting.class));
     }
+
     @OnClick(R.id.txtSupportHelp)
-    public  void  setTxtSupportHelp(){
+    public void setTxtSupportHelp() {
         startActivity(new Intent(getActivity(), Support_Help.class));
     }
-@OnClick(R.id.txtLegal)
-public  void setTxtLegal(){
+
+    @OnClick(R.id.txtLegal)
+    public void setTxtLegal() {
         startActivity(new Intent(getActivity(), LegalActivity.class));
-}
+    }
 
 
     private void logoutUser() {
@@ -103,7 +106,7 @@ public  void setTxtLegal(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                       callApi();
+                        callApi();
                         //startActivity(new Intent());
                         // finishAffinity();
                     }
@@ -117,14 +120,14 @@ public  void setTxtLegal(){
         });
         adb.show();
 
-        }
+    }
 
     private void callApi() {
         if (AppCommon.getInstance(getActivity()).isConnectingToInternet(getActivity())) {
             final Dialog dialog = ViewUtils.getProgressBar(getActivity());
             AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getId(),AppCommon.getInstance(getActivity()).getUserId()));
+            Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(getActivity()).getId(), AppCommon.getInstance(getActivity()).getUserId()));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

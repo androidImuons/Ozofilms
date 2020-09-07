@@ -93,7 +93,7 @@
     <string name="cast">Cast</string>
     <string name="director">Director</string>
     <string name="episode">Episodes</string>
-<!--   Dashboard -->
+    <!--   Dashboard -->
     <string name="most_viewed">Most Viewed</string>
     <string name="romantic">Romantic</string>
     <string name="webseries">Web Series</string>
@@ -101,9 +101,9 @@
     <string name="explore">Explore</string>
     <string name="favourite">Favourite</string>
     <string name="more">More</string>
-<!--    Serach here-->
-<string name="search">Search Here</string>
-<!--Change PassWord-->
+    <!--    Serach here-->
+    <string name="search">Search Here</string>
+    <!--Change PassWord-->
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="userid">Userid</string>

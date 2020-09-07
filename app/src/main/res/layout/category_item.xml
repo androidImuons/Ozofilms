@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_150sdp"
+    android:padding="@dimen/_2sdp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/moviesImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_130sdp"
+        app:placeholderImage="@drawable/oops_logo"/>
+    <TextView
+        android:id="@+id/moviesNmae"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:text="Dabang"
+        android:layout_below="@id/moviesImage"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        />
+
+</RelativeLayout>

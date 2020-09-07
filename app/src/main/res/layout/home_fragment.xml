@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:attrs="http://schemas.android.com/tools"
     android:orientation="vertical">
     <RelativeLayout
         android:orientation="horizontal"
@@ -32,7 +33,7 @@
 
     </RelativeLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
@@ -42,13 +43,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="@dimen/margin_from_left"
-            android:layout_marginRight="@dimen/margin_from_left">
-
-
-
-
-
-
+            android:layout_marginRight="@dimen/margin_from_left"
+            android:layout_marginBottom="@dimen/_20sdp">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
@@ -57,17 +53,27 @@
                 android:layout_height="190dp"
                 android:layout_marginBottom="8dp"/>
 
-
+            <com.rd.PageIndicatorView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:piv_animationType="thinWorm"
+                android:id="@+id/pageIndicatorView"/>
             <LinearLayout
                 android:id="@+id/SliderDots"
                 android:layout_below="@+id/viewPager"
                 android:orientation="horizontal"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_width="match_parent"
+                android:visibility="gone"
                 android:layout_height="wrap_content"/>
-
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/recycleView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    attrs:listitem="@layout/cat_movies_item"/>
             <!--   MostViewed RecyclerView                     -->
-            <LinearLayout
+        <!--    <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -95,10 +101,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:id="@+id/recylerviewMostViewed"></androidx.recyclerview.widget.RecyclerView>
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                attrs:listitem="@layout/row_movies_item"
+                android:id="@+id/recylerviewMostViewed"/>
 
 
-            <!--         Romantic               -->
+            &lt;!&ndash;         Romantic               &ndash;&gt;
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -110,7 +118,6 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="@string/romantic"
-
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/white"
                     android:textSize="16sp"></com.example.oops.custom.OTTTextView>
@@ -120,7 +127,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-
                     android:layout_marginLeft="10dp"
                     app:srcCompat="@drawable/seprator_line"
                     ></androidx.appcompat.widget.AppCompatImageView>
@@ -131,7 +137,7 @@
                 android:orientation="horizontal"
                 android:id="@+id/recylerviewRomantic"></androidx.recyclerview.widget.RecyclerView>
 
-            <!--             Web Series           -->
+            &lt;!&ndash;             Web Series           &ndash;&gt;
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,7 +149,6 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="@string/webseries"
-
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/white"
                     android:textSize="16sp"></com.example.oops.custom.OTTTextView>
@@ -161,7 +166,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-
                     android:layout_marginLeft="10dp"
                     app:srcCompat="@drawable/seprator_line"
                     ></androidx.appcompat.widget.AppCompatImageView>
@@ -172,8 +176,8 @@
                 android:layout_marginBottom="20dp"
                 android:orientation="horizontal"
                 android:id="@+id/recylerviewWebSeries"></androidx.recyclerview.widget.RecyclerView>
-
+-->
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

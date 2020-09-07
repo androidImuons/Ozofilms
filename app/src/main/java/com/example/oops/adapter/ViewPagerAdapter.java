@@ -1,5 +1,6 @@
 package com.example.oops.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,21 +10,27 @@ import android.widget.ImageView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.oops.DataClass.SliderData;
 import com.example.oops.R;
+import com.example.oops.Utils.AppCommon;
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
 
 public class ViewPagerAdapter   extends PagerAdapter {
 
-    private Context context;
+    private Activity context;
     private LayoutInflater layoutInflater;
     private Integer [] images = {R.drawable.header_background,R.drawable.header_background,R.drawable.header_background,R.drawable.header_background};
-
-    public ViewPagerAdapter(Context context) {
+    ArrayList<SliderData> sliderData;
+    public ViewPagerAdapter(Activity context, ArrayList<SliderData> dots) {
         this.context = context;
+        sliderData = dots;
     }
 
     @Override
     public int getCount() {
-        return images.length;
+        return sliderData.size();
     }
 
     @Override
@@ -36,9 +43,9 @@ public class ViewPagerAdapter   extends PagerAdapter {
 
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
-        ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
-        imageView.setImageResource(images[position]);
-
+        SimpleDraweeView imageView = (SimpleDraweeView) view.findViewById(R.id.imageView);
+       // AppCommon.getInstance(context).getDraweeController(imageView, sliderData.get(position).getImageLink(),500);
+        imageView.setImageURI(sliderData.get(position).getImageLink());
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);
