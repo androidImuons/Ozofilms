@@ -41,6 +41,8 @@ public class UserRegistration extends AppCompatActivity {
     EditText editTextPassWord;
     @BindView(R.id.checkBox2)
     CheckBox checkBox2;
+    @BindView(R.id.editTextPin)
+    EditText editTextPin;
 
 
     @Override
@@ -56,26 +58,28 @@ public class UserRegistration extends AppCompatActivity {
         String emailId = editTextEmailId.getText().toString().trim();
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();
         String password = editTextPassWord.getText().toString().trim();
-
-        if(name.isEmpty())
+        String pintxt = editTextPin.getText().toString().trim();
+        if (name.isEmpty())
             editTextName.setError("Please enter user name");
-        else if(emailId.isEmpty())
+        else if (emailId.isEmpty())
             editTextEmailId.setError("Please enter email id");
-        else if(phoneNumber.isEmpty()){
+        else if (phoneNumber.isEmpty()) {
             editTextPhoneNumber.setError("Please enter phone number");
-        }else if(password.isEmpty()){
+        } else if (password.isEmpty()) {
             editTextPassWord.setError("Please enter password");
-        }else
-            callApi(name , emailId,password,phoneNumber);
+        } else if (pintxt.isEmpty()) {
+            editTextPin.setError("Please enter pin");
+        } else
+            callApi(name, emailId, password, phoneNumber , pintxt);
 
     }
 
-    private void callApi(String name, String emailId, String password, String phoneNumber) {
+    private void callApi(String name, String emailId, String password, String phoneNumber , String pin) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             final Dialog dialog = ViewUtils.getProgressBar(UserRegistration.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.RegisterApiCall(new RegistrationEntity( name,emailId, password, phoneNumber, "free"));
+            Call call = apiService.RegisterApiCall(new RegistrationEntity(name, emailId, password, phoneNumber, "free" , pin));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
@@ -89,7 +93,7 @@ public class UserRegistration extends AppCompatActivity {
                             AppCommon.getInstance(UserRegistration.this).setUserLogin(authResponse.getData().getUserId(), true);
                             AppCommon.getInstance(UserRegistration.this).setId(authResponse.getData().getId());
                             AppCommon.getInstance(UserRegistration.this).setUserObject(new Gson().toJson(authResponse.getData()));
-                            startActivity(new Intent(UserRegistration.this,Dashboard.class));
+                            startActivity(new Intent(UserRegistration.this, Dashboard.class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             Toast.makeText(UserRegistration.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();

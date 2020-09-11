@@ -33,6 +33,7 @@ import com.example.oops.Utils.ViewUtils;
 import com.example.oops.activity.CategoryListActivity;
 import com.example.oops.activity.Dashboard;
 import com.example.oops.activity.Login;
+import com.example.oops.activity.VideoPlay;
 import com.example.oops.adapter.HomeMoviesAdapter;
 import com.example.oops.adapter.ViewPagerAdapter;
 import com.example.oops.retrofit.AppService;
@@ -227,5 +228,10 @@ public class HomeFragment extends Fragment {
     public void catList(int adapterPosition) {
         startActivity(new Intent(getActivity() , CategoryListActivity.class)
                 .putExtra("data" ,new Gson().toJson(moviesDataArrayList.get(adapterPosition))));
+    }
+
+    public void moviesDeatils(String movieId, String name) {
+        startActivity(new Intent(getContext() , VideoPlay.class)
+        .putExtra("moviesId" , movieId).putExtra("name" , name));
     }
 }

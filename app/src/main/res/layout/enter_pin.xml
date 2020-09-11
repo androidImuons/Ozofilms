@@ -21,7 +21,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/oops_logo"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/oops_logo"/>
 
         <LinearLayout
 
@@ -37,7 +37,7 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
                 android:text="@string/enter_pin"
-                android:textColor="@color/login_button_color"></com.example.oops.custom.OTTTextView>
+                android:textColor="@color/login_button_color"/>
 
             <com.example.oops.custom.OTTTextView
                 style="@style/TextInCenter"
@@ -45,7 +45,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
                 android:text="user"
-                android:textSize="13sp"></com.example.oops.custom.OTTTextView>
+                android:textSize="13sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,30 +55,50 @@
                 android:orientation="horizontal">
 
                 <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et1"
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
-                    android:inputType="number"
-                    android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
                 <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et2"
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
-                    android:inputType="number"
-                    android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
                 <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et3"
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
-                    android:inputType="number"
-                    android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
 
                 <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et4"
                     android:layout_width="40dp"
                     android:layout_marginLeft="20dp"
                     android:layout_height="40dp"
-                    android:inputType="number"
-                    android:background="@drawable/pin_entry_square"></com.example.oops.custom.OTTEditText>
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
             </LinearLayout>
 
             <com.example.oops.custom.OTTTextView
@@ -86,8 +106,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"
-                android:text="@string/forgot_password"
-                android:textSize="13sp"></com.example.oops.custom.OTTTextView>
+                android:text="@string/forgot_pin"
+                android:textSize="13sp"/>
         </LinearLayout>
         <com.example.oops.custom.OTTButton
             android:id="@+id/submitIssue"

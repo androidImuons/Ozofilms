@@ -24,19 +24,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdvImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-
+                    android:scaleType="fitXY"
                     android:layout_marginTop="@dimen/margin_from_left"
-                    android:background="@drawable/header_background"></androidx.appcompat.widget.AppCompatImageView>
+                    android:background="@drawable/header_background"/>
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/ic_youtube"></androidx.appcompat.widget.AppCompatImageView>
+                    app:srcCompat="@drawable/ic_youtube"/>
             </RelativeLayout>
 
 
@@ -117,6 +118,7 @@ android:layout_gravity="center_vertical"
                 android:textSize="16sp"></com.example.oops.custom.OTTTextView>
 
             <com.example.oops.custom.OTTTextView
+
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."

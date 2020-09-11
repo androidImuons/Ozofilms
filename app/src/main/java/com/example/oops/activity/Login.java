@@ -66,6 +66,7 @@ public class Login extends AppCompatActivity {
                             AppCommon.getInstance(Login.this).setId(authResponse.getData().getId());
                             AppCommon.getInstance(Login.this).setUserObject(new Gson().toJson(authResponse.getData()));
                              startActivity(new Intent(Login.this, Dashboard.class));
+                             finishAffinity();
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             Toast.makeText(Login.this,authResponse.getMsg(), Toast.LENGTH_SHORT).show();

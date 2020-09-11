@@ -76,6 +76,11 @@
         <activity
             android:name=".activity.StorageLocation"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.EnterPin"
+            android:screenOrientation="portrait" />
+
+
     </application>
 
 </manifest>

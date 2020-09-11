@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.DataClass.MoviesData;
 import com.example.oops.R;
+import com.example.oops.fragment.HomeFragment;
 import com.example.oops.model.SearchModel;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class  MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.MyViewHolder> {
     Fragment fragment;
@@ -62,6 +64,11 @@ public class  MostViewAdapter extends RecyclerView.Adapter<MostViewAdapter.MyVie
             super(view);
             ButterKnife.bind(this, view);
 
+        }
+
+        @OnClick(R.id.movie_img)
+        void setImgMostViewed(){
+            ((HomeFragment)fragment).moviesDeatils(moviesDataArrayList.get(getAdapterPosition()).getMovieId() ,moviesDataArrayList.get(getAdapterPosition()).getMovieName() );
         }
     }
 

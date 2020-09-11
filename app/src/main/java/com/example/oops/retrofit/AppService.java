@@ -10,8 +10,10 @@ import com.example.oops.EntityClass.ProfileEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.ResponseClass.AllMoviesResponse;
 import com.example.oops.ResponseClass.CategoryResponse;
+import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.EditProfileResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
+import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.ResponseClass.SliderResponse;
 
@@ -57,4 +59,13 @@ public interface AppService {
     @FormUrlEncoded
     @POST("video/moviesWithCategories")
     Call<CategoryResponse> categoryApi(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("user/verifyPin")
+    Call<CommonResponse> pinApi(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("video/getSingleMovie")
+    Call<MovieDeatilsResponse> MOVIE_DEATILS_RESPONSE_CALL(@FieldMap Map<String, String> entityMap);
+
 }

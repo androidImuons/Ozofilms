@@ -112,5 +112,7 @@
     <string name="r_u_sure_logout_message">Are you sure you want to Logout?</string>
     <string name="ok">OK</string>
     <string name="Cancel">Cancel</string>
+    <string name="pin">pin</string>
+    <string name="forgot_pin">Forgot Pin</string>
 
 </resources>

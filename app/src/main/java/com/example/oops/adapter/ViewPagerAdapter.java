@@ -44,8 +44,8 @@ public class ViewPagerAdapter   extends PagerAdapter {
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.custom_layout, null);
         SimpleDraweeView imageView = (SimpleDraweeView) view.findViewById(R.id.imageView);
-       // AppCommon.getInstance(context).getDraweeController(imageView, sliderData.get(position).getImageLink(),500);
-        imageView.setImageURI(sliderData.get(position).getImageLink());
+        //imageView.setColAppCommon.getInstance(context).getDraweeController(imageView, sliderData.get(position).getImageLink(),500);
+        imageView.setImageURI(sliderData.get(position).getBannerLink());
 
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);

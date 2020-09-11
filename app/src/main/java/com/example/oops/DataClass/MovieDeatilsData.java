@@ -3,7 +3,7 @@ package com.example.oops.DataClass;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class SliderData {
+public class MovieDeatilsData {
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -27,10 +27,10 @@ public class SliderData {
     private String movieType;
     @SerializedName("cast")
     @Expose
-    private Object cast;
+    private String cast;
     @SerializedName("director")
     @Expose
-    private Object director;
+    private String director;
     @SerializedName("totalViews")
     @Expose
     private Integer totalViews;
@@ -58,10 +58,29 @@ public class SliderData {
     @SerializedName("releaseDate")
     @Expose
     private String releaseDate;
+    @SerializedName("videoLink")
+    @Expose
+    private String videoLink;
+    @SerializedName("imageLink")
+    @Expose
+    private String imageLink;
+    @SerializedName("trailerLink")
+    @Expose
+    private String trailerLink;
     @SerializedName("bannerLink")
     @Expose
     private String bannerLink;
+    @SerializedName("categoryName")
+    @Expose
+    private String categoryName;
 
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public Integer getId() {
         return id;
@@ -119,19 +138,19 @@ public class SliderData {
         this.movieType = movieType;
     }
 
-    public Object getCast() {
+    public String getCast() {
         return cast;
     }
 
-    public void setCast(Object cast) {
+    public void setCast(String cast) {
         this.cast = cast;
     }
 
-    public Object getDirector() {
+    public String getDirector() {
         return director;
     }
 
-    public void setDirector(Object director) {
+    public void setDirector(String director) {
         this.director = director;
     }
 
@@ -205,6 +224,30 @@ public class SliderData {
 
     public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
+    public String getTrailerLink() {
+        return trailerLink;
+    }
+
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
     }
 
     public String getBannerLink() {

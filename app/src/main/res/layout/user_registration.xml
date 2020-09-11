@@ -214,6 +214,41 @@
                         android:inputType="textPassword"
                         android:hint="@string/password" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/whitebackgroundrectangular"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_pink_patch"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            app:srcCompat="@drawable/ic_lock"></androidx.appcompat.widget.AppCompatImageView>
+                    </LinearLayout>
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:background="@null"
+                        android:digits="0987654321"
+                        android:maxLength="4"
+                        android:inputType="number"
+                        android:hint="@string/pin" />
+                </LinearLayout>
 
 
                 <com.example.oops.custom.OTTCheckBox
