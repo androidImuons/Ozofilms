@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,12 +20,18 @@ import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
+import com.example.oops.data.database.AppDatabase;
+import com.example.oops.data.database.Subtitle;
+import com.example.oops.data.database.Video;
+import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -56,18 +64,43 @@ public class VideoPlay extends AppCompatActivity {
     SimpleDraweeView sdvImage;
     @BindView(R.id.txtHeading)
     AppCompatTextView  txtHeading;
+    @BindView(R.id.imgPlayVideo)
+    AppCompatImageView imgPlayVideo;
+    private AppDatabase database;
+    private List<Subtitle> subtitleList = new ArrayList<>();
+
+    private List<Video> videoUriList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.video_player);
         ButterKnife.bind(this);
+        setLayout();
+        initializeDb();
+        makeListOfUri();
         if(getIntent()!= null){
             String movieId = getIntent().getStringExtra("moviesId");
             String name = getIntent().getStringExtra("name");
             txtHeading.setText(name);
             callGetMoviesDetails(movieId);
         }
+
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database = null;
+    }
+    private void setLayout() {
+
+
+
+        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 1)));
+    }
+
+    private void initializeDb() {
+        database = AppDatabase.Companion.getDatabase(getApplicationContext());
     }
 
     @OnClick(R.id.imgBackPressed)
@@ -146,4 +179,52 @@ public class VideoPlay extends AppCompatActivity {
 
         sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage , data.getBannerLink() , 1024));
     }
+
+
+    private void makeListOfUri() {
+
+        videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
+
+        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
+        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
+
+        if (database.videoDao().getAllUrls().size() == 0) {
+            database.videoDao().insertAllVideoUrl(videoUriList);
+            database.videoDao().insertAllSubtitleUrl(subtitleList);
+        }
+
+    }
+
+    private VideoSource makeVideoSource(List<Video> videos, int index) {
+        setVideosWatchLength();
+        List<VideoSource.SingleVideo> singleVideos = new ArrayList<>();
+        for (int i = 0; i < videos.size(); i++) {
+
+            singleVideos.add(i, new VideoSource.SingleVideo(
+                    videos.get(i).getVideoUrl(),
+                    database.videoDao().getAllSubtitles(i + 1),
+                    videos.get(i).getWatchedLength())
+            );
+
+        }
+        return new VideoSource(singleVideos, index);
+    }
+
+    private List<Video> setVideosWatchLength() {
+        List<Video> videosInDb = database.videoDao().getVideos();
+        for (int i = 0; i < videosInDb.size(); i++) {
+            videoUriList.get(i).setWatchedLength(videosInDb.get(i).getWatchedLength());
+        }
+        return videoUriList;
+    }
+
+
+    //start player for result due to future features
+    public void goToPlayerActivity(VideoSource videoSource) {
+        int REQUEST_CODE = 1000;
+        Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+        intent.putExtra("videoSource", videoSource);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
 }
