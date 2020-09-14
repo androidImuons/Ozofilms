@@ -1,6 +1,9 @@
 package com.example.oops.activity;
 
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,11 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 
+import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
+import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
+import com.example.oops.fragment.MoreScreenFragment;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
@@ -41,6 +48,8 @@ public class EnterPin extends AppCompatActivity {
     EditText et3;
     @BindView(R.id.et4)
     EditText et4;
+    @BindView(R.id.imgLogout)
+    AppCompatImageView imgLogout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -212,5 +221,75 @@ public class EnterPin extends AppCompatActivity {
         }
 
 
+    }
+    @OnClick(R.id.imgLogout)
+    public  void setImgLogout(){
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        adb.setTitle(getResources().getString(R.string.app_name));
+        adb.setIcon(R.mipmap.ic_launcher_round);
+        adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+        adb.setPositiveButton(getResources().getString(R.string.ok),
+                new DialogInterface.OnClickListener() {
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        callApi();
+                        //startActivity(new Intent());
+                        // finishAffinity();
+                    }
+
+                });
+        adb.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        adb.show();
+    }
+
+    private void callApi() {
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            final Dialog dialog = ViewUtils.getProgressBar(this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class);
+            Call call = apiService.LogoutApiCall(new LogoutEntity(AppCommon.getInstance(this).getId(), AppCommon.getInstance(this).getUserId()));
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
+                    dialog.dismiss();
+                    LogoutResponse authResponse = (LogoutResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Response::", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            AppCommon.getInstance(EnterPin.this).clearPreference();
+                            startActivity(new Intent(EnterPin.this, Login.class));
+                           finishAffinity();
+                            Toast.makeText(EnterPin.this, "Logout Successfully", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(EnterPin.this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
     }
 }

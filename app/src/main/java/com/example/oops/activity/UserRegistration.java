@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatSpinner;
 
 import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.R;
@@ -20,6 +22,9 @@ import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,14 +48,30 @@ public class UserRegistration extends AppCompatActivity {
     CheckBox checkBox2;
     @BindView(R.id.editTextPin)
     EditText editTextPin;
-
-
+@BindView(R.id.countrySpinner)
+    AppCompatSpinner countrySpinner;
+    List<String> spinnerCountryList;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_registration);
         ButterKnife.bind(this);
+        getCountryList();
+       
 
+    }
+
+    private void getCountryList() {
+        spinnerCountryList = new ArrayList<>();
+        spinnerCountryList.add("Select Country");
+        spinnerCountryList.add("India");
+        spinnerCountryList.add("Austrailia");
+        spinnerCountryList.add("UK");
+        spinnerCountryList.add("US");
+
+        ArrayAdapter<String> spinnerGenderAdapter = new ArrayAdapter<>(this,
+                R.layout.spinner_item, spinnerCountryList);
+        countrySpinner.setAdapter(spinnerGenderAdapter);
     }
 
     public void register(View view) {

@@ -115,4 +115,11 @@
     <string name="pin">pin</string>
     <string name="forgot_pin">Forgot Pin</string>
     <string name="no_subtitle">There is no subtitle</string>
+<!--  Change Pin  -->
+    <string name="old_pin">Old Pin</string>
+    <string name="new_pin">New Pin</string>
+    <string name="confirm_pin">Confirm Pin</string>
+    <string name="change_pin">Change Pin</string>
+
+
 </resources>

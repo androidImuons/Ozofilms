@@ -81,6 +81,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".activity.PlayerActivity"
             android:screenOrientation="landscape"></activity>
+        <activity android:name=".activity.ChangePin"
+            android:screenOrientation="portrait"></activity>
 
 
     </application>

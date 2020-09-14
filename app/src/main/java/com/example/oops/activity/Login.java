@@ -34,7 +34,7 @@ public class Login extends AppCompatActivity {
 
     @BindView(R.id.editTextPassWord)
     EditText editTextPassWord;
-
+String msgPrint;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class Login extends AppCompatActivity {
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
                     dialog.dismiss();
                     RegistrationResponse authResponse = (RegistrationResponse) response.body();
+
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getSuccess() == 200) {
@@ -80,8 +81,9 @@ public class Login extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
+
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
+                 Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
 

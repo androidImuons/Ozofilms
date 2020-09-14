@@ -180,6 +180,44 @@
                         android:maxLength="10"
                         android:hint="@string/ph_no" />
                 </LinearLayout>
+
+<!--           Country     -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/whitebackgroundrectangular"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_pink_patch"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            app:srcCompat="@drawable/ic_country"></androidx.appcompat.widget.AppCompatImageView>
+                    </LinearLayout>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+android:id="@+id/countrySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+
+
+
+                         />
+                </LinearLayout>
+
                 <!--           Password-->
                 <LinearLayout
                     android:layout_width="match_parent"

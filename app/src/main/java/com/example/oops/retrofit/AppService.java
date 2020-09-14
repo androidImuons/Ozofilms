@@ -4,6 +4,7 @@ package com.example.oops.retrofit;
 import android.graphics.drawable.Animatable2;
 
 import com.example.oops.EntityClass.ChangePasswordEntitiy;
+import com.example.oops.EntityClass.ChangePinEntity;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.ProfileEntity;
@@ -72,5 +73,8 @@ public interface AppService {
  @FormUrlEncoded
     @POST("video/getRelatedMovies")
     Call<CategoryResponse> GetRelativeMovies(@FieldMap Map<String, String> entityMap);
+
+    @POST("user/changePin")
+    Call<LogoutResponse> changePin(@Body ChangePinEntity changePinEntity);
 
 }

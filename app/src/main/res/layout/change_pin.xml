@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".activity.UserRegistration">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_from_left"
+            android:layout_marginTop="100dp"
+
+            android:layout_marginRight="@dimen/margin_from_left">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/oops_logo"></androidx.appcompat.widget.AppCompatImageView>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/pink_border"
+                android:orientation="vertical">
+
+                <com.example.oops.custom.OTTTextView
+                    style="@style/TextInCenter"
+                    android:layout_marginTop="60dp"
+                    android:text="@string/change_pin"></com.example.oops.custom.OTTTextView>
+                <!--Name-->
+                <LinearLayout
+                    android:id="@+id/userName"
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/whitebackgroundrectangular"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_pink_patch"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            app:srcCompat="@drawable/ic_lock"></androidx.appcompat.widget.AppCompatImageView>
+                    </LinearLayout>
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextOldPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:background="@null"
+                        android:hint="@string/old_pin"
+                        android:inputType="numberPassword"
+                        android:maxLength="4" />
+                </LinearLayout>
+                <!--    Email Id:        -->
+
+
+
+
+                <!-- Old Pin-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/whitebackgroundrectangular"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_pink_patch"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            app:srcCompat="@drawable/ic_lock"></androidx.appcompat.widget.AppCompatImageView>
+                    </LinearLayout>
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextNewPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:maxLength="4"
+                        android:background="@null"
+                        android:inputType="numberPassword"
+                        android:hint="@string/new_pin" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/whitebackgroundrectangular"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="50dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/ic_pink_patch"
+                        android:gravity="center">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center_vertical"
+                            app:srcCompat="@drawable/ic_lock"></androidx.appcompat.widget.AppCompatImageView>
+                    </LinearLayout>
+
+                    <com.example.oops.custom.OTTEditText
+                        android:id="@+id/editTextConfirmPin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:background="@null"
+                        android:digits="0987654321"
+                        android:maxLength="4"
+                        android:inputType="numberPassword"
+                        android:hint="@string/confirm_pin" />
+                </LinearLayout>
+
+
+
+
+
+            </LinearLayout>
+
+
+            <com.example.oops.custom.OTTButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="370dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/button_background"
+
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"></com.example.oops.custom.OTTButton>
+
+        </FrameLayout>
+
+    </ScrollView>
+</LinearLayout>
