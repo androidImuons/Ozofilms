@@ -4,7 +4,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:background="@drawable/header_background"
-    android:layout_height="80dp">
+    android:layout_height="60dp">
 
 
 

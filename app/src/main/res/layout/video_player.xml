@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
@@ -15,10 +16,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_from_left"
-            android:layout_marginRight="@dimen/margin_from_right"
+            android:orientation="vertical"
 
-            android:orientation="vertical">
+            android:padding="@dimen/_10sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -28,9 +28,8 @@
                     android:id="@+id/sdvImage"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:scaleType="fitXY"
-                    android:layout_marginTop="@dimen/margin_from_left"
-                    android:background="@drawable/header_background"/>
+                    android:background="@drawable/header_background"
+                    android:scaleType="fitXY" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
@@ -38,7 +37,7 @@
                     android:id="@+id/imgPlayVideo"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    app:srcCompat="@drawable/ic_youtube"/>
+                    app:srcCompat="@drawable/ic_youtube" />
             </RelativeLayout>
 
 
@@ -67,23 +66,23 @@
                     android:background="@drawable/video_player_rectangular">
 
                     <com.example.oops.custom.OTTTextView
+                        android:id="@+id/txtContentType"
                         android:layout_width="40dp"
                         android:layout_height="match_parent"
-android:id="@+id/txtContentType"
-                        android:gravity="center"
-android:layout_gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
                         android:background="@drawable/video_player_red_background"
+                        android:gravity="center"
 
                         android:text="@string/eighteen"
                         android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
 
                     <com.example.oops.custom.OTTTextView
+                        android:id="@+id/txtRate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:id="@+id/txtRate"
                         android:text="@string/rates"
 
                         android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
@@ -100,14 +99,14 @@ android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtVideoType"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
                     android:background="@drawable/header_background"
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
-                    android:id="@+id/txtVideoType"
                     android:text="@string/video_type"
-                    android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                    android:textColor="@color/white" />
             </LinearLayout>
 
             <com.example.oops.custom.OTTTextView
@@ -116,16 +115,16 @@ android:layout_gravity="center_vertical"
                 android:layout_marginTop="10dp"
                 android:text="@string/storyline"
                 android:textColor="@color/login_button_color"
-                android:textSize="16sp"></com.example.oops.custom.OTTTextView>
+                android:textSize="16sp" />
 
             <com.example.oops.custom.OTTTextView
 
+                android:id="@+id/txtSoryLine"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                 android:textColor="@color/white"
-                android:id="@+id/txtSoryLine"
-                android:textSize="14sp"></com.example.oops.custom.OTTTextView>
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,19 +136,16 @@ android:layout_gravity="center_vertical"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@string/cast"
-
-
                     android:textColor="@color/login_button_color"
-                    android:textSize="16sp"></com.example.oops.custom.OTTTextView>
+                    android:textSize="@dimen/_13sdp" />
 
                 <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtCastName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
-                    android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                     android:textColor="@color/white"
-                    android:id="@+id/txtCastName"
-                    android:textSize="14sp"></com.example.oops.custom.OTTTextView>
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -163,19 +159,17 @@ android:layout_gravity="center_vertical"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@string/director"
-
-
                     android:textColor="@color/login_button_color"
-                    android:textSize="16sp"></com.example.oops.custom.OTTTextView>
+                    android:textSize="@dimen/_13sdp" />
 
                 <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtDirectorName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
                     android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                     android:textColor="@color/white"
-                    android:id="@+id/txtDirectorName"
-                    android:textSize="14sp"></com.example.oops.custom.OTTTextView>
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -189,26 +183,25 @@ android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/episode"
-
-
                     android:textColor="@color/white"
-                    android:textSize="16sp"></com.example.oops.custom.OTTTextView>
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="20dp"
-                    android:background="@color/white"></View>
+                    android:background="@color/white" />
             </LinearLayout>
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
                 android:id="@+id/recylerview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_marginBottom="20dp"
+                tools:listitem="@layout/category_item" />
         </LinearLayout>
     </ScrollView>
 

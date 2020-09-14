@@ -15,6 +15,7 @@ import com.example.oops.ResponseClass.EditProfileResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
+import com.example.oops.ResponseClass.RelativeResponse;
 import com.example.oops.ResponseClass.SliderResponse;
 
 import java.util.HashMap;
@@ -67,5 +68,9 @@ public interface AppService {
     @FormUrlEncoded
     @POST("video/getSingleMovie")
     Call<MovieDeatilsResponse> MOVIE_DEATILS_RESPONSE_CALL(@FieldMap Map<String, String> entityMap);
+
+ @FormUrlEncoded
+    @POST("video/getRelatedMovies")
+    Call<CategoryResponse> GetRelativeMovies(@FieldMap Map<String, String> entityMap);
 
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -138,13 +139,7 @@ public class EnterPin extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void afterTextChanged(Editable s) {
-                String p1 = et1.getText().toString().trim();
-                String p2 = et2.getText().toString().trim();
-                String p3 = et3.getText().toString().trim();
-                String p4 = et4.getText().toString().trim();
-                if(!p1.isEmpty() && !p3.isEmpty() && !p2.isEmpty() && !p4.isEmpty() ) {
-                    callApiPin(p1 , p2 , p3 , p4);
-                }
+
                 if(s.length()==0)
                 {
                     et3.requestFocus();
@@ -153,6 +148,17 @@ public class EnterPin extends AppCompatActivity {
 
         });
 
+    }
+
+    @OnClick(R.id.submitIssue)
+    void setPin(){
+        String p1 = et1.getText().toString().trim();
+        String p2 = et2.getText().toString().trim();
+        String p3 = et3.getText().toString().trim();
+        String p4 = et4.getText().toString().trim();
+        if(!p1.isEmpty() && !p3.isEmpty() && !p2.isEmpty() && !p4.isEmpty() ) {
+            callApiPin(p1 , p2 , p3 , p4);
+        }
     }
 
     private void callApiPin(String p1, String p2, String p3, String p4) {
