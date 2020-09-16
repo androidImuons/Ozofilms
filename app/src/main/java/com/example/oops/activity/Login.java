@@ -3,6 +3,7 @@ package com.example.oops.activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -14,12 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -103,5 +108,68 @@ String msgPrint;
             editTextPassWord.setError("Plese enter password");
         else
             callApi(emailId , pass);
+    }
+
+    public void forgotPass(View view) {
+        String emailName = editTextUserName.getText().toString().trim();
+        if(emailName.isEmpty())
+            editTextUserName.setError("Please enter email id");
+        else if (!isEmailValid(emailName))
+            editTextUserName.setError("Email Id is Invalid");
+        else {
+            callforgotApi(emailName);
+        }
+
+
+    }
+
+    private void callforgotApi(String emailName) {
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            final Dialog dialog = ViewUtils.getProgressBar(Login.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class);
+            Map<String , String> entityMap = new HashMap<>();
+            entityMap.put("email" , emailName);
+            Call call = apiService.forgotPassword(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
+                    dialog.dismiss();
+                    ForgotPassResponse authResponse = (ForgotPassResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Response::", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            Toast.makeText(Login.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Login.this , ForgotPassword.class)
+                                    .putExtra("isPassword" , true)
+                            .putExtra("data" , new Gson().toJson(authResponse.getData())));
+                        } else {
+                            Toast.makeText(Login.this,authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(Login.this).showDialog(Login.this, authResponse.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
+
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 }

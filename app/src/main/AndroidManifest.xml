@@ -17,6 +17,7 @@
         android:allowBackup="true"
         android:icon="@drawable/oops_logo"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@drawable/oops_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
@@ -79,12 +80,25 @@
         <activity
             android:name=".activity.EnterPin"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ForgotPassword"
+            android:screenOrientation="portrait" />
+
         <activity android:name=".activity.PlayerActivity"
             android:screenOrientation="landscape"></activity>
         <activity android:name=".activity.ChangePin"
             android:screenOrientation="portrait"></activity>
 
-
+        <service android:name=".Utils.DemoDownloadService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </service>
+        <service android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
     </application>
 
 </manifest>

@@ -143,8 +143,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
+                    android:onClick="forgotPass"
                     android:text="@string/forgot_password"
-                    android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                    android:textColor="@color/white"/>
             </LinearLayout>
 
 

@@ -120,6 +120,8 @@
     <string name="new_pin">New Pin</string>
     <string name="confirm_pin">Confirm Pin</string>
     <string name="change_pin">Change Pin</string>
+    <string name="track_selection_title">Select tracks</string>
+    <string name="OTP">Enter OTP</string>
 
 
 </resources>

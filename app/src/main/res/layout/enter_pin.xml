@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical">
+
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -13,7 +14,8 @@
         android:layout_marginRight="@dimen/_15sdp"
         android:layout_gravity="right"
         android:id="@+id/imgLogout"
-        app:srcCompat="@drawable/ic_logout"></androidx.appcompat.widget.AppCompatImageView>
+        app:srcCompat="@drawable/ic_logout"/>
+
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:textSize="@dimen/_6sdp"
@@ -22,15 +24,13 @@
         android:gravity="center"
         android:layout_marginRight="@dimen/_15sdp"
         android:textColor="@color/white"
-        android:text="@string/logout"></androidx.appcompat.widget.AppCompatTextView>
+        android:text="@string/logout"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_from_left"
         android:layout_marginTop="100dp"
-
         android:layout_marginRight="@dimen/margin_from_left">
 
         <androidx.appcompat.widget.AppCompatImageView

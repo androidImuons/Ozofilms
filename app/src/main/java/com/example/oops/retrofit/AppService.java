@@ -12,7 +12,9 @@ import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.ResponseClass.AllMoviesResponse;
 import com.example.oops.ResponseClass.CategoryResponse;
 import com.example.oops.ResponseClass.CommonResponse;
+import com.example.oops.ResponseClass.CommonResponseObject;
 import com.example.oops.ResponseClass.EditProfileResponse;
+import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
@@ -76,5 +78,21 @@ public interface AppService {
 
     @POST("user/changePin")
     Call<LogoutResponse> changePin(@Body ChangePinEntity changePinEntity);
+
+    @FormUrlEncoded
+    @POST("user/forgotPassword")
+    Call<ForgotPassResponse> forgotPassword(@FieldMap Map<String, String> entityMap);
+ @FormUrlEncoded
+    @POST("user/forgotPin")
+    Call<ForgotPassResponse> forgotPin(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("user/resetPassword")
+    Call<CommonResponseObject> UpdatePassword(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("user/resetPin")
+    Call<CommonResponseObject> UpdatePin(@FieldMap Map<String, String> entityMap);
+
 
 }

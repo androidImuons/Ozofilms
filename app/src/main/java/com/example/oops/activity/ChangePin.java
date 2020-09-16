@@ -14,6 +14,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import com.example.oops.EntityClass.ChangePinEntity;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
@@ -21,6 +22,9 @@ import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,15 +56,15 @@ public class ChangePin extends AppCompatActivity {
         seditTextOldPin = editTextOldPin.getText().toString().trim();
         seditTextNewPin = editTextNewPin.getText().toString().trim();
         seditTextConfirmPin = editTextConfirmPin.getText().toString().trim();
-        if(seditTextOldPin.length() <4){
+        if(seditTextOldPin.length() <4 || seditTextOldPin.isEmpty()){
             editTextOldPin.setError("Please enter Old Pin");
 
         }
-        else if(seditTextNewPin.length() <4){
+        else if(seditTextNewPin.length() <4 || seditTextNewPin.isEmpty()){
             editTextNewPin.setError("Please enter New Pin");
 
         }
-        else if(seditTextConfirmPin.length() <4){
+        else if(seditTextConfirmPin.length() <4 || seditTextConfirmPin.isEmpty()){
             editTextConfirmPin.setError("Please enter confirm Pin");
         }
         else if(!seditTextConfirmPin.matches(seditTextNewPin)){
@@ -117,5 +121,7 @@ public class ChangePin extends AppCompatActivity {
             Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 }

@@ -57,8 +57,6 @@ public class UserRegistration extends AppCompatActivity {
         setContentView(R.layout.user_registration);
         ButterKnife.bind(this);
         getCountryList();
-       
-
     }
 
     private void getCountryList() {

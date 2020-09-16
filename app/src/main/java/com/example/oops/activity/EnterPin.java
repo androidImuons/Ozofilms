@@ -18,9 +18,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 
+import com.example.oops.DataClass.ResponseData;
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
+import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
@@ -265,7 +267,7 @@ public class EnterPin extends AppCompatActivity {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             AppCommon.getInstance(EnterPin.this).clearPreference();
-                            startActivity(new Intent(EnterPin.this, Login.class));
+                            startActivity(new Intent(EnterPin.this, EnterPin.class));
                            finishAffinity();
                             Toast.makeText(EnterPin.this, "Logout Successfully", Toast.LENGTH_SHORT).show();
 
@@ -290,6 +292,52 @@ public class EnterPin extends AppCompatActivity {
         } else {
             // no internet
             Toast.makeText(EnterPin.this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void callforgotApi() {
+        ResponseData userData = new Gson().fromJson(AppCommon.getInstance(this).getUserObject() , ResponseData.class);
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            final Dialog dialog = ViewUtils.getProgressBar(EnterPin.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class);
+            Map<String , String> entityMap = new HashMap<>();
+            entityMap.put("email" , userData.getEmail());
+            Call call = apiService.forgotPin(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
+                    dialog.dismiss();
+                    ForgotPassResponse authResponse = (ForgotPassResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Response::", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(EnterPin.this , ForgotPassword.class)
+                                    .putExtra("data" , new Gson().toJson(authResponse.getData()))
+                                    .putExtra("isPassword" , false));
+                        } else {
+                            Toast.makeText(EnterPin.this,authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, authResponse.getMessage());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
+
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
         }
     }
 }
