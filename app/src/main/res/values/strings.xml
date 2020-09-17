@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TEEVOREEL</string>
+
+    <string name="download_start_error">Failed to start download</string>
     <!--Video Quality-->
     <string name="video_quality">Video Quality</string>
     <string name="standard">Standard</string>
