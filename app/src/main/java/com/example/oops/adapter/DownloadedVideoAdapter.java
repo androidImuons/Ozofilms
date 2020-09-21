@@ -144,11 +144,11 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
         CategoryListData categoryListData= new CategoryListData();
 
-      //  VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
+     VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
 
-        if (!categoryListData.getMovieName().isEmpty()) {
-            holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
-        }
+//        if (!categoryListData.getMovieName().isEmpty()) {
+//            holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
+//        }
 
 
         if (download.state == Download.STATE_COMPLETED) {
