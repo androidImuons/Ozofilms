@@ -39,6 +39,7 @@ import retrofit2.http.POST;
 public interface AppService {
 
     @POST("user/login")
+
     Call<RegistrationResponse> LoginApi(@Body LoginEntity loginEntity);
 
     @POST("user/registration")

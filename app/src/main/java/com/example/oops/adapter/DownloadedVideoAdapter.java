@@ -11,13 +11,17 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
+import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.MyDiffUtilCallback;
+import com.example.oops.activity.OfflinePlayerActivity;
 import com.example.oops.fragment.DownloadVideo;
 import com.example.oops.model.VideoModel;
 import com.google.android.exoplayer2.offline.Download;
@@ -26,45 +30,48 @@ import com.google.android.exoplayer2.offline.DownloadRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+
 /**
  * Created by Mayur Solanki (mayursolanki120@gmail.com) on 25/02/19, 5:48 PM.
  */
-public class DownloadedVideoAdapter extends RecyclerView.Adapter<DownloadedVideoAdapter.MyViewHolder> { //implements Filterable
+public class DownloadedVideoAdapter extends  RecyclerView.Adapter<DownloadedVideoAdapter.MyViewHolder> { //implements Filterable
 
-    List<Download> videosList;
-    //    private ValueFilter mFilter = new ValueFilter();
-    Context context;
-    DownloadVideo downloadActivity;
+        List<Download> videosList;
 
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        RelativeLayout rlContainer;
-        ImageView imageView;
-        TextView tvDownloadVideoTitle;
-        TextView tvDownloadVideoPercentage;
-        TextView tvDownloadVideoStatus;
-        ImageView imgMenuOverFlow;
-        ProgressBar progressBarPercentage;
+        List<CategoryListData> categoryListData;
+        Context context;
+        DownloadVideo downloadActivity;
 
 
+public class MyViewHolder extends RecyclerView.ViewHolder {
+    RelativeLayout rlContainer;
+    ImageView imageView;
+    TextView tvDownloadVideoTitle;
+    TextView tvDownloadVideoPercentage;
+    TextView tvDownloadVideoStatus;
+    ImageView imgMenuOverFlow;
+    ProgressBar progressBarPercentage;
 
-        public MyViewHolder(View view) {
-            super(view);
-            rlContainer = view.findViewById(R.id.rl_container);
-            imageView = view.findViewById(R.id.img_download_banner);
-            tvDownloadVideoTitle = view.findViewById(R.id.tv_download_vid_title);
-            tvDownloadVideoPercentage = view.findViewById(R.id.tv_downloaded_percentage);
-            tvDownloadVideoStatus = view.findViewById(R.id.tv_downloaded_status);
-            imgMenuOverFlow = view.findViewById(R.id.img_overflow);
-            progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
+
+
+    public MyViewHolder(View view) {
+        super(view);
+        rlContainer = view.findViewById(R.id.rl_container);
+        imageView = view.findViewById(R.id.img_download_banner);
+        tvDownloadVideoTitle = view.findViewById(R.id.tv_download_vid_title);
+        tvDownloadVideoPercentage = view.findViewById(R.id.tv_downloaded_percentage);
+        tvDownloadVideoStatus = view.findViewById(R.id.tv_downloaded_status);
+        imgMenuOverFlow = view.findViewById(R.id.img_overflow);
+    progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
 
 //            imgDownloadDelete = view.findViewById(R.id.img_delete_download);
 //            imgDownloadPlayPause = view.findViewById(R.id.img_download_play_pause);
 
 
 
-        }
     }
+}
 
 
     public DownloadedVideoAdapter(Context context, DownloadVideo downloadActivity) {
@@ -94,11 +101,11 @@ public class DownloadedVideoAdapter extends RecyclerView.Adapter<DownloadedVideo
                 if (key.equals("percentDownloaded")) {
 
                     Download download = (Download) payloads.get(position);
-
+        CategoryListData categoryListData = new CategoryListData();
                     VideoModel videoModel =       AppUtil.getVideoDetail(download.request.id);
 
                     if (!videoModel.getVideoName().isEmpty()) {
-                        holder.tvDownloadVideoTitle.setText(videoModel.getVideoName());
+                        holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
                     }
 
 
@@ -135,11 +142,12 @@ public class DownloadedVideoAdapter extends RecyclerView.Adapter<DownloadedVideo
 
         Download download = videosList.get(position);
 
+        CategoryListData categoryListData= new CategoryListData();
 
-        VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
+      //  VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
 
-        if (!videoModel.getVideoName().isEmpty()) {
-            holder.tvDownloadVideoTitle.setText(videoModel.getVideoName());
+        if (!categoryListData.getMovieName().isEmpty()) {
+            holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
         }
 
 
@@ -160,6 +168,7 @@ public class DownloadedVideoAdapter extends RecyclerView.Adapter<DownloadedVideo
             holder.tvDownloadVideoPercentage.setVisibility(View.INVISIBLE);
 
         }
+//        CategoryListData categoryListData = new CategoryListData();
 
 
         holder.tvDownloadVideoStatus.setText(AppUtil.downloadStatusFromId(download));
@@ -172,9 +181,9 @@ public class DownloadedVideoAdapter extends RecyclerView.Adapter<DownloadedVideo
                 if(download.state == Download.STATE_COMPLETED){
                     Bundle bundle = new Bundle();
                     bundle.putString("video_url", download.request.id);
-//                    Intent intent = new Intent(context, OfflinePlayerActivity.class);
-//                    intent.putExtras(bundle);
-//                    context.startActivity(intent);
+                    Intent intent = new Intent(context, OfflinePlayerActivity.class);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }else {
                     downloadActivity.openBottomSheet(download);
                 }

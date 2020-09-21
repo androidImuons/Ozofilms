@@ -99,6 +99,8 @@
             android:screenOrientation="landscape"/>
         <activity android:name=".activity.ChangePin"
             android:screenOrientation="portrait"/>
+<activity android:name=".activity.OfflinePlayerActivity"
+    android:screenOrientation="landscape"/>
 
         <service android:name=".Utils.DemoDownloadService"
             android:exported="false">
