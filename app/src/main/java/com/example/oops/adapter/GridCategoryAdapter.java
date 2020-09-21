@@ -14,6 +14,7 @@ import com.example.oops.R;
 import com.example.oops.ResponseClass.CategoryResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.activity.CategoryListActivity;
+import com.example.oops.activity.VideoPlay;
 import com.example.oops.fragment.HomeFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class GridCategoryAdapter extends RecyclerView.Adapter<GridCategoryAdapter.CategoryHolder> {
 
@@ -67,5 +69,6 @@ public class GridCategoryAdapter extends RecyclerView.Adapter<GridCategoryAdapte
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+
     }
 }

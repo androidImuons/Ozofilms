@@ -3,6 +3,8 @@ package com.example.oops.retrofit;
 
 import android.graphics.drawable.Animatable2;
 
+import com.example.oops.DataClass.WebSearchModule;
+import com.example.oops.DataClass.WebSearchResponse;
 import com.example.oops.EntityClass.ChangePasswordEntitiy;
 import com.example.oops.EntityClass.ChangePinEntity;
 import com.example.oops.EntityClass.LoginEntity;
@@ -17,6 +19,7 @@ import com.example.oops.ResponseClass.EditProfileResponse;
 import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
+import com.example.oops.ResponseClass.MoviesSearchResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.ResponseClass.RelativeResponse;
 import com.example.oops.ResponseClass.SliderResponse;
@@ -94,5 +97,12 @@ public interface AppService {
     @POST("user/resetPin")
     Call<CommonResponseObject> UpdatePin(@FieldMap Map<String, String> entityMap);
 
+    @FormUrlEncoded
+    @POST("video/searchVideos")
+    Call<MoviesSearchResponse> searchMoviesApi(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("video/searchVideos")
+    Call<WebSearchResponse> searchWebApi(@FieldMap Map<String, String> entityMap);
 
 }
