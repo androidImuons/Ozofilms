@@ -111,6 +111,11 @@ public class HomeFragment extends Fragment {
                         Log.e("Slider Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             setData(authResponse.getData());
+
+
+
+
+
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             Toast.makeText(getActivity(),authResponse.getMessage(), Toast.LENGTH_SHORT).show();

@@ -32,7 +32,7 @@
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
         android:theme="@style/AppTheme"
         tools:targetApi="q">
-        >
+
         <activity android:name=".activity.CategoryListActivity"></activity>
         <activity
             android:name=".activity.SplashScreen"
@@ -99,7 +99,8 @@
             android:screenOrientation="landscape"></activity>
         <activity android:name=".activity.ChangePin"
             android:screenOrientation="portrait"></activity>
-
+<activity android:name=".activity.OfflinePlayerActivity"
+    android:screenOrientation="landscape"></activity>
         <service android:name=".Utils.DemoDownloadService"
             android:exported="false">
             <intent-filter>

@@ -79,6 +79,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -87,6 +88,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.net.Uri.parse;
 import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
 import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
 import static com.google.android.exoplayer2.offline.Download.STATE_FAILED;
@@ -129,6 +131,8 @@ ImageView imgDownload;
     private List<Video> videoUriList = new ArrayList<>();
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
+
+    String movieId;
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -175,7 +179,7 @@ ImageView imgDownload;
 
 
 
-    private String videoUrl= "https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8";
+  private String videoUrl ;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
@@ -208,8 +212,10 @@ ImageView imgDownload;
         initializeDb();
 
         if(getIntent()!= null){
-            String movieId = getIntent().getStringExtra("moviesId");
+            movieId= getIntent().getStringExtra("moviesId");
             String name = getIntent().getStringExtra("name");
+
+
             txtVideoHeading.setText(name);
             txtHeading.setVisibility(View.GONE);
 
@@ -242,15 +248,15 @@ ImageView imgDownload;
         imgDownload = (ImageView) findViewById(R.id.imgDownload);
 //        prepareView();
         imgDownload.setOnClickListener(VideoPlay.this);
-        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
-        videoDurationInSeconds = videoDurationInSeconds % 60 ;
+//        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
+//        videoDurationInSeconds = videoDurationInSeconds % 60 ;
 
 
 
         runnableCode = new Runnable() {
             @Override
             public void run() {
-//                observerVideoStatus();
+//               observerVideoStatus();
                 handler.postDelayed(this, 1000);
             }
         };
@@ -259,6 +265,9 @@ ImageView imgDownload;
 
 
     }
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -307,10 +316,13 @@ ImageView imgDownload;
                     dialog.dismiss();
                     MovieDeatilsResponse authResponse = (MovieDeatilsResponse) response.body();
                     if (authResponse != null) {
-                        Log.i("Response::", new Gson().toJson(authResponse));
+                        Log.i("Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if(authResponse.getData() != null)
                             setData(authResponse.getData());
+                            videoUrl= authResponse.getData().getVideoLink();
+
+
                         } else {
 
                             Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -539,7 +551,9 @@ ImageView imgDownload;
 
 
             case R.id.imgDownload:
+
                 fetchDownloadOptions();
+
 
 
                 break;
@@ -620,7 +634,7 @@ ImageView imgDownload;
         for (int i = 0; i < trackKeyss.size(); i++) {
             TrackKey trackKey = trackKeyss.get(i);
             long bitrate = trackKey.getTrackFormat().bitrate;
-            long getInBytes =  (bitrate * videoDurationInSeconds)/8;
+            long getInBytes =  (bitrate * 128)/8;
             String getInMb = AppUtil.formatFileSize(getInBytes);
             String videoResoultionDashSize =  " "+trackKey.getTrackFormat().height +"      ("+getInMb+")";
             optionsToDownload.add(i, videoResoultionDashSize);
@@ -812,7 +826,13 @@ ImageView imgDownload;
     public void onDownloadsChanged(Download download) {
         switch (download.state) {
             case STATE_QUEUED:
-
+//                imgDownload.setImageResource(R.drawable.app_setting);
+//                imgDownload.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(VideoPlay.this,"queue",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
                 break;
 
             case STATE_STOPPED:
@@ -821,7 +841,13 @@ ImageView imgDownload;
                 break;
             case STATE_DOWNLOADING:
 
-
+//                imgDownload.setImageResource(R.drawable.ic_logout);
+//                imgDownload.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(VideoPlay.this,"Video is added in downloading",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 
                 Log.d("EXO DOWNLOADING ", +download.getBytesDownloaded() + " " + download.contentLength);
                 Log.d("EXO  DOWNLOADING ", "" + download.getPercentDownloaded());
@@ -830,7 +856,13 @@ ImageView imgDownload;
                 break;
             case STATE_COMPLETED:
 
-
+//imgDownload.setImageResource(R.drawable.country_icon);
+//                imgDownload.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(VideoPlay.this,"download Completed",Toast.LENGTH_SHORT).show();
+//                    }
+//                });
 //                progressBarPercentage.setVisibility(View.GONE);
 
                 Log.d("EXO COMPLETED ", +download.getBytesDownloaded() + " " + download.contentLength);

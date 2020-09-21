@@ -91,7 +91,7 @@ public class DownloadVideo extends Fragment {
         }
 
 
-        downloadedVideoAdapter = new DownloadedVideoAdapter(getContext(),DownloadVideo.this);
+        downloadedVideoAdapter = new DownloadedVideoAdapter(getContext(), DownloadVideo.this);
         recylerview.setAdapter(downloadedVideoAdapter);
         downloadedVideoAdapter.addItems(downloadedVideoList);
 
@@ -102,7 +102,7 @@ public class DownloadVideo extends Fragment {
 
         VideoModel videoModel = AppUtil.getVideoDetail(download.request.id);
 
-        String statusTitle = videoModel.getVideoName();
+//        String statusTitle = videoModel.getVideoName();
 
         View dialogView = getLayoutInflater().inflate(R.layout.fragment_bottom_sheet_dialog, null);
         BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
@@ -135,7 +135,7 @@ public class DownloadVideo extends Fragment {
             llDownloadResume.setVisibility(View.GONE);
         }
 
-        tvVideoTitle.setText(statusTitle);
+//        tvVideoTitle.setText(statusTitle);
         llDownloadStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

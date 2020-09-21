@@ -250,7 +250,7 @@ public class DemoDownloadService extends DownloadService implements DownloadTrac
                         .setOngoing(true)
                         .setAutoCancel(false)
                         .setColor(ContextCompat.getColor(context, R.color.colorAccent))
-                        .setContentTitle(videoModel.getVideoName())
+
                         .setContentText("Downloading")
                         .setProgress(100, (int) download.getPercentDownloaded(), false)
                         .setOnlyAlertOnce(true)
