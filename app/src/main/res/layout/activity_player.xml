@@ -50,12 +50,10 @@
             />
 
 
-
-
         <ImageButton
             android:id="@+id/btn_back"
             android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="top|left"
             android:layout_margin="20dp"
             android:layout_weight="0"

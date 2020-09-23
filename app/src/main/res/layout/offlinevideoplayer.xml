@@ -1,52 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context=".activity.OfflinePlayerActivity">
-
-
-    <LinearLayout
+    android:orientation="vertical"
+    >
+    <com.google.android.exoplayer2.ui.PlayerView
+        android:id="@+id/player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="#ffffff"
+        android:visibility="visible"
+        app:controller_layout_id="@layout/exo_playback_control_view"
+        app:fastforward_increment="10000"
+        app:player_layout_id="@layout/exo_simple_player_view"
+        app:resize_mode="fit"
+        app:rewind_increment="10000"
+        app:show_timeout="5000"
+        app:use_controller="true">
+
+        <com.cj.videoprogressview.VolumeProgressView
+            android:id="@+id/vpv"
+            android:layout_marginLeft="3dp"
+            android:padding="10dp"
+            android:background="@drawable/bg_center_window"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            app:vpv_halo_color="@android:color/white"
+            app:vpv_halo_height="7dp"
+            app:vpv_halo_width="2dp"
+            />
+
+        <com.cj.videoprogressview.LightProgressView
+            android:id="@+id/lpv"
+            android:padding="10dp"
+            android:background="@drawable/bg_center_window"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:lpv_halo_color="@android:color/white"
+            app:lpv_moon_color="@android:color/white"
+            app:lpv_halo_height="7dp"
+            app:lpv_halo_width="2dp"
+            />
 
 
-        <FrameLayout
-            android:id="@+id/frame_layout_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <com.google.android.exoplayer2.ui.PlayerView
-
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#ffffff"
-                android:visibility="visible"
-                android:id="@+id/player_view"
-                app:controller_layout_id="@layout/offline_player_custom_control"
-                app:fastforward_increment="10000"
-
-                app:resize_mode="fit"
-                app:rewind_increment="10000"
-                app:show_timeout="5000"
-                app:use_controller="true"/>
 
 
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="top|left"
+            android:layout_margin="20dp"
+            android:layout_weight="0"
+            android:background="@android:color/transparent"
+            android:src="@drawable/exo_back_btn" />
 
-            <ProgressBar
-                android:id="@+id/loading_exoplayer"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center" />
-        </FrameLayout>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="60dp"
+            android:layout_height="600dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent" />
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/retry_btn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:src="@drawable/exo_retry_btn"
+            android:visibility="gone" />
 
-
-
-
-
-</RelativeLayout>
-
+    </com.google.android.exoplayer2.ui.PlayerView>
+</LinearLayout>
