@@ -321,6 +321,7 @@ ImageView imgDownload;
                             if(authResponse.getData() != null)
                             setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();
+//                            String  abc = authResponse.getData().getImageLink();
 
 
                         } else {
@@ -871,9 +872,7 @@ ImageView imgDownload;
 
                 if(download.request.uri.toString().equals(videoUrl)){
 
-                    if(download.getPercentDownloaded() != -1){
-
-                    }
+                    imgDownload.setImageResource(R.drawable.ic_lock);
                 }
 
 

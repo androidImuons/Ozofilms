@@ -1,14 +1,17 @@
 package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -29,8 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cj.videoprogressview.LightProgressView;
+import com.cj.videoprogressview.VolumeProgressView;
 import com.example.oops.Ooops;
 import com.example.oops.R;
+import com.example.oops.Utils.PlayerUtils;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -111,6 +118,14 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
     private static final int AUTO_HIDE_DELAY_MILLIS = 2000;
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
+    ImageButton retry,btn_back,btn_subtitle,btn_settings;
+    ProgressBar progressBar;
+    LightProgressView mLightPeogressView;
+    VolumeProgressView mVolumeProgressView;
+    AudioManager mAudioManager;
+    GestureDetector mGestureDetector;
+    protected int mStreamVolume;
+    protected float mBrightness;
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
@@ -186,25 +201,64 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
 
     private void initView() {
         playerView = findViewById(R.id.player_view);
-        frameLayoutMain = findViewById(R.id.frame_layout_main);
-        imgBwd = findViewById(R.id.img_bwd);
-        exoPlay = findViewById(R.id.exo_play);
-        exoPause = findViewById(R.id.exo_pause);
-        imgBackPlayer = findViewById(R.id.img_back_player);
-        imgBackPlayer.setOnClickListener(this);
-        imgFwd = findViewById(R.id.img_fwd);
-        linMediaController = findViewById(R.id.lin_media_controller);
-        tvPlayerCurrentTime = findViewById(R.id.tv_player_current_time);
-        exoProgressbar = findViewById(R.id.loading_exoplayer);
-        tvPlayerEndTime = findViewById(R.id.tv_player_end_time);
-        tvPlaybackSpeed = findViewById(R.id.tv_play_back_speed);
-        tvPlaybackSpeed.setOnClickListener(this);
-        tvPlaybackSpeed.setText("" + tapCount);
-        tvPlayBackSpeedSymbol = findViewById(R.id.tv_play_back_speed_symbol);
-        imgFullScreenEnterExit = findViewById(R.id.img_full_screen_enter_exit);
-
-        tvPlayBackSpeedSymbol.setOnClickListener(this);
+        retry = findViewById(R.id.retry_btn);
+        progressBar = findViewById(R.id.progress_bar);
+        btn_back = findViewById(R.id.btn_back);
+        btn_subtitle = findViewById(R.id.btn_subtitle);
+        btn_settings = findViewById(R.id.btn_settings);
+        mLightPeogressView = findViewById(R.id.lpv);
+        mVolumeProgressView = findViewById(R.id.vpv);
+        mBrightness = PlayerUtils.scanForActivity(this).getWindow().getAttributes().screenBrightness;
+        mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
+        retry.setOnClickListener(this);
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        btn_subtitle.setVisibility(View.GONE);
+        btn_settings.setVisibility(View.GONE);
+        mBrightness = PlayerUtils.scanForActivity(this).getWindow().getAttributes().screenBrightness;
+        mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.adjustStreamVolume(
+                AudioManager.STREAM_MUSIC,           // or STREAM_ACCESSIBILITY, STREAM_ALARM, STREAM DTMF, STREAM_NOTIFCATION, STREAM_RING, STREAM_SYSTEM, STREAM_VOICE_CALL
+                AudioManager.ADJUST_LOWER,           // or ADJUST_RAISE, ADJUST_SAME
+                0                                    // or FLAG_PLAY_SOUND, FLAG_REMOVE_SOUND_AND_VIBRATE, FLAG_SHOW_UI, FLAG_VIBRATE, FLAG_ALLOW_RINGER_MODES
+        );
+
+        playerView.setOnTouchListener(new OfflinePlayerActivity.OnSwipeTouchListener(OfflinePlayerActivity.this) {
+
+            public void onSwipeTop(float diffY) {
+
+                slideToChangeVolume(diffY);
+
+            }
+
+            public void onSwipeRight(float diffX) {
+
+
+                slideToChangeBrightness(diffX);
+
+
+            }
+
+            public void onSwipeLeft(float diffX) {
+
+                slideToChangeBrightness(diffX);
+
+
+            }
+
+            public void onSwipeBottom(float diffY) {
+
+                slideToChangeVolume(diffY);
+
+
+            }
+
+        });
     }
     public void prepareView() {
 
@@ -269,18 +323,19 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 Log.v(TAG, "Listener-onPlayerStateChanged..." + playbackState);
 
-
                 switch (playbackState) {
                     case ExoPlayer.STATE_IDLE:
                         Log.d(TAG, "playbackState : " + "STATE_IDLE");
                         break;
                     case ExoPlayer.STATE_BUFFERING:
                         Log.d(TAG, "playbackState : " + "STATE_BUFFERING");
-                        exoProgressbar.setVisibility(View.VISIBLE);
+                        progressBar.setVisibility(View.VISIBLE);
+                        retry.setVisibility(View.VISIBLE);
                         break;
                     case ExoPlayer.STATE_READY:
                         Log.d(TAG, "playbackState : " + "STATE_READY");
-                        exoProgressbar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
+                        retry.setVisibility(View.GONE);
                         break;
                     case ExoPlayer.STATE_ENDED:
                         Log.d(TAG, "playbackState : " + "STATE_ENDED");
@@ -289,6 +344,25 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
 
                         break;
                 }
+//                switch (playbackState) {
+//                    case ExoPlayer.STATE_IDLE:
+//                        Log.d(TAG, "playbackState : " + "STATE_IDLE");
+//                        break;
+//                    case ExoPlayer.STATE_BUFFERING:
+//                        Log.d(TAG, "playbackState : " + "STATE_BUFFERING");
+//                        exoProgressbar.setVisibility(View.VISIBLE);
+//                        break;
+//                    case ExoPlayer.STATE_READY:
+//                        Log.d(TAG, "playbackState : " + "STATE_READY");
+//                        exoProgressbar.setVisibility(View.GONE);
+//                        break;
+//                    case ExoPlayer.STATE_ENDED:
+//                        Log.d(TAG, "playbackState : " + "STATE_ENDED");
+//                        break;
+//                    default:
+//
+//                        break;
+//                }
             }
             @Override
             public void onRepeatModeChanged(int repeatMode) {
@@ -344,8 +418,8 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
             @Override
             public void run() {
                 if (simpleExoPlayer != null) {
-                    tvPlayerCurrentTime.setText(stringForTime((int) simpleExoPlayer.getCurrentPosition()));
-                    tvPlayerEndTime.setText(stringForTime((int) simpleExoPlayer.getDuration()));
+//                    tvPlayerCurrentTime.setText(stringForTime((int) simpleExoPlayer.getCurrentPosition()));
+//                    tvPlayerEndTime.setText(stringForTime((int) simpleExoPlayer.getDuration()));
 
                     handler.postDelayed(this, 1000);
                 }
@@ -354,30 +428,30 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initBwd() {
-        imgBwd.requestFocus();
-        imgBwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() - 10000);
-            }
-        });
+//        imgBwd.requestFocus();
+//        imgBwd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() - 10000);
+//            }
+//        });
     }
 
     private void initFwd() {
-        imgFwd.requestFocus();
-        imgFwd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() + 10000);
-            }
-        });
+//        imgFwd.requestFocus();
+//        imgFwd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                simpleExoPlayer.seekTo(simpleExoPlayer.getCurrentPosition() + 10000);
+//            }
+//        });
 
     }
 
     private void setOnClickListner() {
-        imgFullScreenEnterExit.setOnClickListener(this);
-        tvPlaybackSpeed.setOnClickListener(this);
-        tvPlaybackSpeed.setOnClickListener(this);
+//        imgFullScreenEnterExit.setOnClickListener(this);
+//        tvPlaybackSpeed.setOnClickListener(this);
+//        tvPlaybackSpeed.setOnClickListener(this);
     }
 
 
@@ -391,58 +465,21 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View view) {
 
-        if (view.getId() == R.id.img_full_screen_enter_exit) {
-            Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-            int orientation = display.getOrientation();
+      if(view.getId()==R.id.retry_btn)
 
-            if (orientation == Surface.ROTATION_90 || orientation == Surface.ROTATION_270) {
-
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                frameLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, 600));
-                imgFullScreenEnterExit.setImageResource(R.drawable.exo_controls_fullscreen_enter);
-
-                hide();
-            } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                frameLayoutMain.setLayoutParams(new LinearLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-
-                imgFullScreenEnterExit.setImageResource(R.drawable.exo_controls_fullscreen_exit);
-                hide();
-
-            }
-        } else if (view.getId() == R.id.tv_play_back_speed || view.getId() == R.id.tv_play_back_speed_symbol) {
-            if (tvPlaybackSpeed.getText().equals("1")) {
-                tapCount++;
-                PlaybackParameters param = new PlaybackParameters(1.25f);
-                simpleExoPlayer.setPlaybackParameters(param);
-                tvPlaybackSpeed.setText("" + 1.25);
-            } else if (tvPlaybackSpeed.getText().equals("1.25")) {
-                tapCount++;
-                PlaybackParameters param = new PlaybackParameters(1.5f);
-                simpleExoPlayer.setPlaybackParameters(param);
-                tvPlaybackSpeed.setText("" +1.5);
-
-            } else if (tvPlaybackSpeed.getText().equals("1.5")) {
-                tapCount++;
-                PlaybackParameters param = new PlaybackParameters(1.75f);
-                simpleExoPlayer.setPlaybackParameters(param);
-                tvPlaybackSpeed.setText("" + 1.75);
-            } else if (tvPlaybackSpeed.getText().equals("1.75")) {
-                tapCount++;
-                PlaybackParameters param = new PlaybackParameters(2f);
-                simpleExoPlayer.setPlaybackParameters(param);
-                tvPlaybackSpeed.setText("" + 2);
-            }else {
-                tapCount = 0;
-                simpleExoPlayer.setPlaybackParameters(null);
-                tvPlaybackSpeed.setText("" + 1);
-
-            }
-        }else if(view.getId() == R.id.img_back_player){
-            onBackPressed();
-        }
+        showProgressBar(true);
+        showRetryBtn(false);
 
     }
+
+    private void showRetryBtn(boolean b) {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void showProgressBar(boolean b) {
+        retry.setVisibility(View.VISIBLE);
+    }
+
 
 
     @Override
@@ -676,6 +713,175 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
                 throw new IllegalStateException("Unsupported type: " + type);
             }
         }
+    }
+
+    protected void slideToChangeBrightness(float deltaY) {
+        Window window = PlayerUtils.scanForActivity(this).getWindow();
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        int height = PlayerUtils.getScreenHeight(getApplicationContext(), false);
+        if (mBrightness == -1.0f) mBrightness = 0.5f;
+        float brightness = deltaY * 2 / height * 1.0f + mBrightness;
+        if (brightness < 0) {
+            brightness = 0f;
+
+        }
+        if (brightness > 1.0f) brightness = 1.0f;
+        mLightPeogressView.setProgress(brightness);
+
+
+        attributes.screenBrightness = brightness;
+        window.setAttributes(attributes);
+    }
+
+    protected void slideToChangeVolume(float deltaY) {
+        int streamMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int height = PlayerUtils.getScreenHeight(getApplicationContext(), false);
+        float deltaV = deltaY * 2 / height * streamMaxVolume;
+        float index = mStreamVolume + deltaV;
+        if (index > streamMaxVolume) {
+            index = streamMaxVolume;
+
+        } else if (index < 0) {
+            index = 0;
+        }
+        mVolumeProgressView.setProgress(index / streamMaxVolume);
+        mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, (int) index, 0);
+    }
+
+
+    public class OnSwipeTouchListener implements View.OnTouchListener {
+
+        private final GestureDetector gestureDetector;
+
+        public OnSwipeTouchListener(Context ctx) {
+            gestureDetector = new GestureDetector(ctx, new GestureListener());
+        }
+
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            if (gestureDetector.onTouchEvent(event)) {
+                playerView.showController();
+                return true;
+            } else {
+                mVolumeProgressView.setVisibility(View.GONE);
+                mLightPeogressView.setVisibility(View.GONE);
+            }
+            //return super.onTouchEvent(event);
+            return gestureDetector.onTouchEvent(event);
+        }
+
+        private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+            private static final int SWIPE_THRESHOLD = 100;
+            private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+            private boolean mFirstTouch;
+            private boolean mChangeBrightness;
+            private boolean mChangeVolume;
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                mStreamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+                mBrightness = OfflinePlayerActivity.this.getWindow().getAttributes().screenBrightness;
+                return true;
+            }
+
+
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                if (e1 == null || e2 == null) {
+                    mVolumeProgressView.setVisibility(View.GONE);
+                    mLightPeogressView.setVisibility(View.GONE);
+                    return false;
+                }else{
+                    mFirstTouch = true;
+                    mChangeBrightness = false;
+                    mChangeVolume = false;
+                }
+
+                float deltaY = e1.getY() - e2.getY();
+                if (mFirstTouch) {
+                    if (Math.abs(distanceX) < Math.abs(distanceY)) {
+                        if (e2.getX() > PlayerUtils.getScreenWidth(OfflinePlayerActivity.this, true) / 2) {
+                            mChangeVolume = true;
+                            mVolumeProgressView.setVisibility(View.VISIBLE);
+                        } else {
+                            mChangeBrightness = true;
+                            mLightPeogressView.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+
+                    mFirstTouch = false;
+                }
+
+
+                if (mChangeBrightness) {
+                    slideToChangeBrightness(deltaY);
+
+                } else if (mChangeVolume) {
+                    slideToChangeVolume(deltaY);
+                }
+
+
+                return true;
+
+            }
+
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                boolean result = false;
+                try {
+                    float diffY = e2.getY() - e1.getY();
+                    float diffX = e2.getX() - e1.getX();
+                    if (Math.abs(diffX) > Math.abs(diffY)) {
+                        if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+
+                            if (diffX > 0) {
+                               /* mVolumeProgressView.setVisibility(View.GONE);
+                                mLightPeogressView.setVisibility(View.VISIBLE);*/
+                                onSwipeRight(diffX);
+
+                            }/* else {
+                               // mVolumeProgressView.setVisibility(View.GONE);
+                                mLightPeogressView.setVisibility(View.VISIBLE);*//*
+                                onSwipeLeft(diffX);
+                            }*/
+                            result = true;
+                        }
+                    } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffY > 0) {
+
+                            onSwipeBottom(diffY);
+
+                        }
+                        result = true;
+                    }
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+                return result;
+            }
+        }
+
+        public void onSwipeRight(float diffX) {
+        }
+
+        public void onSwipeLeft(float diffX) {
+        }
+
+        public void onSwipeTop(float diffY) {
+        }
+
+        public void onSwipeBottom(float diffY) {
+        }
+
     }
 
 }
