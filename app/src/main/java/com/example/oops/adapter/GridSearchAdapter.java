@@ -44,6 +44,7 @@ public class GridSearchAdapter extends RecyclerView.Adapter<GridSearchAdapter.Se
 
     @Override
     public void onBindViewHolder(@NonNull SearchHolder holder, int position) {
+        if(searchDataArrayList.get(position).getImageLink() != null && !searchDataArrayList.get(position).getImageLink().isEmpty() )
         holder.moviesImage.setController( AppCommon.getInstance(fragment.getContext())
                 .getDraweeController(holder.moviesImage , searchDataArrayList.get(position).getImageLink() , 500));
         holder.moviesNmae.setText(searchDataArrayList.get(position).getMovieName());
@@ -61,6 +62,7 @@ public class GridSearchAdapter extends RecyclerView.Adapter<GridSearchAdapter.Se
     public void update(ArrayList<SearchData> searchDataArrayList, int offset) {
         this.searchDataArrayList = searchDataArrayList;
         offsetLevel = 30*(offset+1)-1;
+        notifyDataSetChanged();
     }
 
     public class SearchHolder extends RecyclerView.ViewHolder {

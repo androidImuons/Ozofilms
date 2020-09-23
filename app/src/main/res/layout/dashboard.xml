@@ -27,11 +27,10 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:fitsSystemWindows="true"
-
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@drawable/selector_bottom_nav"
         app:itemTextColor="@drawable/selector_bottom_nav"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
-        android:layout_height="80dp"
+        android:layout_height="@dimen/_45sdp"
         app:menu="@menu/bottom_navigation_menu" />
 </RelativeLayout>

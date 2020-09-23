@@ -9,28 +9,16 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@drawable/header_background"
-        android:layout_height="80dp">
-
-
-
-
-
-
-
-
+        android:layout_height="@dimen/_45sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgview_navigational_home"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_marginRight="25dp"
-
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             app:srcCompat="@drawable/oops_logo" />
-
-
-
-
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -42,13 +30,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/margin_from_left"
-            android:layout_marginRight="@dimen/margin_from_left"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_20sdp">
 
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
                 android:layout_marginBottom="8dp"/>

@@ -85,6 +85,10 @@ dependencies {
     implementation 'com.cj.videoprogressview:progressview:1.0.0'
     implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.11.4'
     implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.facebook.android:facebook-login:[5,6)'
+
 }
 repositories {
     mavenCentral()

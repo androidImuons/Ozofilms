@@ -101,13 +101,18 @@ public class AppCommon {
         editor.putInt(MyPreference.IsDemo , id);
         editor.apply();
     }
-    public boolean isSound() {
+    public boolean isSocial() {
         SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
         return prefs.getBoolean(MyPreference.sound, true);
     }
-    public void setSound(boolean demo) {
+    public String getSocialType() {
+        SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
+        return prefs.getString(MyPreference.SocialType, "");
+    }
+    public void setSocial(boolean demo , String SocialType) {
         SharedPreferences.Editor editor = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE).edit();
         editor.putBoolean(MyPreference.sound , demo);
+        editor.putString(MyPreference.SocialType , SocialType);
         editor.apply();
     }
 

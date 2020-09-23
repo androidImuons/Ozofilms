@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.SupportHelpEntity;
+import com.example.oops.MainActivity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
@@ -30,6 +31,13 @@ import com.example.oops.activity.Login;
 import com.example.oops.activity.Support_Help;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -123,6 +131,13 @@ public class MoreScreenFragment extends Fragment {
     }
 
     private void callApi() {
+        // user login with google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+       GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(getContext(), gso);
+       mGoogleSignInClient.signOut();
+
         if (AppCommon.getInstance(getActivity()).isConnectingToInternet(getActivity())) {
             final Dialog dialog = ViewUtils.getProgressBar(getActivity());
             AppCommon.getInstance(getActivity()).setNonTouchableFlags(getActivity());

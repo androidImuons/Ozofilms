@@ -37,17 +37,10 @@
             android:id="@+id/sdvImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/header_background"
+           app:placeholderImage="@drawable/oops_logo"
             android:scaleType="fitXY" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imgPlayVideo"
-            android:paddingBottom="@dimen/_5sdp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            app:srcCompat="@drawable/ic_youtube" />
+
     </RelativeLayout>
 
     <View

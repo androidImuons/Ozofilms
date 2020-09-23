@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.oops.DataClass.MoviesSearchModule;
 import com.example.oops.DataClass.SearchData;
@@ -37,6 +39,7 @@ import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.activity.CategoryListActivity;
 import com.example.oops.activity.VideoPlay;
+import com.example.oops.activity.VideoPlayerSeries;
 import com.example.oops.adapter.GridCategoryAdapter;
 import com.example.oops.adapter.GridSearchAdapter;
 import com.example.oops.retrofit.AppService;
@@ -69,24 +72,49 @@ public class SearchHere extends Fragment {
     @BindView(R.id.radioButton2)
     RadioButton radioButton2;
 
+    @BindView(R.id.radioGroup)
+    RadioGroup radioGroup;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swiperefresh;
+
+    Dialog dialog;
     int offset;
     GridSearchAdapter gridCategoryAdapter;
 
     ArrayList<MoviesSearchModule> moviesSearchModules;
     ArrayList<WebSearchModule> webSearchModuleArrayList;
-    ArrayList<SearchData> searchDataArrayList;
+    ArrayList<SearchData> searchDataArrayList ;
     //boolean isLastCurrent stat
     private boolean loading = true;
     int pastVisiblesItems, visibleItemCount, totalItemCount;
     int isMovies = 1;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
         View view = inflater.inflate(R.layout.search_here, container, false);
 
         ButterKnife.bind(this, view);
         init();
+
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                searchDataArrayList.clear();
+                callSearchApi();
+            }
+        });
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                // checkedId is the RadioButton selected
+                searchDataArrayList.clear();
+                callSearchApi();
+            }
+        });
         return view;
 
     }
@@ -100,31 +128,6 @@ public class SearchHere extends Fragment {
 
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
-       /* recylerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0) { //check for scroll down
-                    visibleItemCount = mLayoutManager.getChildCount();
-                    totalItemCount = mLayoutManager.getItemCount();
-                    int pastVisiblesItems = mLayoutManager.findContainingItemView();
-
-                    if (loading) {
-                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
-                            loading = false;
-                            callapi();
-                            Log.i("check", "Last Item Wow !");
-                            // Do pagination.. i.e. fetch new data
-                        }
-                    }
-                }
-            }
-        });*/
         recylerview.setAdapter(gridCategoryAdapter);
 
         editTextSearchHere.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -138,6 +141,7 @@ public class SearchHere extends Fragment {
                 return false;
             }
         });
+        callSearchApi();
     }
 
     private void callSearchApi() {
@@ -148,7 +152,8 @@ public class SearchHere extends Fragment {
             isMovies = 0;
         }
         if (AppCommon.getInstance(getContext()).isConnectingToInternet(getContext())) {
-            final Dialog dialog = ViewUtils.getProgressBar(getActivity());
+            if(!swiperefresh.isRefreshing())
+            dialog = ViewUtils.getProgressBar(getActivity());
             AppCommon.getInstance(getContext()).setNonTouchableFlags(getActivity());
             AppService apiService = ServiceGenerator.createService(AppService.class);
             Map<String, String> entityMap = new HashMap<>();
@@ -167,7 +172,10 @@ public class SearchHere extends Fragment {
                 @Override
                 public void onResponse(Call call, Response response) {
                     AppCommon.getInstance(getContext()).clearNonTouchableFlags(getActivity());
+                    if(!swiperefresh.isRefreshing())
                     dialog.dismiss();
+                    else
+                        swiperefresh.setRefreshing(false);
                     if (finalIsMovies == 1) {
                         MoviesSearchResponse authResponse = (MoviesSearchResponse) response.body();
                         if (authResponse != null) {
@@ -197,7 +205,10 @@ public class SearchHere extends Fragment {
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
+                    if(!swiperefresh.isRefreshing())
+                        dialog.dismiss();
+                    else
+                        swiperefresh.setRefreshing(false);
                     AppCommon.getInstance(getContext()).clearNonTouchableFlags(getActivity());
                     // loaderView.setVisibility(View.GONE);
                     Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
@@ -222,10 +233,16 @@ public class SearchHere extends Fragment {
 
     private void setDataMovies(ArrayList<MoviesSearchModule> data) {
        // searchDataArrayList = new ArrayList<>();
+
         for (int i = 0; i < data.size(); i++) {
+            boolean isMovieValue;
+            if (isMovies == 1)
+                isMovieValue = true;
+            else
+                isMovieValue = false;
             searchDataArrayList.add(new SearchData(data.get(i).getId(),
                     data.get(i).getMovieId(), data.get(i).getMovieName()
-                    , data.get(i).getImageLink()));
+                    , data.get(i).getImageLink() ));
         }
 
         gridCategoryAdapter.update(searchDataArrayList , offset);
@@ -247,6 +264,9 @@ public class SearchHere extends Fragment {
                     .putExtra("moviesId", searchDataArrayList.get(adapterPosition).getMovieId())
                     .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieId()));
         }else {
+            startActivity(new Intent(getContext(), VideoPlayerSeries.class)
+                    .putExtra("seriesId", searchDataArrayList.get(adapterPosition).getMovieId())
+                    .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
             Toast.makeText(getContext(), "Web Show will open very soon!!", Toast.LENGTH_SHORT).show();
         }
     }
