@@ -41,6 +41,7 @@
         android:textColor="@color/white" />
     <!--Subscribe-->
     <com.example.oops.custom.OTTTextView
+        android:id="@+id/txtSub"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_centerVertical="true"

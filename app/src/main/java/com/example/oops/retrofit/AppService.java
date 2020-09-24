@@ -20,6 +20,7 @@ import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.ResponseClass.RelativeResponse;
 import com.example.oops.ResponseClass.SliderResponse;
+import com.example.oops.ResponseClass.SubscriptionPlansResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +61,11 @@ public interface AppService {
     @FormUrlEncoded
     @POST("video/getAllMovies")
     Call<AllMoviesResponse> allMoviesApi(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("subscription/getPlans")
+    Call<SubscriptionPlansResponse> allSubscribtionPlansAPi(@FieldMap Map<String, String> entityMap);
+
 
     @FormUrlEncoded
     @POST("video/moviesWithCategories")

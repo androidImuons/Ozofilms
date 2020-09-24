@@ -18,16 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.oops.EntityClass.LogoutEntity;
-import com.example.oops.EntityClass.SupportHelpEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.LogoutResponse;
-import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.activity.AppSetting;
 import com.example.oops.activity.LegalActivity;
 import com.example.oops.activity.Login;
-import com.example.oops.activity.Support_Help;
+import com.example.oops.activity.SubscriptionActivity;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
@@ -35,7 +33,6 @@ import com.google.gson.Gson;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,11 +77,17 @@ public class MoreScreenFragment extends Fragment {
     @OnClick(R.id.txtAppSetting)
     public void setTxtAppSetting() {
         startActivity(new Intent(getActivity(), AppSetting.class));
+
+    }
+
+    @OnClick(R.id.txtSub)
+    public void setSubscription() {
+        startActivity(new Intent(getActivity(), SubscriptionActivity.class));
     }
 
     @OnClick(R.id.txtSupportHelp)
     public void setTxtSupportHelp() {
-        startActivity(new Intent(getActivity(), Support_Help.class));
+        startActivity(new Intent(getActivity(), AppSetting.class));
     }
 
     @OnClick(R.id.txtLegal)
