@@ -2,6 +2,7 @@ package com.example.oops.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,11 +36,15 @@ import com.example.oops.activity.Dashboard;
 import com.example.oops.activity.Login;
 import com.example.oops.activity.VideoPlay;
 import com.example.oops.adapter.HomeMoviesAdapter;
+import com.example.oops.adapter.SliderAdapter;
 import com.example.oops.adapter.ViewPagerAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
 import com.rd.PageIndicatorView;
+import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
+import com.smarteist.autoimageslider.SliderAnimations;
+import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,7 +58,7 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     @BindView(R.id.viewPager)
-    ViewPager viewPager;
+    SliderView viewPager;
     @BindView(R.id.SliderDots)
     LinearLayout SliderDots;
     @BindView(R.id.pageIndicatorView)
@@ -195,7 +200,18 @@ public class HomeFragment extends Fragment {
     }
 
     private void viewPagerSlider() {
-        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity() , sliderDataArrayList);
+        SliderAdapter adapter = new SliderAdapter(getContext() , sliderDataArrayList);
+
+        viewPager.setSliderAdapter(adapter);
+
+        viewPager.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
+        viewPager.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
+        viewPager.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
+        viewPager.setIndicatorSelectedColor(Color.WHITE);
+        viewPager.setIndicatorUnselectedColor(Color.GRAY);
+        viewPager.setScrollTimeInSec(4); //set scroll delay in seconds :
+        viewPager.startAutoCycle();
+       /* ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity() , sliderDataArrayList);
 
         viewPager.setAdapter(viewPagerAdapter);
 
@@ -204,7 +220,7 @@ public class HomeFragment extends Fragment {
         pageIndicatorView.setSelection(0);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {/*empty*/}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {*//*empty*//*}
 
             @Override
             public void onPageSelected(int position) {
@@ -212,7 +228,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {/*empty*/}
+            public void onPageScrollStateChanged(int state) {*//*empty*//*}
         });
         viewPager.setCurrentItem(10000);
         dots = new ImageView[dotscount];
@@ -227,7 +243,7 @@ public class HomeFragment extends Fragment {
             params.setMargins(8, 0, 8, 0);
 
             SliderDots.addView(dots[i], params);
-        }
+        }*/
     }
 
     public void catList(int adapterPosition) {

@@ -10,6 +10,7 @@
         android:id="@+id/moviesImage"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_120sdp"
+        app:roundedCornerRadius="5dp"
         app:placeholderImage="@drawable/oops_logo"/>
     <TextView
         android:id="@+id/moviesNmae"

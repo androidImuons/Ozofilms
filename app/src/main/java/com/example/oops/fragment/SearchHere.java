@@ -58,6 +58,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchHere extends Fragment {
+
     @BindView(R.id.editTextSearchHere)
     AppCompatEditText editTextSearchHere;
     String seditTextSearchHere;

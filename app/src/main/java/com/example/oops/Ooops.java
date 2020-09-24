@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ooops extends Application {
+
     private static final String TAG = "DemoApplication";
     private static final String DOWNLOAD_ACTION_FILE = "actions";
     private static final String DOWNLOAD_TRACKER_ACTION_FILE = "tracked_actions";

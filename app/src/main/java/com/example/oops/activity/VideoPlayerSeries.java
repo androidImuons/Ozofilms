@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import com.example.oops.DataClass.EpisodeData;
 import com.example.oops.DataClass.SeasonData;
 import com.example.oops.DataClass.WebSearchResponse;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.EpisodeResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.MoviesSearchResponse;
@@ -71,6 +73,9 @@ public class VideoPlayerSeries extends Activity {
 
     @BindView(R.id.seasonbtn)
     TextView seasonbtn;
+     @BindView(R.id.like)
+     ImageView like;
+
 
 
     /*@BindView(R.id.seasonSpinner)
@@ -83,7 +88,7 @@ public class VideoPlayerSeries extends Activity {
     EpisodeAdapter episodeAdapter;
     SeasonAdapter seasonAdapter;
 
-
+String movieId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +97,7 @@ public class VideoPlayerSeries extends Activity {
         data = new ArrayList<>();
 
         if (getIntent() != null) {
-            String movieId = getIntent().getStringExtra("seriesId");
+             movieId = getIntent().getStringExtra("seriesId");
             String name = getIntent().getStringExtra("name");
             txtVideoHeading.setText(name);
             callGetSessionApi(movieId);
@@ -273,5 +278,72 @@ public class VideoPlayerSeries extends Activity {
     @OnClick(R.id.seasonbtn)
     void setClick(){
         seasonList.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.like)
+    void  setLike(){
+        if(like.isSelected()){
+            like.setSelected(false);
+
+        }else
+            like.setSelected(true);
+        addAndRemoveLike(like.isSelected());
+    }
+
+    private void addAndRemoveLike(boolean selected) {
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            Dialog dialog = ViewUtils.getProgressBar(VideoPlayerSeries.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("type", String.valueOf("Series"));
+            entityMap.put("serMovId", String.valueOf(movieId));
+
+            Call call = apiService.addAndRemoveFavurite(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(VideoPlayerSeries.this).clearNonTouchableFlags(VideoPlayerSeries.this);
+                    dialog.dismiss();
+                    CommonResponse authResponse = (CommonResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Test", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            if (authResponse.getData() != null) {
+                                if(authResponse.getMessage().equals("Added To Favourite Successfully")){
+                                    like.setSelected(true);
+                                }else {
+                                    like.setSelected(false);
+                                }
+                            }
+                               /* setData(authResponse.getData());
+                            videoUrl= authResponse.getData().getVideoLink();*/
+
+
+                        } else {
+
+                            Toast.makeText(VideoPlayerSeries.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(VideoPlayerSeries.this).showDialog(VideoPlayerSeries.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(VideoPlayerSeries.this).clearNonTouchableFlags(VideoPlayerSeries.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(VideoPlayerSeries.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -60,11 +60,12 @@
                     android:text="@string/four_more_shoot"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"></com.example.oops.custom.OTTTextView>
+                    android:textStyle="bold"/>
 
                 <LinearLayout
                     android:layout_width="100dp"
                     android:layout_height="30dp"
+                    android:visibility="gone"
                     android:background="@drawable/video_player_rectangular">
 
                     <com.example.oops.custom.OTTTextView
@@ -90,6 +91,13 @@
                         android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/like"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@android:color/holo_red_dark"
+                    android:src="@drawable/like_selected"/>
 
             </LinearLayout>
 

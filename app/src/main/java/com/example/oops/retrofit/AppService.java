@@ -17,6 +17,7 @@ import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.CommonResponseObject;
 import com.example.oops.ResponseClass.EditProfileResponse;
 import com.example.oops.ResponseClass.EpisodeResponse;
+import com.example.oops.ResponseClass.FavouriteResponse;
 import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
@@ -26,6 +27,7 @@ import com.example.oops.ResponseClass.RelativeResponse;
 import com.example.oops.ResponseClass.SeasonResponse;
 import com.example.oops.ResponseClass.SliderResponse;
 import com.example.oops.ResponseClass.SocialResponse;
+import com.example.oops.fragment.FavouriteFragment;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,4 +127,12 @@ public interface AppService {
     @FormUrlEncoded
     @POST("video/getEpisodes")
     Call<EpisodeResponse> getEdpisodes(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("video/addRemoveFavourite")
+    Call<CommonResponse> addAndRemoveFavurite(@FieldMap Map<String, String> entityMap);
+
+    @FormUrlEncoded
+    @POST("video/myFavouriteList")
+    Call<FavouriteResponse> favouriteCall(@FieldMap Map<String, String> entityMap);
 }

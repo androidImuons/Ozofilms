@@ -4,6 +4,7 @@ public class SearchData {
     private int id ;
     String movieId , movieName , imageLink;
 
+
     public SearchData(int id, String movieId, String movieName, String imageLink) {
         this.id = id;
         this.movieId = movieId;
