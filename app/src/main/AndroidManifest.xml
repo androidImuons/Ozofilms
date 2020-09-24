@@ -13,31 +13,27 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
-    <uses-feature
-        android:name="android.software.leanback"
-        android:required="false" />
-    <uses-feature
-        android:name="android.hardware.touchscreen"
-        android:required="false" />
-
+    <uses-feature android:name="android.software.leanback" android:required="false"/>
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
     <application
         android:name=".Ooops"
         android:allowBackup="true"
-        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
-        android:icon="@drawable/oops_logo"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:roundIcon="@drawable/oops_logo"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory,android:allowBackup"
+        android:appComponentFactory="android.support.v4.app.CoreComponentFactory"
+        android:theme="@style/AppTheme"
         tools:targetApi="q">
-        <activity android:name=".activity.SubscriptionActivity"></activity>
-        <activity android:name=".activity.CategoryListActivity" />
+
+        <activity android:name=".activity.CategoryListActivity"/>
         <activity
             android:name=".activity.SplashScreen"
             android:screenOrientation="portrait">
@@ -47,6 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".activity.Login"
             android:screenOrientation="portrait" />
@@ -98,29 +96,44 @@
         <activity
             android:name=".activity.ForgotPassword"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.PlayerActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".activity.ChangePin"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activity.OfflinePlayerActivity"
-            android:screenOrientation="landscape" />
 
-        <service
-            android:name=".Utils.DemoDownloadService"
+        <activity android:name=".activity.PlayerActivity"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".activity.ChangePin"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.VideoPlayerSeries"
+            android:screenOrientation="portrait"/>
+<activity android:name=".activity.OfflinePlayerActivity"
+    android:screenOrientation="landscape"/>
+
+        <service android:name=".Utils.DemoDownloadService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="com.google.android.exoplayer.downloadService.action.RESTART"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </service>
-        <service
-            android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name="com.google.android.exoplayer2.scheduler.PlatformScheduler$PlatformSchedulerService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true"/>
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
+
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

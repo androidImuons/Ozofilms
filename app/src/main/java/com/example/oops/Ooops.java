@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Ooops extends Application {
+
     private static final String TAG = "DemoApplication";
     private static final String DOWNLOAD_ACTION_FILE = "actions";
     private static final String DOWNLOAD_TRACKER_ACTION_FILE = "tracked_actions";
@@ -55,9 +56,9 @@ public class Ooops extends Application {
         super.onCreate();
         Fresco.initialize(this);
 
-        videoModels.add(new VideoModel("1","Resignation","https://61vod-adaptive.akamaized.net/exp=1594921486~acl=%2Fc9b367b8-ba98-4724-ab01-e77e552a86e4%2F%2A~hmac=441add996ddd6f79dbe45a00b7a07cf5411f284493dbd49bcacb85efc2fd4345/c9b367b8-ba98-4724-ab01-e77e552a86e4/sep/video/58ab8e52,6ceccd5b,3fffe590,4d929f3c/master.m3u8",15));
-        videoModels.add(new VideoModel("2","big buck bunny","https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8",128));
-        videoModels.add(new VideoModel("3","example","https://skyfire.vimeocdn.com/1594887549-0xba9cec0ffe80b3f72ef5920950eaaa7997aa7467/5d8cb288-9512-4e58-8aad-9d5860ebf148/sep/video/3eb59ea5,54b8e546,f71d0c36,fe87a620/master.m3u8",30));
+//        videoModels.add(new VideoModel("1","Resignation","https://61vod-adaptive.akamaized.net/exp=1594921486~acl=%2Fc9b367b8-ba98-4724-ab01-e77e552a86e4%2F%2A~hmac=441add996ddd6f79dbe45a00b7a07cf5411f284493dbd49bcacb85efc2fd4345/c9b367b8-ba98-4724-ab01-e77e552a86e4/sep/video/58ab8e52,6ceccd5b,3fffe590,4d929f3c/master.m3u8",15));
+//        videoModels.add(new VideoModel("2","big buck bunny","https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8",128));
+//        videoModels.add(new VideoModel("3","example","https://skyfire.vimeocdn.com/1594887549-0xba9cec0ffe80b3f72ef5920950eaaa7997aa7467/5d8cb288-9512-4e58-8aad-9d5860ebf148/sep/video/3eb59ea5,54b8e546,f71d0c36,fe87a620/master.m3u8",30));
 
 
         mInstance = this;

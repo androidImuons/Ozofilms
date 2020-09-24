@@ -25,4 +25,5 @@ public class MyPreference {
     public static String language = "LANGUAGE";
     public static String notificationObj = "NotificationObj";
     public static String GameToken = "gameToken";
+    public static String SocialType = "SocialType";
 }

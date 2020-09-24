@@ -119,6 +119,7 @@
 
             <com.example.oops.custom.OTTTextView
                 style="@style/TextInCenter"
+                android:id="@+id/forgotPin"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginRight="20dp"

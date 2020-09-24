@@ -4,10 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -29,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.DataClass.MovieDeatilsData;
+import com.example.oops.MainActivity;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CategoryResponse;
@@ -42,8 +45,13 @@ import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.RelatedAdapter;
 import com.example.oops.data.database.AppDatabase;
+import com.example.oops.data.database.MovieDetailsTable;
+import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
+import com.example.oops.data.databasevideodownload.DatabaseClient;
+import com.example.oops.data.databasevideodownload.VideoDownloadDataBase;
+import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
@@ -72,6 +80,7 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
@@ -183,8 +192,14 @@ ImageView imgDownload;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
-
-
+MovieDetailsTable movieDetailsTable;
+    MovieDownloadDatabase mdb;
+    String subTitle,videoLink,audioLink,addOn,releaseDate,movieName,thumbnailImage,movieType,shortDescription,longDescription,directorName,trailerLink,bannerLink,categoryName,cast;
+    Context context;
+    int movieCategory;
+//    DownloadRequest myDownloadRequest;
+    int movieid;
+    String sMovie;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -221,6 +236,7 @@ ImageView imgDownload;
 
             callGetMoviesDetails(movieId);
         }
+//        movieid = Integer.parseInt(movieId);
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
@@ -235,6 +251,7 @@ ImageView imgDownload;
         Ooops application = (Ooops) getApplication();
         downloadTracker = application.getDownloadTracker();
         downloadManager = application.getDownloadManager();
+        mdb = MovieDownloadDatabase.getInstance(getApplicationContext());
 
         try {
             DownloadService.start(this, DemoDownloadService.class);
@@ -321,6 +338,24 @@ ImageView imgDownload;
                             if(authResponse.getData() != null)
                             setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();
+movieName = authResponse.getData().getMovieName();
+thumbnailImage = authResponse.getData().getImageLink();
+                            sMovie =authResponse.getData().getMovieId();
+//                            movieid = Integer.parseInt(sMovie);
+movieType = authResponse.getData().getMovieType();
+shortDescription =authResponse.getData().getMovieShortDescription();
+longDescription = authResponse.getData().getMovieLongDescription();
+                            directorName = authResponse.getData().getDirector();
+                            trailerLink = authResponse.getData().getTrailerLink();
+                            bannerLink = authResponse.getData().getBannerLink();
+                            categoryName = authResponse.getData().getCategoryName();
+                            cast = authResponse.getData().getCast();
+                            movieCategory = authResponse.getData().getMovieCategory();
+                            videoLink = authResponse.getData().getVideoLink();
+                            audioLink = authResponse.getData().getAudioFile();
+                            addOn = authResponse.getData().getAddedOn();
+                            releaseDate = authResponse.getData().getReleaseDate();
+                            subTitle = authResponse.getData().getSubtitles();
 
 
                         } else {
@@ -551,9 +586,19 @@ ImageView imgDownload;
 
 
             case R.id.imgDownload:
+//                if (DatabaseClient.getInstance(this).getAppDatabase().videoDownloadDao().isDataExist(movieid. )) {
+                    fetchDownloadOptions();
 
-                fetchDownloadOptions();
+                    // data not exist.
+//                    Toast.makeText(VideoPlay.this," Not Data Exist"+movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
 
+//                } else {
+//                    // data already exist.
+//                    Toast.makeText(VideoPlay.this," Exist" +movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
+//                }
+
+
+//
 
 
                 break;
@@ -696,6 +741,7 @@ ImageView imgDownload;
 
                 startDownload(downloadRequest);
 
+
                 dialogInterface.dismiss();
 
             }
@@ -708,7 +754,7 @@ ImageView imgDownload;
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-        DownloadRequest myDownloadRequest = downloadRequestt;
+      DownloadRequest   myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
@@ -720,7 +766,7 @@ ImageView imgDownload;
 
 
 
-
+            saveTask();
             downloadManager.addDownload(myDownloadRequest);
 
         }
@@ -865,15 +911,14 @@ ImageView imgDownload;
 //                });
 //                progressBarPercentage.setVisibility(View.GONE);
 
+
                 Log.d("EXO COMPLETED ", +download.getBytesDownloaded() + " " + download.contentLength);
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
                 if(download.request.uri.toString().equals(videoUrl)){
 
-                    if(download.getPercentDownloaded() != -1){
-
-                    }
+                    imgDownload.setImageResource(R.drawable.ic_lock);
                 }
 
 
@@ -928,6 +973,43 @@ ImageView imgDownload;
 
 
 
+
+    private void saveTask() {
+
+
+        class SaveTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                //creating a task
+                VideoDownloadTable task = new VideoDownloadTable();
+                task.setTimeStamp(2);
+                task.setMovieId(shortDescription);
+                task.setMovieName(movieName);
+                task.setMovieType(categoryName);
+                task.setUrlVideo(videoUrl);
+                task.setUrlImage(thumbnailImage);
+Log.i("SUNIL!",videoUrl);
+                //adding to database
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .videoDownloadDao()
+                        .insert(task);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+//                finish();
+//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        SaveTask st = new SaveTask();
+        st.execute();
+    }
 
 
 

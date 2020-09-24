@@ -142,6 +142,12 @@
     <string name="change_pin">Change Pin</string>
     <string name="track_selection_title">Select tracks</string>
     <string name="OTP">Enter OTP</string>
+    <string name="season">Season</string>
+
+
+    <string name="facebook_app_id">321229779184351</string>
+    <string name="fb_login_protocol_scheme">fb321229779184351</string>
+    <string name="seasons">Seasons</string>
 
 
 </resources>

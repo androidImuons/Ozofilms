@@ -17,12 +17,12 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
-public class ViewPagerAdapter   extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
 
     private Activity context;
     private LayoutInflater layoutInflater;
-    private Integer [] images = {R.drawable.header_background,R.drawable.header_background,R.drawable.header_background,R.drawable.header_background};
     ArrayList<SliderData> sliderData;
+
     public ViewPagerAdapter(Activity context, ArrayList<SliderData> dots) {
         this.context = context;
         sliderData = dots;
@@ -48,7 +48,7 @@ public class ViewPagerAdapter   extends PagerAdapter {
         imageView.setImageURI(sliderData.get(position).getBannerLink());
 
         ViewPager vp = (ViewPager) container;
-        vp.addView(view, 0);
+        vp.addView(view);
         return view;
 
     }

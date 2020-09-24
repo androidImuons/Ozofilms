@@ -9,28 +9,16 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:background="@drawable/header_background"
-        android:layout_height="80dp">
-
-
-
-
-
-
-
-
+        android:layout_height="@dimen/_45sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgview_navigational_home"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_marginRight="25dp"
-
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             app:srcCompat="@drawable/oops_logo" />
-
-
-
-
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -42,22 +30,38 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/margin_from_left"
-            android:layout_marginRight="@dimen/margin_from_left"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_20sdp">
 
-            <androidx.viewpager.widget.ViewPager
+
+            <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/viewPager"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:layout_marginBottom="8dp"/>
+                app:sliderIndicatorMarginTop="@dimen/_10sdp"
+                android:layout_height="@dimen/_150sdp"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="2dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1"
+                app:sliderStartAutoCycle="true"/>
+
 
             <com.rd.PageIndicatorView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 app:piv_animationType="thinWorm"
+                android:visibility="gone"
                 android:id="@+id/pageIndicatorView"/>
             <LinearLayout
                 android:id="@+id/SliderDots"

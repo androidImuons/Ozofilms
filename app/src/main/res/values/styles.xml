@@ -64,4 +64,9 @@
     <style name="TrackSelectionDialogThemeOverlay" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="windowNoTitle">false</item>
     </style>
+
+    <style name="edit_style">
+            <item name="android:textSize">14sp</item>
+            <item name="android:textColor">#ffffff</item>
+    </style>
 </resources>

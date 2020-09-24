@@ -13,6 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.oops.R;
 import com.example.oops.fragment.DownloadVideo;
+import com.example.oops.fragment.FavouriteFragment;
 import com.example.oops.fragment.HomeFragment;
 import com.example.oops.fragment.MoreScreenFragment;
 import com.example.oops.fragment.SearchHere;
@@ -63,7 +64,7 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
                 break;
 
             case R.id.favourite:
-                fragment = new HomeFragment();
+                fragment = new FavouriteFragment();
                 break;
 
             case R.id.download:

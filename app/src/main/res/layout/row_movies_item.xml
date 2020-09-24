@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/_170sdp"
+    android:layout_width="@dimen/_100sdp"
+    android:layout_height="@dimen/_140sdp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/movie_img"
-        android:layout_width="@dimen/_130sdp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:placeholderImage="@drawable/oops_logo"
+        app:roundedCornerRadius="5dp"
         android:padding="@dimen/_5sdp"
         android:scaleType="fitXY"/>
 

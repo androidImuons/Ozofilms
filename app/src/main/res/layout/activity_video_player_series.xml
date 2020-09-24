@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_layout"
+        android:id="@+id/top"></include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@id/top"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+
+            android:padding="@dimen/_10sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/sdvImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="@drawable/header_background"
+                    android:scaleType="fitXY" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgPlayVideo"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_youtube" />
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+
+                android:orientation="horizontal">
+
+                <com.example.oops.custom.OTTTextView
+
+                    android:id="@+id/txtVideoHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@string/four_more_shoot"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:visibility="gone"
+                    android:background="@drawable/video_player_rectangular">
+
+                    <com.example.oops.custom.OTTTextView
+                        android:id="@+id/txtContentType"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/video_player_red_background"
+                        android:gravity="center"
+
+                        android:text="@string/eighteen"
+                        android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+
+                    <com.example.oops.custom.OTTTextView
+                        android:id="@+id/txtRate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/rates"
+
+                        android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/like"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@android:color/holo_red_dark"
+                    android:src="@drawable/like_selected"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtVideoType"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:background="@drawable/header_background"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:text="@string/video_type"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <com.example.oops.custom.OTTTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/storyline"
+                android:textColor="@color/login_button_color"
+                android:textSize="16sp" />
+
+            <com.example.oops.custom.OTTTextView
+
+                android:id="@+id/txtSoryLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
+                android:textColor="@color/white"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.example.oops.custom.OTTTextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cast"
+                    android:textColor="@color/login_button_color"
+                    android:textSize="@dimen/_13sdp" />
+
+                <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtCastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.example.oops.custom.OTTTextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/director"
+                    android:textColor="@color/login_button_color"
+                    android:textSize="@dimen/_13sdp" />
+
+                <com.example.oops.custom.OTTTextView
+                    android:id="@+id/txtDirectorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <com.example.oops.custom.OTTTextView
+                    android:id="@+id/seasonbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/season"
+                    android:drawableRight="@drawable/arrow_drop_down"
+                    android:textColor="@color/white"
+                    app:drawableTint="@color/white"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:background="@color/white" />
+            </LinearLayout>
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recylerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
+                tools:listitem="@layout/season_item" />
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/seasonList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f2000000"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtHeading"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:fontFamily="@font/futura_n"
+                android:gravity="center"
+                android:text="@string/seasons"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sdp"
+                android:background="@drawable/header_background"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/seasonRecycleView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                tools:listitem="@layout/season_list"
+                android:layout_below="@id/txtHeading"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

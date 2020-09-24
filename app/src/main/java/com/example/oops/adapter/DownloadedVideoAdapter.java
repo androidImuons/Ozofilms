@@ -3,6 +3,7 @@ package com.example.oops.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
@@ -29,6 +32,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 
@@ -78,7 +82,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.videosList = new ArrayList<>();
         this.downloadActivity = downloadActivity;
-
+this.categoryListData = new ArrayList<>();
 
 
     }
@@ -104,11 +108,14 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         CategoryListData categoryListData = new CategoryListData();
                     VideoModel videoModel =       AppUtil.getVideoDetail(download.request.id);
 
-                    if (!videoModel.getVideoName().isEmpty()) {
-                        holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
-                    }
-
-
+//                    if (!videoModel.getVideoName().isEmpty()) {
+//                        holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
+//                    }
+//                    holder.imageView.setController(AppCommon.getInstance(this).getDraweeController(sdvImage , data.getBannerLink() , 1024));
+//                    Glide.with(this.context)
+//                            .load(AppCommon.getInstance(context).getDraweeController())
+//                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                            .into(holder.imageView);
                     DownloadRequest downloadRequest = Ooops.getInstance().getDownloadTracker().getDownloadRequest(download.request.uri);
 
                     if (download.state == Download.STATE_COMPLETED) {
@@ -147,10 +154,10 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
      VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
 
 //        if (!categoryListData.getMovieName().isEmpty()) {
-//            holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
+           holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
 //        }
 
-
+//        holder.imageView.setController(AppCommon.getInstance(context).getDraweeController(holder.imageView ,categoryListData.get(position).getImageLink() , 500));
         if (download.state == Download.STATE_COMPLETED) {
             holder.progressBarPercentage.setVisibility(View.GONE);
         } else {
@@ -184,6 +191,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
                     Intent intent = new Intent(context, OfflinePlayerActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
+                    Log.i("SUNIL2",""+download.request.id);
                 }else {
                     downloadActivity.openBottomSheet(download);
                 }
