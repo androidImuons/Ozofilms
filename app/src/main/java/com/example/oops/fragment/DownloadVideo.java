@@ -1,6 +1,7 @@
 package com.example.oops.fragment;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -19,7 +20,10 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.Utils.AppUtil;
+import com.example.oops.adapter.DownloadVideoAdapter;
 import com.example.oops.adapter.DownloadedVideoAdapter;
+import com.example.oops.data.databasevideodownload.DatabaseClient;
+import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.model.VideoModel;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -43,7 +47,7 @@ public class DownloadVideo extends Fragment {
     private DownloadedVideoAdapter downloadedVideoAdapter;
     private Runnable runnableCode;
     private Handler handler;
-
+    DownloadVideoAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -51,29 +55,46 @@ public class DownloadVideo extends Fragment {
         View view = inflater.inflate(R.layout.downloadvideofragment, container, false);
         ButterKnife.bind(this, view);
         txtHeading.setText(getString(R.string.downloads));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        recylerview.setLayoutManager(linearLayoutManager);
-        ((SimpleItemAnimator) recylerview.getItemAnimator()).setSupportsChangeAnimations(false);
-        loadVideos();
+        recylerview = view.findViewById(R.id.recylerview);
+        recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        handler = new Handler();
-        runnableCode = new Runnable() {
-            @Override
-            public void run() {
-                List<Download> exoVideoList = new ArrayList<>();
-                for (Map.Entry<Uri, Download> entry : Ooops.getInstance().getDownloadTracker().downloads.entrySet()) {
-                    Uri keyUri = entry.getKey();
-                    Download download = entry.getValue();
-                    exoVideoList.add(download);
-                }
-                downloadedVideoAdapter.onNewData(exoVideoList);
-                handler.postDelayed(this, 1000);
-            }
-        };
-        handler.post(runnableCode);
+        getTasks();
         return view;
 
     }
+
+
+
+
+    private void getTasks() {
+        class GetTasks extends AsyncTask<Void, Void, List<VideoDownloadTable>> {
+
+            @Override
+            protected List<VideoDownloadTable> doInBackground(Void... voids) {
+                List<VideoDownloadTable> taskList = DatabaseClient
+                        .getInstance(getActivity())
+                        .getAppDatabase()
+                        .videoDownloadDao()
+                        .getAll();
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<VideoDownloadTable> tasks) {
+                super.onPostExecute(tasks);
+//                adapter.notifyDataSetChanged();
+
+                 adapter = new DownloadVideoAdapter(getActivity(), tasks);
+                recylerview.setAdapter(adapter);
+//                adapter.notifyDataSetChanged();
+            }
+        }
+
+        GetTasks gt = new GetTasks();
+        gt.execute();
+    }
+
+
 
     @OnClick(R.id.imgBackPressed)
     public void setImgBackPressed() {
@@ -177,9 +198,5 @@ public class DownloadVideo extends Fragment {
 
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        handler.removeCallbacks(runnableCode);
-    }
+
 }
