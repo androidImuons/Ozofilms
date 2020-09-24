@@ -3,6 +3,7 @@ package com.example.oops.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.google.android.exoplayer2.offline.DownloadRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 
@@ -152,7 +154,7 @@ this.categoryListData = new ArrayList<>();
      VideoModel videoModel =   AppUtil.getVideoDetail(download.request.id);
 
 //        if (!categoryListData.getMovieName().isEmpty()) {
-//            holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
+           holder.tvDownloadVideoTitle.setText(categoryListData.getMovieName());
 //        }
 
 //        holder.imageView.setController(AppCommon.getInstance(context).getDraweeController(holder.imageView ,categoryListData.get(position).getImageLink() , 500));
@@ -189,6 +191,7 @@ this.categoryListData = new ArrayList<>();
                     Intent intent = new Intent(context, OfflinePlayerActivity.class);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
+                    Log.i("SUNIL2",""+download.request.id);
                 }else {
                     downloadActivity.openBottomSheet(download);
                 }
