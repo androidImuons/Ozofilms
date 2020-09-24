@@ -83,8 +83,8 @@ public class SubscriptionActivity extends AppCompatActivity {
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class , AppCommon.getInstance(getApplicationContext()).getToken());
             Map<String , String> entityMap = new HashMap<>();
-            entityMap.put("id" ,"55");
-            entityMap.put("userId" ,"OTT8631540");
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getUserId()));
             Call call = apiService.allSubscribtionPlansAPi(entityMap);
 
             call.enqueue(new Callback() {

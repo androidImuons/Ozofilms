@@ -27,6 +27,7 @@ import com.example.oops.ResponseClass.RelativeResponse;
 import com.example.oops.ResponseClass.SeasonResponse;
 import com.example.oops.ResponseClass.SliderResponse;
 import com.example.oops.ResponseClass.SocialResponse;
+import com.example.oops.ResponseClass.SubscriptionPlansResponse;
 import com.example.oops.fragment.FavouriteFragment;
 
 import java.util.HashMap;
@@ -135,4 +136,9 @@ public interface AppService {
     @FormUrlEncoded
     @POST("video/myFavouriteList")
     Call<FavouriteResponse> favouriteCall(@FieldMap Map<String, String> entityMap);
+
+
+    @FormUrlEncoded
+    @POST("subscription/getPlans")
+    Call<SubscriptionPlansResponse> allSubscribtionPlansAPi(@FieldMap Map<String, String> entityMap);
 }
