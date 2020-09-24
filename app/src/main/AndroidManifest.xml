@@ -99,6 +99,9 @@
 
         <activity android:name=".activity.PlayerActivity"
             android:screenOrientation="landscape"/>
+
+        <activity android:name=".activity.SubscriptionActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activity.ChangePin"
             android:screenOrientation="portrait"/>
         <activity android:name=".activity.VideoPlayerSeries"
