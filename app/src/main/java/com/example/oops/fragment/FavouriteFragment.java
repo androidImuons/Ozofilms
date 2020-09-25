@@ -3,42 +3,34 @@ package com.example.oops.fragment;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatEditText;
-import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.oops.DataClass.MoviesSearchModule;
-import com.example.oops.DataClass.SearchData;
-import com.example.oops.DataClass.WebSearchModule;
-import com.example.oops.DataClass.WebSearchResponse;
+import com.example.oops.DataClass.FavouriteData;
+import com.example.oops.DataClass.MovieData;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.FavouriteResponse;
-import com.example.oops.ResponseClass.MoviesSearchResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.FavouriteAdapter;
-import com.example.oops.adapter.GridSearchAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -51,8 +43,8 @@ public class FavouriteFragment extends Fragment {
 
     String seditTextSearchHere;
 
-    @BindView(R.id.recylerview)
-    RecyclerView recylerview;
+    @BindView(R.id.fab_list_recylerview)
+    RecyclerView recyclerView;
 
 
     @BindView(R.id.swiperefresh)
@@ -60,16 +52,14 @@ public class FavouriteFragment extends Fragment {
 
     Dialog dialog;
     int offset;
-    FavouriteAdapter gridCategoryAdapter;
 
-    ArrayList<MoviesSearchModule> moviesSearchModules;
-    ArrayList<WebSearchModule> webSearchModuleArrayList;
-    //ArrayList<FavouriteListData> searchDataArrayList ;
+    FavouriteAdapter favouriteAdapter;
 
-    //boolean isLastCurrent stat
-    private boolean loading = true;
-    int pastVisiblesItems, visibleItemCount, totalItemCount;
-    int isMovies = 1;
+    ArrayList<ArrayList<MovieData>> movieDataArrayList;
+
+    ArrayList<FavouriteData> favouriteDataArrayList;
+    List<MovieData> students;
+
 
 
     @Override
@@ -79,6 +69,7 @@ public class FavouriteFragment extends Fragment {
 
         ButterKnife.bind(this, view);
         init();
+        callFavouriteApi();
 
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -92,15 +83,12 @@ public class FavouriteFragment extends Fragment {
 
 
     private void init() {
-        //searchDataArrayList = new ArrayList<>();
-        gridCategoryAdapter = new FavouriteAdapter();
-        // AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 500);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3 , RecyclerView.VERTICAL , false);
-        // LinearLayoutManager mLayoutManagerMy = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
-        recylerview.setLayoutManager(mLayoutManager);
-        recylerview.setItemAnimator(new DefaultItemAnimator());
-        recylerview.setAdapter(gridCategoryAdapter);
-        callFavouriteApi();
+        movieDataArrayList = new ArrayList<ArrayList<MovieData>>();
+        favouriteDataArrayList = new ArrayList<>();
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void callFavouriteApi() {
@@ -125,9 +113,25 @@ public class FavouriteFragment extends Fragment {
 
                         FavouriteResponse authResponse = (FavouriteResponse) response.body();
                         if (authResponse != null) {
-                            Log.i("Response::", new Gson().toJson(authResponse));
+                            Log.i("FABVOURITE_LIST", new Gson().toJson(authResponse));
                             if (authResponse.getCode() == 200) {
                                 //setDataMovies(authResponse.getData());
+
+
+                                favouriteDataArrayList= authResponse.getData();
+
+                                for(FavouriteData favouriteData:favouriteDataArrayList){
+
+                                    movieDataArrayList.add(favouriteData.getMovie());
+                                }
+
+
+                              //  favouriteAdapter = new FavouriteAdapter(movieDataArrayList, getContext());
+                                recyclerView.setAdapter(favouriteAdapter);
+
+
+
+
                             } else {
                                 Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }

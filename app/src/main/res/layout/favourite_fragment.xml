@@ -9,15 +9,33 @@
    <include
        layout="@layout/header_layout"
        android:id="@+id/topBar"/>
+
+
+
+    <com.example.oops.custom.OTTTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="10dp"
+        android:layout_below="@+id/topBar"
+        android:textStyle="bold"
+        android:id="@+id/text"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:textSize="@dimen/_12sdp"
+        android:text="@string/series"
+        android:textColor="@color/white"
+
+        />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh"
-        android:layout_below="@id/topBar"
+        android:layout_below="@id/text"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recylerview"
+            android:id="@+id/fab_list_recylerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:listitem=""

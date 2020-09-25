@@ -74,6 +74,10 @@ public class MovieDeatilsData {
     @Expose
     private String categoryName;
 
+    @SerializedName("isFavourite")
+    @Expose
+    private Integer isFavourite;
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -256,5 +260,13 @@ public class MovieDeatilsData {
 
     public void setBannerLink(String bannerLink) {
         this.bannerLink = bannerLink;
+    }
+
+    public Integer getIsFavourite() {
+        return isFavourite;
+    }
+
+    public void setIsFavourite(Integer isFavourite) {
+        this.isFavourite = isFavourite;
     }
 }

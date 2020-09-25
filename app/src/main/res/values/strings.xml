@@ -46,6 +46,9 @@
     <string name="rs">\u20B9</string>
     <string name="strike_text">1. <strike>StrikeThrough</strike> Using strike</string>
 
+    <!--Subscription -->
+    <string name="series">Series</string>
+
 
 
 

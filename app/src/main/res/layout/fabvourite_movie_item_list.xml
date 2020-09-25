@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/movieImage"
+        android:layout_width="@dimen/_120sdp"
+        android:layout_height="@dimen/_120sdp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:contentDescription="TODO"
+        android:src="@mipmap/ic_launcher" />
+
+    <com.example.oops.custom.OTTTextView
+        android:id="@+id/movieDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_toRightOf="@id/movieImage"
+        android:maxLines="1"
+        android:text="Description"
+        android:textSize="12sp" />
+
+    <com.example.oops.custom.OTTTextView
+        android:id="@+id/movieName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/movieDescription"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/movieImage"
+        android:gravity="center_vertical"
+        android:text="MOVIE NAME"
+        android:textSize="16sp" />
+
+</RelativeLayout>
