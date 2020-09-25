@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -504,11 +505,10 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
 
 
         if(data.getIsFavourite()==0){
-
             like.setEnabled(false);
+
         }else {
             like.setEnabled(true);
-
         }
         if (data.getMovieLongDescription() != null)
             txtSoryLine.setText(data.getMovieLongDescription());
@@ -730,8 +730,10 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this);
-        builder.setTitle("Select Download Format");
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this,R.style.MyDialogTheme1);
+      //  builder.setTitle("Select Download Format");
+        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
+
         int checkedItem = 1;
 
 
@@ -747,7 +749,7 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
                 VideoPlay.this, // Context
-                android.R.layout.simple_list_item_single_choice, // Layout
+                R.layout.mytextview, // Layout
                 optionsToDownload // List
         );
 
@@ -788,7 +790,6 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
 
                 }
 
-
                 DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
                 if (downloadRequest.streamKeys.isEmpty()) {
                     // All tracks were deselected in the dialog. Don't start the download.
@@ -807,6 +808,7 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
         AlertDialog dialog = builder.create();
         dialog.setCancelable(true);
         dialog.show();
+
     }
 
     private void startDownload(DownloadRequest downloadRequestt) {
