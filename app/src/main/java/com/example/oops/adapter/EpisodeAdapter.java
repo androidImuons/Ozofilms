@@ -74,4 +74,5 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
             ButterKnife.bind(this ,itemView);
         }
     }
+
 }

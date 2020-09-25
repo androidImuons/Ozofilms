@@ -9,6 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 import com.example.oops.DataClass.EditData;
@@ -26,6 +27,7 @@ import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +44,8 @@ public class Profile extends AppCompatActivity {
     @BindView(R.id.editTextEmail)
     AppCompatEditText editTextEmail;
     String seditTextEmail;
+    @BindView(R.id.imgBackPressed)
+    AppCompatImageView imgBackPressed;
     @BindView(R.id.editTextPassWord)
     AppCompatEditText editTextPassWord;
     String seditTextPassWord;
@@ -56,6 +60,10 @@ public class Profile extends AppCompatActivity {
         ButterKnife.bind(this);
         setData();
         initView();
+    }
+    @OnClick(R.id.imgBackPressed)
+    public  void setImgBackPressed(){
+        onBackPressed();
     }
 
     private void setData() {

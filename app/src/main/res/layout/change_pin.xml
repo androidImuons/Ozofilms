@@ -7,7 +7,8 @@
     android:background="@drawable/background"
     android:orientation="vertical"
     tools:context=".activity.UserRegistration">
-
+    <include
+        layout="@layout/header_layout"></include>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

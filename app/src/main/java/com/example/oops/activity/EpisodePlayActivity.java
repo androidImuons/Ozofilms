@@ -2,9 +2,7 @@ package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,8 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -23,34 +23,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.oops.DataClass.CategoryListData;
+import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
-import com.example.oops.ResponseClass.CategoryResponse;
-import com.example.oops.ResponseClass.MovieDeatilsResponse;
-import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.DemoDownloadService;
 import com.example.oops.Utils.DownloadTracker;
 import com.example.oops.Utils.TrackKey;
-import com.example.oops.Utils.ViewUtils;
-import com.example.oops.adapter.RelatedAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDetailsTable;
 import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
-import com.example.oops.retrofit.AppService;
-import com.example.oops.retrofit.ServiceGenerator;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -72,7 +60,6 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
-import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -81,16 +68,10 @@ import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
 import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
@@ -100,42 +81,11 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class VideoPlay extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
-    @BindView(R.id.txtVideoHeading)
-    AppCompatTextView txtVideoHeading;
-    String stxtVideoHeading;
+public class EpisodePlayActivity extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
 
-    @BindView(R.id.txtContentType)
-    AppCompatTextView txtContentType;
-    @BindView(R.id.txtRate)
-    AppCompatTextView txtRate;
-    @BindView(R.id.txtVideoType)
-    AppCompatTextView txtVideoType;
-    @BindView(R.id.txtSoryLine)
-    AppCompatTextView txtSoryLine;
-    @BindView(R.id.txtCastName)
-    AppCompatTextView txtCastName;
-    @BindView(R.id.txtDirectorName)
-    AppCompatTextView txtDirectorName;
-    @BindView(R.id.recylerview)
-    RecyclerView recylerview;
-    @BindView(R.id.sdvImage)
-    SimpleDraweeView sdvImage;
-    @BindView(R.id.txtHeading)
-    AppCompatTextView  txtHeading;
-    @BindView(R.id.imgPlayVideo)
-    AppCompatImageView imgPlayVideo;
-    private AppDatabase database;
-    private List<Subtitle> subtitleList = new ArrayList<>();
-    ArrayList<CategoryListData> categoryList;
-    RelatedAdapter relatedAdapter;
-LinearLayout linearLayout;
-ImageView imgDownload;
-    private List<Video> videoUriList = new ArrayList<>();
+
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
-
-    String movieId;
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -175,6 +125,7 @@ ImageView imgDownload;
 
 
     Button btnAbc;
+    String millisInString;
 
     private DownloadTracker downloadTracker;
     private DownloadManager downloadManager;
@@ -182,19 +133,27 @@ ImageView imgDownload;
 
 
 
-  private String videoUrl ;
+    private String videoUrl= "https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8";
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
-MovieDetailsTable movieDetailsTable;
-    MovieDownloadDatabase mdb;
-    String subTitle,videoLink,audioLink,addOn,releaseDate,movieName,thumbnailImage,movieType,shortDescription,longDescription,directorName,trailerLink,bannerLink,categoryName,cast;
-    Context context;
-    int movieCategory;
-    String millisInString;
-    //    DownloadRequest myDownloadRequest;
-    int movieid;
-    String sMovie;
+
+
+
+    @BindView(R.id.sdvImage)
+    com.facebook.drawee.view.SimpleDraweeView sdvImage;
+    @BindView(R.id.txtVideoHeading)
+    AppCompatTextView txtVideoHeading;
+    @BindView(R.id.txtSoryLine)
+    AppCompatTextView txtSoryLine;
+    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId;
+    @BindView(R.id.imgPlayVideo)
+    AppCompatImageView imgPlayVideo;
+    private AppDatabase database;
+    private List<Video> videoUriList = new ArrayList<>();
+    private List<Subtitle> subtitleList = new ArrayList<>();
+ImageButton nextBtn;
+ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -212,27 +171,23 @@ MovieDetailsTable movieDetailsTable;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
         dataSourceFactory = buildDataSourceFactory();
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER);
         }
-        setContentView(R.layout.video_player);
+        setContentView(R.layout.episodeplayactivity);
         ButterKnife.bind(this);
-        setLayout();
-        initializeDb();
-
-        if(getIntent()!= null){
-            movieId= getIntent().getStringExtra("moviesId");
-            String name = getIntent().getStringExtra("name");
-
-
-            txtVideoHeading.setText(name);
-            txtHeading.setVisibility(View.GONE);
-
-            callGetMoviesDetails(movieId);
-        }
-//        movieid = Integer.parseInt(movieId);
-        linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        Intent i = this.getIntent();
+        episodeThumnailImage = i.getStringExtra("episodeThumnailImage");
+        episodeNo = i.getStringExtra("episodeNo");
+        storyDescription = i.getStringExtra("storyDescription");
+        name = i.getStringExtra("name");
+        episodeId = i.getStringExtra("episodeId");
+        videourl = i.getStringExtra("videourl");
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -246,7 +201,7 @@ MovieDetailsTable movieDetailsTable;
         Ooops application = (Ooops) getApplication();
         downloadTracker = application.getDownloadTracker();
         downloadManager = application.getDownloadManager();
-        mdb = MovieDownloadDatabase.getInstance(getApplicationContext());
+
 
         try {
             DownloadService.start(this, DemoDownloadService.class);
@@ -254,33 +209,28 @@ MovieDetailsTable movieDetailsTable;
             DownloadService.startForeground(this, DemoDownloadService.class);
         }
         handler = new Handler();
-
-
-
-        imgDownload = (ImageView) findViewById(R.id.imgDownload);
-//        prepareView();
-        imgDownload.setOnClickListener(VideoPlay.this);
-//        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
-//        videoDurationInSeconds = videoDurationInSeconds % 60 ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         millisInString  = dateFormat.format(new Date());
+        millisInString  = dateFormat.format(new Date());
+        imgDownload = findViewById(R.id.imgDownload);
 
-
-        runnableCode = new Runnable() {
-            @Override
-            public void run() {
-//               observerVideoStatus();
-                handler.postDelayed(this, 1000);
-            }
-        };
-
-        handler.post(runnableCode);
-
-
+        imgDownload.setOnClickListener(this);
+        Glide.with(this)
+                .load(episodeThumnailImage)
+                .into(sdvImage);
+        txtVideoHeading.setText(name);
+        txtSoryLine.setText(storyDescription);
+        setLayout();
+        initializeDb();
+        makeListOfUri();
     }
 
+    private void setLayout() {
+        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
+    }
 
-
+    private void initializeDb() {
+        database = AppDatabase.Companion.getDatabase(getApplicationContext());
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -288,176 +238,9 @@ MovieDetailsTable movieDetailsTable;
         database = null;
 
     }
-    private void setLayout() {
 
-        categoryList = new ArrayList<>();
-        relatedAdapter = new RelatedAdapter(VideoPlay.this , categoryList );
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recylerview.setLayoutManager(mLayoutManager);
-        recylerview.setItemAnimator(new DefaultItemAnimator());
-        recylerview.setAdapter(relatedAdapter);
-
-
-        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
-    }
-
-    private void initializeDb() {
-        database = AppDatabase.Companion.getDatabase(getApplicationContext());
-    }
-
-    @OnClick(R.id.imgBackPressed)
-    public  void setImgBackPressed(){
-        onBackPressed();
-    }
-
-
-    private void callGetMoviesDetails(String movieId) {
-
-        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
-            AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class , AppCommon.getInstance(this).getToken());
-            Map<String , String> entityMap = new HashMap<>();
-            entityMap.put("id" , String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId" , String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId" , String.valueOf(movieId));
-            Call call = apiService.MOVIE_DEATILS_RESPONSE_CALL(entityMap);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    dialog.dismiss();
-                    MovieDeatilsResponse authResponse = (MovieDeatilsResponse) response.body();
-                    if (authResponse != null) {
-                        Log.i("Test", new Gson().toJson(authResponse));
-                        if (authResponse.getCode() == 200) {
-                            if(authResponse.getData() != null)
-                            setData(authResponse.getData());
-                            videoUrl= authResponse.getData().getVideoLink();
-movieName = authResponse.getData().getMovieName();
-thumbnailImage = authResponse.getData().getImageLink();
-                            sMovie =authResponse.getData().getMovieId();
-//                            movieid = Integer.parseInt(sMovie);
-movieType = authResponse.getData().getMovieType();
-shortDescription =authResponse.getData().getMovieShortDescription();
-longDescription = authResponse.getData().getMovieLongDescription();
-                            directorName = authResponse.getData().getDirector();
-                            trailerLink = authResponse.getData().getTrailerLink();
-                            bannerLink = authResponse.getData().getBannerLink();
-                            categoryName = authResponse.getData().getCategoryName();
-                            cast = authResponse.getData().getCast();
-                            movieCategory = authResponse.getData().getMovieCategory();
-                            videoLink = authResponse.getData().getVideoLink();
-                            audioLink = authResponse.getData().getAudioFile();
-                            addOn = authResponse.getData().getAddedOn();
-                            releaseDate = authResponse.getData().getReleaseDate();
-                            subTitle = authResponse.getData().getSubtitles();
-
-
-                        } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void callRelativeMovies(MovieDeatilsData data) {
-
-        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
-            AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class , AppCommon.getInstance(this).getToken());
-            Map<String , String> entityMap = new HashMap<>();
-            entityMap.put("id" , String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId" , String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId" , String.valueOf(data.getMovieId()));
-            entityMap.put("category" , String.valueOf(data.getMovieCategory()));
-            Call call = apiService.GetRelativeMovies(entityMap);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    dialog.dismiss();
-                    CategoryResponse authResponse = (CategoryResponse) response.body();
-                    if (authResponse != null) {
-                        Log.i("Response::", new Gson().toJson(authResponse));
-                        if (authResponse.getCode() == 200) {
-                            if(authResponse.getData() != null)
-                                if(authResponse.getData().size()!= 0) {
-                                    categoryList = authResponse.getData();
-                                    relatedAdapter.upadate(authResponse.getData());
-                                }
-                        } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void setData(MovieDeatilsData data) {
-        callRelativeMovies(data);
-        if(data.getMovieLongDescription() != null)
-        txtSoryLine.setText(data.getMovieLongDescription());
-        else
-            txtSoryLine.setText("N/A");
-
-        if(data.getCast() != null)
-            txtCastName.setText(data.getCast());
-        else
-            txtCastName.setText("N/A");
-
-        if(data.getDirector() != null)
-            txtDirectorName.setText(data.getDirector());
-        else
-            txtDirectorName.setText("N/A");
-
-        if(data.getCategoryName() != null)
-            txtVideoType.setText(data.getCategoryName());
-        else
-            txtVideoType.setText("N/A");
-
-        sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage , data.getBannerLink() , 1024));
-        makeListOfUri(data);
-    }
-
-
-    private void makeListOfUri(MovieDeatilsData data) {
-        videoUriList.add(new Video(data.getVideoLink() , Long.getLong("zero" , 1)));
+    private void makeListOfUri() {
+        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
 
         /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
 
@@ -470,6 +253,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
         }
 
     }
+
 
     private VideoSource makeVideoSource(List<Video> videos, int index) {
         setVideosWatchLength();
@@ -504,11 +288,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    public void clickRelativeMovies(int adapterPosition) {
-        startActivity(new Intent(this , VideoPlay.class)
-                .putExtra("moviesId" , categoryList.get(adapterPosition).getMovieId())
-                .putExtra("name" , categoryList.get(adapterPosition).getMovieName()));
-    }
 
 
     @Override
@@ -583,9 +362,9 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
             case R.id.imgDownload:
 //                if (DatabaseClient.getInstance(this).getAppDatabase().videoDownloadDao().isDataExist(movieid. )) {
-                    fetchDownloadOptions();
+                fetchDownloadOptions();
 
-                    // data not exist.
+                // data not exist.
 //                    Toast.makeText(VideoPlay.this," Not Data Exist"+movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
 
 //                } else {
@@ -614,7 +393,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
         trackKeys.clear();
 
         if (pDialog == null || !pDialog.isShowing()) {
-            pDialog = new ProgressDialog(VideoPlay.this);
+            pDialog = new ProgressDialog(EpisodePlayActivity.this);
             pDialog.setTitle(null);
             pDialog.setCancelable(false);
             pDialog.setMessage("Preparing Download Options...");
@@ -622,7 +401,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
         }
 
 
-        DownloadHelper downloadHelper = DownloadHelper.forHls(VideoPlay.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(VideoPlay.this));
+        DownloadHelper downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -667,7 +446,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this);
         builder.setTitle("Select Download Format");
         int checkedItem = 1;
 
@@ -683,7 +462,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
-                VideoPlay.this, // Context
+                EpisodePlayActivity.this, // Context
                 android.R.layout.simple_list_item_single_choice, // Layout
                 optionsToDownload // List
         );
@@ -750,7 +529,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-      DownloadRequest   myDownloadRequest = downloadRequestt;
+        DownloadRequest   myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
@@ -981,13 +760,13 @@ longDescription = authResponse.getData().getMovieLongDescription();
                 //creating a task
                 VideoDownloadTable task = new VideoDownloadTable();
                 task.setTimestamp(millisInString);
-                task.setMovieId(movieId);
-                task.setMovieName(movieName);
-                task.setMovieType(categoryName);
+                task.setMovieId(episodeId);
+                task.setMovieName(name);
+                task.setMovieType("Web Series");
                 task.setUrlVideo(videoUrl);
-                task.setMovieDescription(shortDescription);
-                task.setUrlImage(thumbnailImage);
-Log.i("SUNIL!",videoUrl);
+                task.setMovieDescription(storyDescription);
+                task.setUrlImage(episodeThumnailImage);
+
                 //adding to database
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                         .videoDownloadDao()
@@ -1007,6 +786,8 @@ Log.i("SUNIL!",videoUrl);
         SaveTask st = new SaveTask();
         st.execute();
     }
+
+
 
 
 

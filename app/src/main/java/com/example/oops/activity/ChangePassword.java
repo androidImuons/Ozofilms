@@ -38,8 +38,8 @@ public class ChangePassword extends AppCompatActivity {
     @BindView(R.id.editTextNewPassword)
     AppCompatEditText editTextNewPassWord;
     String sNewPassword;
-    //    @BindView(R.id.imgBackPressed)
-//    AppCompatImageView imgBackPressed;
+        @BindView(R.id.imgBackPressed)
+    AppCompatImageView imgBackPressed;
     @BindView(R.id.editTextConfirmPassword)
     AppCompatEditText editTextConfirmPassword;
     String sConfirmPassword;
@@ -52,6 +52,10 @@ public class ChangePassword extends AppCompatActivity {
         setContentView(R.layout.changepassword);
         ButterKnife.bind(this);
         initView();
+    }
+    @OnClick(R.id.imgBackPressed)
+    public  void setImgBackPressed(){
+        onBackPressed();
     }
 
     private void initView() {

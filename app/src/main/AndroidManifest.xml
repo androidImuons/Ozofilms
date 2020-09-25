@@ -110,7 +110,8 @@
             android:screenOrientation="portrait"/>
 <activity android:name=".activity.OfflinePlayerActivity"
     android:screenOrientation="landscape"/>
-
+<activity android:name=".activity.EpisodePlayActivity"
+    android:screenOrientation="portrait"></activity>
         <service android:name=".Utils.DemoDownloadService"
             android:exported="false">
             <intent-filter>
