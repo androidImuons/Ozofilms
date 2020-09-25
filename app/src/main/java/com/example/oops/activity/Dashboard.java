@@ -1,5 +1,6 @@
 package com.example.oops.activity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -7,6 +8,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -78,6 +80,19 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
 
         return loadFragment(fragment);
     }
-}
 
+//    @Override
+//    public void onBackPressed() {
+//        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
+//                .setMessage("Are you sure you want to exit?")
+//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                }).setNegativeButton("No", null).show();    }
+//}
+
+
+}
 
