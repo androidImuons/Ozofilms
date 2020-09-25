@@ -16,6 +16,7 @@ private  int id;
 private  String movieId;
 private  String movieName;
 private String movieType;
+private String movieDescription;
 private  String urlVideo;
 private  String urlImage;
     @ColumnInfo(name = "timestamp")
@@ -80,5 +81,13 @@ private  String urlImage;
 
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getMovieDescription() {
+        return movieDescription;
+    }
+
+    public void setMovieDescription(String movieDescription) {
+        this.movieDescription = movieDescription;
     }
 }

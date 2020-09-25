@@ -85,7 +85,9 @@ android:visibility="gone"
 
 
 
-
+        <ImageButton
+            android:id="@+id/btn_next"
+            style="@style/ExoMediaButton.Next" />
 
 
     </LinearLayout>

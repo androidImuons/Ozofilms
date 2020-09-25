@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,12 +7,10 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-    <include layout="@layout/header_layout"
-        android:id="@+id/top"></include>
+    <include layout="@layout/header_layout"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_below="@id/top"
         android:layout_height="wrap_content">
 
         <LinearLayout
@@ -34,9 +32,9 @@
                     android:scaleType="fitXY" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgPlayVideo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imgPlayVideo"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     app:srcCompat="@drawable/ic_youtube" />
@@ -50,19 +48,28 @@
 
                 android:orientation="horizontal">
 
-                <com.example.oops.custom.OTTTextView
-
-                    android:id="@+id/txtVideoHeading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/four_more_shoot"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
+                    android:orientation="vertical">
+
+                    <com.example.oops.custom.OTTTextView
+
+                        android:id="@+id/txtVideoHeading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+
+                        android:gravity="center_vertical"
+                        android:text="@string/four_more_shoot"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:visibility="gone"
@@ -75,9 +82,8 @@
                         android:layout_gravity="center_vertical"
                         android:background="@drawable/video_player_red_background"
                         android:gravity="center"
-
                         android:text="@string/eighteen"
-                        android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                        android:textColor="@color/white"/>
 
                     <com.example.oops.custom.OTTTextView
                         android:id="@+id/txtRate"
@@ -87,17 +93,18 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/rates"
-
-                        android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                        android:textColor="@color/white"/>
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/like"
                     android:layout_width="@dimen/_28sdp"
                     android:layout_height="@dimen/_28sdp"
+                    android:visibility="gone"
                     android:layout_gravity="center_vertical"
                     android:tint="@android:color/holo_red_dark"
                     android:src="@drawable/like_selected"/>
+
 
             </LinearLayout>
 
@@ -123,7 +130,6 @@
                     android:id="@+id/imgDownload"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:visibility="gone"
                     android:layout_gravity="center_vertical"
                     app:srcCompat="@drawable/download" />
 
@@ -147,9 +153,9 @@
                 android:textSize="14sp" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
@@ -181,7 +187,6 @@
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:text="@string/director"
-
                     android:textColor="@color/login_button_color"
                     android:textSize="@dimen/_13sdp" />
 
@@ -192,7 +197,7 @@
                     android:layout_marginLeft="50dp"
                     android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -200,16 +205,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:orientation="horizontal">
 
                 <com.example.oops.custom.OTTTextView
-                    android:id="@+id/seasonbtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/season"
-                    android:drawableRight="@drawable/arrow_drop_down"
+                    android:text="@string/episode"
                     android:textColor="@color/white"
-                    app:drawableTint="@color/white"
                     android:textSize="16sp" />
 
                 <View
@@ -223,47 +226,13 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recylerview"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="20dp"
-                tools:listitem="@layout/season_item" />
+                tools:listitem="@layout/category_item" />
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
-        android:id="@+id/seasonList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#f2000000"
-        android:clickable="true"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="@dimen/_30sdp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtHeading"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_30sdp"
-                android:fontFamily="@font/futura_n"
-                android:gravity="center"
-                android:text="@string/seasons"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_16sdp"
-                android:background="@drawable/header_background"/>
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/seasonRecycleView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/_10sdp"
-                tools:listitem="@layout/season_list"
-                android:layout_below="@id/txtHeading"/>
-        </RelativeLayout>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

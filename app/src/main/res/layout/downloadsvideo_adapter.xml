@@ -52,6 +52,13 @@ android:textColor="@color/white"
                 android:id="@+id/txtMovieType"
                 android:textColor="@color/white"
                 android:textSize="14sp"></com.example.oops.custom.OTTTextView>
+            <com.example.oops.custom.OTTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:id="@+id/txtMovieID"
+                android:textSize="0dp"></com.example.oops.custom.OTTTextView>
 
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"

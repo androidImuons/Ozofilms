@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import com.example.oops.EntityClass.ChangePinEntity;
 import com.example.oops.EntityClass.LoginEntity;
@@ -45,12 +46,22 @@ public class ChangePin extends AppCompatActivity {
     String seditTextConfirmPin;
     @BindView(R.id.btnSubmit)
     AppCompatButton btnSubmit;
+    @BindView(R.id.imgBackPressed)
+    AppCompatImageView imgBackPressed;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_pin);
         ButterKnife.bind(this);
     }
+
+
+
+    @OnClick(R.id.imgBackPressed)
+    public void setImgBackPressed() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.btnSubmit)
     public  void setBtnSubmit(){
         seditTextOldPin = editTextOldPin.getText().toString().trim();

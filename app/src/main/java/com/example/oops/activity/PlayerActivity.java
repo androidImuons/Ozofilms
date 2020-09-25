@@ -43,7 +43,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = "PlayerActivity";
     private PlayerView playerView;
     private VideoPlayer player;
-    private ImageButton mute, unMute, subtitle, setting, retry, back;
+    private ImageButton mute, unMute, subtitle, setting, retry,nextBtn, back;
     private ProgressBar progressBar;
     private AlertDialog alertDialog;
     private boolean mFirstTouch;
@@ -118,6 +118,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         back = findViewById(R.id.btn_back);
 
         mLightPeogressView = findViewById(R.id.lpv);
+        nextBtn = findViewById(R.id.btn_next);
         mVolumeProgressView = findViewById(R.id.vpv);
         mBrightness = PlayerUtils.scanForActivity(this).getWindow().getAttributes().screenBrightness;
         mAudioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
@@ -127,7 +128,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
         subtitle.setOnClickListener(this);
         setting.setOnClickListener(this);
-
+        nextBtn.setOnClickListener(this);
 
         retry.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -290,7 +291,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 showProgressBar(true);
                 showRetryBtn(false);
                 break;
+            case R.id.btn_next:
+                player.seekToNext();
 
+                break;
             default:
                 break;
         }
