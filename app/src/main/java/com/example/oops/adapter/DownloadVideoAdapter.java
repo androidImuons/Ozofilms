@@ -1,6 +1,10 @@
 package com.example.oops.adapter;
 
+
+import android.app.Activity;
 import android.content.Context;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -101,11 +106,11 @@ public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAda
     @Override
     public void onBindViewHolder(DownloadVideoAdapter.MyViewHolder holder, int position) {
         VideoDownloadTable t = taskList.get(position);
-        holder.txtMovieName.setText(t.getMovieName());
+     holder.txtMovieName.setText(t.getMovieName());
         holder.txtMovieType.setText(t.getMovieType());
         Glide.with(mCtx).load(t.getUrlImage()).into(holder.imgDownload);
         holder.txtDescription.setText(t.getMovieId());
-
+holder.txtTimeStamp.setText(t.getTimestamp());
 
     }
 
@@ -129,6 +134,8 @@ AppCompatTextView txtDescription;
         TextView tvDownloadVideoStatus;
 @BindView(R.id.img_overflow)
 AppCompatImageView img_overflow;
+@BindView(R.id.txtTimeStamp)
+AppCompatTextView txtTimeStamp;
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -137,9 +144,29 @@ AppCompatImageView img_overflow;
             img_overflow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    VideoDownloadTable task = taskList.get(getAdapterPosition());
-                    deleteTask(task);
+//                    VideoDownloadTable task = taskList.get(getAdapterPosition());
+//                    deleteTask(task);
+
+                    //Uncomment the below code to Set the message and title from the strings.xml file
+//                    builder.setMessage(R.string.dialog_message) .setTitle(R.string.dialog_title);
+
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx);
+                    alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
+                            alertDialogBuilder.setPositiveButton("yes",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface arg0, int arg1) {
+                                                             VideoDownloadTable task = taskList.get(getAdapterPosition());
+                deleteTask(task);
+                                            Toast.makeText(mCtx,"You clicked yes button",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
                 }
+
             });
 
         }
@@ -153,7 +180,7 @@ AppCompatImageView img_overflow;
             intent.putExtras(bundle);
             mCtx.startActivity(intent);
             android.util.Log.i("SUNIL2",""+task.getUrlVideo());
-            Log.i("SUNIL3",""+task.getUrlVideo());
+
         }
 
 
@@ -171,7 +198,9 @@ AppCompatImageView img_overflow;
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
 
-                Intent i = new Intent(mCtx, Dashboard.class);
+                getTasks();
+//                Intent i = new Intent(mCtx,DownloadVideo.class);
+//                mCtx.startActivity(i);
 
             }
         }
@@ -182,20 +211,6 @@ AppCompatImageView img_overflow;
     }
 
 
-    private class DeleteAsyncTask extends AsyncTask<VideoDownloadTable,Void,Void>{
-
-        private VideoDownloadDao noteDao;
-
-        DeleteAsyncTask(VideoDownloadDao noteDao){
-            this.noteDao = noteDao;
-        }
-
-        @Override
-        protected Void doInBackground(VideoDownloadTable... notes) {
-            noteDao.delete(notes[0]);
-            return null;
-        }
-    }
 
 
     private void getTasks() {
@@ -214,6 +229,10 @@ AppCompatImageView img_overflow;
             @Override
             protected void onPostExecute(List<VideoDownloadTable> tasks) {
                 super.onPostExecute(tasks);
+
+//                Intent i = new Intent(mCtx,DownloadVideo.class);
+//                mCtx.startActivity(i);
+//                mCtx.startActivity(mCtx,DownloadVideo.class);
 
             }
         }

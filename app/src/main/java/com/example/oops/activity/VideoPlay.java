@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -31,11 +29,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.DataClass.MovieDeatilsData;
-import com.example.oops.MainActivity;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CategoryResponse;
-import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
@@ -50,7 +46,6 @@ import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
-import com.example.oops.data.databasevideodownload.VideoDownloadDataBase;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
@@ -80,15 +75,15 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -97,7 +92,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.net.Uri.parse;
 import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
 import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
 import static com.google.android.exoplayer2.offline.Download.STATE_FAILED;
@@ -197,7 +191,8 @@ MovieDetailsTable movieDetailsTable;
     String subTitle,videoLink,audioLink,addOn,releaseDate,movieName,thumbnailImage,movieType,shortDescription,longDescription,directorName,trailerLink,bannerLink,categoryName,cast;
     Context context;
     int movieCategory;
-//    DownloadRequest myDownloadRequest;
+    String millisInString;
+    //    DownloadRequest myDownloadRequest;
     int movieid;
     String sMovie;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
@@ -267,7 +262,8 @@ MovieDetailsTable movieDetailsTable;
         imgDownload.setOnClickListener(VideoPlay.this);
 //        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
 //        videoDurationInSeconds = videoDurationInSeconds % 60 ;
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         millisInString  = dateFormat.format(new Date());
 
 
         runnableCode = new Runnable() {
@@ -984,7 +980,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
                 //creating a task
                 VideoDownloadTable task = new VideoDownloadTable();
-                task.setTimeStamp(2);
+                task.setTimestamp(millisInString);
                 task.setMovieId(shortDescription);
                 task.setMovieName(movieName);
                 task.setMovieType(categoryName);
@@ -1010,8 +1006,6 @@ Log.i("SUNIL!",videoUrl);
         SaveTask st = new SaveTask();
         st.execute();
     }
-
-
 
 
 

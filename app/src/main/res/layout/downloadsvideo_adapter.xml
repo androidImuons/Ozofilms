@@ -29,6 +29,14 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="15dp"
             android:orientation="vertical">
+            <com.example.oops.custom.OTTTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+
+                android:id="@+id/txtTimeStamp"
+                android:textColor="@color/white"
+                android:textSize="0sp"></com.example.oops.custom.OTTTextView>
 
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"

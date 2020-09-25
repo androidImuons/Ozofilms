@@ -75,6 +75,8 @@
         <activity
             android:name=".activity.Downloads"
             android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".activity.Support_Help"
             android:screenOrientation="portrait" />

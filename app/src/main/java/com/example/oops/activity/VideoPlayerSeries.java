@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.oops.DataClass.EpisodeData;
+import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.DataClass.SeasonData;
 import com.example.oops.DataClass.WebSearchResponse;
 import com.example.oops.R;
@@ -34,6 +36,10 @@ import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.adapter.RelatedAdapter;
 import com.example.oops.adapter.SeasonAdapter;
+import com.example.oops.data.database.AppDatabase;
+import com.example.oops.data.database.Subtitle;
+import com.example.oops.data.database.Video;
+import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -41,6 +47,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -75,18 +82,22 @@ public class VideoPlayerSeries extends Activity {
     TextView seasonbtn;
      @BindView(R.id.like)
      ImageView like;
+     @BindView(R.id.imgPlayVideo)
+             ImageView imgPlayVideo;
 
-
+    private List<Video> videoUriList = new ArrayList<>();
 
     /*@BindView(R.id.seasonSpinner)
     Spinner seasonSpinner;*/
-
+    private List<Subtitle> subtitleList = new ArrayList<>();
 
     ArrayList<SeasonData> data;
     ArrayAdapter<SeasonData> adapter;
     ArrayList<EpisodeData> episodeDataArrayList;
     EpisodeAdapter episodeAdapter;
     SeasonAdapter seasonAdapter;
+    private AppDatabase database;
+    String imageLink;
 
 String movieId;
     @Override
@@ -104,6 +115,7 @@ String movieId;
         }
 
         setLayout();
+        initializeDb();
         //getInit();
     }
 
@@ -122,10 +134,20 @@ String movieId;
         seasonRecycleView.setLayoutManager(mLayoutManager1);
         seasonRecycleView.setItemAnimator(new DefaultItemAnimator());
         seasonRecycleView.setAdapter(seasonAdapter);
-
+        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
 
     }
 
+    private void initializeDb() {
+        database = AppDatabase.Companion.getDatabase(getApplicationContext());
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.clearAllTables();
+        database = null;
+
+    }
     private void callGetEpisodeList(int position) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             Dialog dialog = ViewUtils.getProgressBar(VideoPlayerSeries.this);
@@ -147,6 +169,9 @@ String movieId;
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
+
+//                                List<Epis>
+
                             }
                                /* setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();*/
@@ -178,11 +203,36 @@ String movieId;
     }
 
     private void setDataEpisode(ArrayList<EpisodeData> data) {
+
         episodeDataArrayList = data;
         episodeAdapter.update(episodeDataArrayList);
+        makeListOfUri(data);
+    }
+
+
+    private void makeListOfUri(ArrayList<EpisodeData> data) {
+        for(int i=0;i<data.size();i++){
+
+             imageLink= data.get(i).getVideoLink();
+
+            Log.d("NSOODODODOD", "setDataEpisode: "+imageLink);
+        }
+        videoUriList.add(new Video(imageLink , Long.getLong("zero" , 1)));
+
+        /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
+
+        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
+        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
+*/
+        if (database.videoDao().getAllUrls().size() == 0) {
+            database.videoDao().insertAllVideoUrl(videoUriList);
+    database.videoDao().insertAllSubtitleUrl(subtitleList);
+        }
+
     }
 
     private void getInit() {
+
      /*   adapter =
                 new ArrayAdapter<SeasonData>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, data);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -265,6 +315,7 @@ String movieId;
         seasonAdapter.update(data);
         sdvImage.setImageURI(data.get(0).getThumbnailLink());
         txtSoryLine.setText(data.get(0).getSeasonDetails());
+
         seasonbtn.setText("Season "+data.get(0).getSeasonNo());
         callGetEpisodeList(0);        //   adapter.notifyDataSetChanged();
     }
@@ -346,4 +397,39 @@ String movieId;
             Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+    private VideoSource makeVideoSource(List<Video> videos, int index) {
+        setVideosWatchLength();
+        List<VideoSource.SingleVideo> singleVideos = new ArrayList<>();
+        for (int i = 0; i < videos.size(); i++) {
+
+            singleVideos.add(i, new VideoSource.SingleVideo(
+                    videos.get(i).getVideoUrl(),
+                    database.videoDao().getAllSubtitles(i + 1),
+                    videos.get(i).getWatchedLength())
+            );
+
+        }
+        return new VideoSource(singleVideos, index);
+    }
+
+    private List<Video> setVideosWatchLength() {
+        List<Video> videosInDb = database.videoDao().getVideos();
+        for (int i = 0; i < videosInDb.size(); i++) {
+            //videoUriList.get(i).setWatchedLength(videosInDb.get(i).getWatchedLength());
+            videoUriList.get(i).setWatchedLength(videosInDb.get(i).getWatchedLength());
+        }
+        return videoUriList;
+    }
+
+
+    //start player for result due to future features
+    public void goToPlayerActivity(VideoSource videoSource) {
+        int REQUEST_CODE = 1000;
+        Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+        intent.putExtra("videoSource", videoSource);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
 }
