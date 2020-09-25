@@ -529,7 +529,7 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
             txtVideoType.setText(data.getCategoryName());
         else
             txtVideoType.setText("N/A");
-
+        if(data.getBannerLink() != null && !data.getBannerLink().equals(""))
         sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
         makeListOfUri(data);
     }

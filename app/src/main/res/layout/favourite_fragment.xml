@@ -23,7 +23,7 @@
         android:textSize="@dimen/_12sdp"
         android:text="@string/series"
         android:textColor="@color/white"
-
+        android:visibility="gone"
         />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

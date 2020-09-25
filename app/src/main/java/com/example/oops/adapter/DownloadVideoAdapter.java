@@ -109,7 +109,7 @@ public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAda
      holder.txtMovieName.setText(t.getMovieName());
         holder.txtMovieType.setText(t.getMovieType());
         Glide.with(mCtx).load(t.getUrlImage()).into(holder.imgDownload);
-        holder.txtDescription.setText(t.getMovieId());
+        holder.txtDescription.setText(t.getMovieDescription());
 holder.txtTimeStamp.setText(t.getTimestamp());
 
     }

@@ -263,7 +263,7 @@ public class SearchHere extends Fragment {
         if(isMovies ==1) {
             startActivity(new Intent(getContext(), VideoPlay.class)
                     .putExtra("moviesId", searchDataArrayList.get(adapterPosition).getMovieId())
-                    .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieId()));
+                    .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
         }else {
             startActivity(new Intent(getContext(), VideoPlayerSeries.class)
                     .putExtra("seriesId", searchDataArrayList.get(adapterPosition).getMovieId())
