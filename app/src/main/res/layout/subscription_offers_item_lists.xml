@@ -17,21 +17,23 @@
         android:weightSum="2"
         android:orientation="horizontal">
 
-        <com.example.oops.custom.OTTTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            android:layout_weight=".5"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:text="@string/rs"/>
+<!--        <com.example.oops.custom.OTTTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_10sdp"-->
+<!--            android:layout_weight=".5"-->
+<!--            android:layout_marginRight="@dimen/_2sdp"-->
+<!--            android:text="@string/rs"/>-->
 
         <com.example.oops.custom.OTTTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            android:id="@+id/tVdiscountAmount"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+
+            android:id="@+id/tVplanName"
             android:layout_weight=".5"
             android:layout_marginRight="@dimen/_10sdp"
             android:text="900"/>
