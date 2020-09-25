@@ -35,6 +35,23 @@
     <string name="download_network">Download Network</string>
     <string name="using_wifi_only">Using Wi-Fi Only</string>
     <string name="using_mobile_data">Using Mobile Data</string>
+    <!--Subscription -->
+    <string name="introductory_order">Introductory order</string>
+    <string name="select_a_package">Select a pacakge</string>
+    <string name="offers">Amazing deals, Unlimited Entertainment</string>
+    <string name="coupans_code">If you have a coupan code,Click here</string>
+    <string name="unlimited_Hd_Stream">Unlimited access and full HD streaming</string>
+    <string name="download_offline">Download to watch offline</string>
+    <string name="regional_content">Exclusive Multi Regional Content</string>
+    <string name="rs">\u20B9</string>
+    <string name="strike_text">1. <strike>StrikeThrough</strike> Using strike</string>
+
+
+
+
+
+
+
     <!--More Option-->
     <string name="subscribe">Subscribe</string>
     <string name="rate_us">Rate Us</string>
@@ -45,6 +62,7 @@
     <string name="wi_fi_only">Wi-Fi Only</string>
     <!-- help & suppport -->
     <string name="support_help">Support / Help</string>
+    <string name="subscription">Subscription</string>
     <string name="full_name">Full Name:</string>
     <string name="mobile_no">Mobile No:</string>
     <string name="email">Email:</string>
