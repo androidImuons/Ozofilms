@@ -1,10 +1,14 @@
 package com.example.oops.adapter;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,9 +29,12 @@ import butterknife.ButterKnife;
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeHolder> {
     Activity activity;
     ArrayList<EpisodeData> episodeDataArrayList;
-    public EpisodeAdapter(Activity activity, ArrayList<EpisodeData> episodeDataArrayList) {
+    Context context;
+
+    public EpisodeAdapter(Activity activity, Context context,ArrayList<EpisodeData> episodeDataArrayList) {
         this.activity = activity;
         this.episodeDataArrayList = episodeDataArrayList;
+        this.context = context;
     }
 
     @NonNull
@@ -44,6 +51,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
         holder.epiName.setText(episodeDataArrayList.get(position).getEpisodeName());
         if(episodeDataArrayList.get(position).getThumbnailLink() != null && !episodeDataArrayList.get(position).getThumbnailLink().isEmpty() )
             holder.sdvImage.setController(AppCommon.getInstance(activity).getDraweeController(holder.sdvImage ,episodeDataArrayList.get(position).getThumbnailLink() , 300));
+
 
     }
 
@@ -67,6 +75,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
         @BindView(R.id.sdvImage)
         SimpleDraweeView sdvImage;
+        @BindView(R.id.relativeLayout)
+        RelativeLayout relativeLayout;
 
 
         public EpisodeHolder(@NonNull View itemView) {

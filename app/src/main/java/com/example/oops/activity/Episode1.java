@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.EpisodeData;
-import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.EpisodeResponse;
@@ -43,7 +42,6 @@ import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
@@ -99,7 +97,7 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class EpisodePlayActivity extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
+public class Episode1  extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
 
 
     ProgressDialog pDialog;
@@ -167,18 +165,18 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.txtSoryLine)
     AppCompatTextView txtSoryLine;
     @BindView(R.id.txtVideoType)
-            AppCompatTextView txtVideoType;
+    AppCompatTextView txtVideoType;
     String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
     private AppDatabase database;
     private List<Video> videoUriList = new ArrayList<>();
     private List<Subtitle> subtitleList = new ArrayList<>();
-ImageButton nextBtn;
+    ImageButton nextBtn;
     EpisodeAdapter episodeAdapter;
     String sessionID;
 
-ImageView imgDownload;
+    ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -215,7 +213,7 @@ ImageView imgDownload;
         videourl = i.getStringExtra("videourl");
         sessionID = i.getStringExtra("sessionID");
         txtVideoType.setText("Episode : " + episodeNo);
-    Abv = i.getStringExtra("Abv");
+        Abv = i.getStringExtra("Abv");
 
         json =i.getStringExtra("json");
 //        Log.i("Ahhhhn",""+removePosition);
@@ -259,7 +257,7 @@ ImageView imgDownload;
         setLayout();
         initializeDb();
         makeListOfUri();
-      callGetEpisodeList();
+        callGetEpisodeList();
     }
 
     private void setLayout() {
@@ -279,7 +277,7 @@ ImageView imgDownload;
     private void callGetEpisodeList() {
         episodeDataArrayList.clear();
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(EpisodePlayActivity.this);
+            Dialog dialog = ViewUtils.getProgressBar(Episode1.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
             Map<String, String> entityMap = new HashMap<>();
@@ -290,7 +288,7 @@ ImageView imgDownload;
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(EpisodePlayActivity.this).clearNonTouchableFlags(EpisodePlayActivity.this);
+                    AppCommon.getInstance(Episode1.this).clearNonTouchableFlags(Episode1.this);
                     dialog.dismiss();
                     EpisodeResponse authResponse = (EpisodeResponse) response.body();
                     if (authResponse != null) {
@@ -299,20 +297,19 @@ ImageView imgDownload;
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
 
-
 //                                List<Epis>
 
                             }
                                /* setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();*/
                             recylerview.addOnItemTouchListener(
-                                    new RecyclerItemClickListener(EpisodePlayActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+                                    new RecyclerItemClickListener(Episode1.this, new RecyclerItemClickListener.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(View view, int position) {
                                             // TODO Handle item click
                                             stringPosition = String.valueOf(position);
                                             episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                                            Intent i = new Intent(EpisodePlayActivity.this,Episode1.class);
+                                            Intent i = new Intent(Episode1.this,EpisodePlayActivity.class);
                                             i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
                                             i.putExtra("name",name);
                                             i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
@@ -323,31 +320,26 @@ ImageView imgDownload;
                                             i.putExtra("Abv",stringPosition);
 
 
-
-
-
                                             startActivity(i);
-
-
 
                                         }
                                     }));
 
                         } else {
 
-                            Toast.makeText(EpisodePlayActivity.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Episode1.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        AppCommon.getInstance(EpisodePlayActivity.this).showDialog(EpisodePlayActivity.this, "Server Error");
+                        AppCommon.getInstance(Episode1.this).showDialog(Episode1.this, "Server Error");
                     }
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
-                    AppCommon.getInstance(EpisodePlayActivity.this).clearNonTouchableFlags(EpisodePlayActivity.this);
+                    AppCommon.getInstance(Episode1.this).clearNonTouchableFlags(Episode1.this);
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(EpisodePlayActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Episode1.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -360,19 +352,11 @@ ImageView imgDownload;
 
     private void setDataEpisode(ArrayList<EpisodeData> data) {
         episodeDataArrayList.clear();
-     episodeDataArrayList = data;
-        ArrayList<String> cars = new ArrayList<String>();
-        for (int i1 = 0; i1 < episodeDataArrayList.size(); i1++) {
-
-            cars.add(episodeDataArrayList.get(i1).getVideoLink());
-
-            Log.i("ABCB",""+cars.add(episodeDataArrayList.get(i1).getVideoLink()));
-        }
+        episodeDataArrayList = data;
         removePosition = Integer.parseInt(Abv);
         episodeDataArrayList.remove(removePosition);
-       episodeAdapter.notifyDataSetChanged();
-       episodeAdapter.update(episodeDataArrayList);
-
+        episodeAdapter.notifyDataSetChanged();
+        episodeAdapter.update(episodeDataArrayList);
 
 
 
@@ -532,7 +516,7 @@ ImageView imgDownload;
         trackKeys.clear();
 
         if (pDialog == null || !pDialog.isShowing()) {
-            pDialog = new ProgressDialog(EpisodePlayActivity.this);
+            pDialog = new ProgressDialog(Episode1.this);
             pDialog.setTitle(null);
             pDialog.setCancelable(false);
             pDialog.setMessage("Preparing Download Options...");
@@ -540,7 +524,7 @@ ImageView imgDownload;
         }
 
 
-        DownloadHelper downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
+        DownloadHelper downloadHelper = DownloadHelper.forHls(Episode1.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(Episode1.this));
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -585,7 +569,7 @@ ImageView imgDownload;
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Episode1.this);
         builder.setTitle("Select Download Format");
         int checkedItem = 1;
 
@@ -601,7 +585,7 @@ ImageView imgDownload;
 
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
-                EpisodePlayActivity.this, // Context
+                Episode1.this, // Context
                 android.R.layout.simple_list_item_single_choice, // Layout
                 optionsToDownload // List
         );

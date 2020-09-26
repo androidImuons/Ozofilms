@@ -1,6 +1,5 @@
 package com.example.oops.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -21,25 +20,19 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.oops.DataClass.EpisodeData;
-import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.DataClass.SeasonData;
-import com.example.oops.DataClass.WebSearchResponse;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.EpisodeResponse;
-import com.example.oops.ResponseClass.MovieDeatilsResponse;
-import com.example.oops.ResponseClass.MoviesSearchResponse;
 import com.example.oops.ResponseClass.SeasonResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
@@ -49,10 +42,8 @@ import com.example.oops.Utils.RecyclerItemClickListener;
 import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
-import com.example.oops.adapter.RelatedAdapter;
 import com.example.oops.adapter.SeasonAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
@@ -61,7 +52,6 @@ import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.login.widget.LoginButton;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -149,7 +139,7 @@ public class VideoPlayerSeries extends Activity implements View.OnClickListener,
     EpisodeAdapter episodeAdapter;
     SeasonAdapter seasonAdapter;
     private AppDatabase database;
-    String videoUrl,episodeNo,episodeThumnailImage,episodeId;
+    String videoUrl,episodeNo,episodeThumnailImage,episodeId,stringPosition;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     ImageView imgDownload;
@@ -191,11 +181,13 @@ public class VideoPlayerSeries extends Activity implements View.OnClickListener,
     private DownloadTracker downloadTracker;
     private DownloadManager downloadManager;
     private DownloadHelper myDownloadHelper;
-    String movieId;
+    String movieId,json,movieId1;
     String millisInString,name,storyDescription;
     private Handler handler;
-
+    ArrayList<ArrayList<EpisodeData>> list;
     String thumbnailImage,categoryName;
+    String see;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,10 +203,12 @@ public class VideoPlayerSeries extends Activity implements View.OnClickListener,
              movieId = getIntent().getStringExtra("seriesId");
              name = getIntent().getStringExtra("name");
             txtVideoHeading.setText(name);
+            movieId1 = String.valueOf(movieId);
             callGetSessionApi(movieId);
         }
         setLayout();
         initializeDb();
+
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -264,7 +258,7 @@ public void setImgBackPressed(){
     private void setLayout() {
 
         episodeDataArrayList = new ArrayList<>();
-        episodeAdapter = new EpisodeAdapter(this, episodeDataArrayList);
+        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
@@ -311,7 +305,7 @@ public void setImgBackPressed(){
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
-
+                                 see = data.get(position).getSeasonId();
 //                                List<Epis>
 
                             }
@@ -348,35 +342,33 @@ public void setImgBackPressed(){
 
         episodeDataArrayList = data;
         episodeAdapter.update(episodeDataArrayList);
+
         makeListOfUri(data);
     }
 
 
     private void makeListOfUri(ArrayList<EpisodeData> data) {
-        for(int i=0;i<data.size();i++){
 
-             videoUrl= data.get(i).getVideoLink();
-            episodeNo = String.valueOf(data.get(i).getEpisodeNo());
-            episodeThumnailImage = data.get(i).getThumbnailLink();
-
-
-episodeId = data.get(i).getEpisodeId();
-            
-        }
 
         recylerview.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
+                        stringPosition = String.valueOf(position);
+                      episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
                       Intent i = new Intent(getApplicationContext(),EpisodePlayActivity.class);
-                      i.putExtra("videourl",videoUrl);
+                      i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
                       i.putExtra("name",name);
-                      i.putExtra("episodeThumnailImage",episodeThumnailImage);
+                      i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+                        i.putExtra("episodeNo",episodeNo);
+                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
                       i.putExtra("storyDescription",storyDescription);
-                      i.putExtra("episodeNo",episodeNo);
-i.putExtra("episodeId",episodeId);
-startActivity(i);
+                      i.putExtra("sessionID",see);
+                      i.putExtra("Abv",stringPosition);
+
+
+                             startActivity(i);
 
                     }
                 }));

@@ -6,6 +6,7 @@
     android:paddingRight="@dimen/_10sdp"
     android:paddingLeft="@dimen/_10sdp"
     android:paddingTop="@dimen/_5sdp"
+    android:id="@+id/relativeLayout"
     android:gravity="center_vertical">
 
     <LinearLayout
