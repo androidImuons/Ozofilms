@@ -73,6 +73,11 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -80,6 +85,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -123,6 +129,8 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     List<TrackKey> trackKeys = new ArrayList<>();
     List<String> optionsToDownload = new ArrayList<String>();
+
+    List<EpisodeData> dataList=new ArrayList<>();
 
     DefaultTrackSelector.Parameters qualityParams;
 
@@ -177,6 +185,10 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 ImageButton nextBtn;
     EpisodeAdapter episodeAdapter;
     String sessionID;
+    String JSON;
+    String  stringVideo;
+
+    List<EpisodeData> episodeDataList;
 
 ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
@@ -214,6 +226,15 @@ ImageView imgDownload;
         episodeId = i.getStringExtra("episodeId");
         videourl = i.getStringExtra("videourl");
         sessionID = i.getStringExtra("sessionID");
+        JSON = i.getStringExtra("Json");
+
+
+
+       dataList = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
+
+
+
+
         txtVideoType.setText("Episode : " + episodeNo);
     Abv = i.getStringExtra("Abv");
 
@@ -323,10 +344,8 @@ ImageView imgDownload;
                                             i.putExtra("Abv",stringPosition);
 
 
-
-
-
                                             startActivity(i);
+
 
 
 
@@ -378,14 +397,15 @@ ImageView imgDownload;
 
 
     }
+
+
     private void makeListOfUri() {
-        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
+        for(int l=0;l<dataList.size();l++){
+            stringVideo=dataList.get(l).getVideoLink();
+            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
 
-        /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
+        }
 
-        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
-        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
-*/
         if (database.videoDao().getAllUrls().size() == 0) {
             database.videoDao().insertAllVideoUrl(videoUriList);
             database.videoDao().insertAllSubtitleUrl(subtitleList);

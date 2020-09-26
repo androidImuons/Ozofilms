@@ -88,7 +88,7 @@ public class MyTrackSelectionView extends LinearLayout {
             int rendererIndex,
             long currentBitrate) {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity,R.style.MyDialogTheme1);
         MyTrackSelectionView.currentBitrate = currentBitrate;
 
         // Inflate with the builder's context to ensure the correct style is used.
@@ -136,7 +136,7 @@ View dialogView = dialogInflater.inflate(com.google.android.exoplayer2.ui.R.layo
         // View for disabling the renderer.
         disableView =
                 (CheckedTextView)
-                        inflater.inflate(android.R.layout.simple_list_item_single_choice, this, false);
+                        inflater.inflate(R.layout.mytextview, this, false);
         disableView.setBackgroundResource(selectableItemBackgroundResourceId);
         disableView.setText(R.string.exo_track_selection_none);
         disableView.setEnabled(false);
@@ -149,7 +149,7 @@ View dialogView = dialogInflater.inflate(com.google.android.exoplayer2.ui.R.layo
         // View for clearing the override to allow the selector to use its default selection logic.
         defaultView =
                 (CheckedTextView)
-                        inflater.inflate(android.R.layout.simple_list_item_single_choice, this, false);
+                        inflater.inflate(R.layout.mytextview, this, false);
         defaultView.setBackgroundResource(selectableItemBackgroundResourceId);
         defaultView.setText(R.string.exo_track_selection_auto);
         defaultView.setEnabled(false);
@@ -248,8 +248,8 @@ View dialogView = dialogInflater.inflate(com.google.android.exoplayer2.ui.R.layo
                 }
                 int trackViewLayoutId =
                         enableAdaptiveSelections
-                                ? android.R.layout.simple_list_item_single_choice
-                                : android.R.layout.simple_list_item_single_choice;
+                                ? R.layout.mytextview
+                                : R.layout.mytextview;
                 CheckedTextView trackView =
                         (CheckedTextView) inflater.inflate(trackViewLayoutId, this, false);
                 trackView.setBackgroundResource(selectableItemBackgroundResourceId);

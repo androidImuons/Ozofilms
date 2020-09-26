@@ -292,6 +292,8 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 showRetryBtn(false);
                 break;
             case R.id.btn_next:
+
+                Toast.makeText(getApplicationContext(),"Next",Toast.LENGTH_LONG).show();
                 player.seekToNext();
 
                 break;

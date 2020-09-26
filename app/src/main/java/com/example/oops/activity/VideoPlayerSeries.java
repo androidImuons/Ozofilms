@@ -129,6 +129,7 @@ public class VideoPlayerSeries extends Activity implements View.OnClickListener,
 
     private List<Video> videoUriList = new ArrayList<>();
 
+
     /*@BindView(R.id.seasonSpinner)
     Spinner seasonSpinner;*/
     private List<Subtitle> subtitleList = new ArrayList<>();
@@ -343,6 +344,11 @@ public void setImgBackPressed(){
         episodeDataArrayList = data;
         episodeAdapter.update(episodeDataArrayList);
 
+       json = new Gson().toJson(episodeDataArrayList);
+
+
+        Log.d("SDOOSDVVD", "setDataEpisode: "+episodeDataArrayList);
+
         makeListOfUri(data);
     }
 
@@ -366,9 +372,11 @@ public void setImgBackPressed(){
                       i.putExtra("storyDescription",storyDescription);
                       i.putExtra("sessionID",see);
                       i.putExtra("Abv",stringPosition);
+                        i.putExtra("Json",json);
 
 
-                             startActivity(i);
+
+                        startActivity(i);
 
                     }
                 }));

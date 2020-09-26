@@ -11,6 +11,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,10 +113,12 @@ public class MoreScreenFragment extends Fragment {
     private void logoutUser() {
 
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder adb = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme1);
         adb.setTitle(getResources().getString(R.string.app_name));
         adb.setIcon(R.mipmap.ic_launcher_round);
-        adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+        adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>Logout </font>"));
+        adb.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure you want to logout? </font>"));
+       // adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
         adb.setPositiveButton(getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -150,9 +151,14 @@ AppCompatTextView txtTimeStamp;
                     //Uncomment the below code to Set the message and title from the strings.xml file
 //                    builder.setMessage(R.string.dialog_message) .setTitle(R.string.dialog_title);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx);
-                    alertDialogBuilder.setMessage("Are you sure, You wanted to make decision");
-                            alertDialogBuilder.setPositiveButton("yes",
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx,R.style.MyDialogTheme1);
+                    alertDialogBuilder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Remove movie </font>"));
+                    alertDialogBuilder.setIcon(R.drawable.ic_delete);
+
+//                    alertDialogBuilder.setMessage("Are you sure, You want to remove this movie ?");
+                    alertDialogBuilder.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure, You want to remove this movie ?</font>"));
+
+                    alertDialogBuilder.setPositiveButton("yes",
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface arg0, int arg1) {
