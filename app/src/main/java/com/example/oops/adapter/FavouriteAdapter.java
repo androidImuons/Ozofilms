@@ -6,14 +6,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.oops.DataClass.CommonFavModule;
 import com.example.oops.DataClass.FavouriteData;
 import com.example.oops.DataClass.MovieData;
 import com.example.oops.R;
 import com.example.oops.custom.OTTTextView;
+import com.example.oops.fragment.FavouriteFragment;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +28,14 @@ import butterknife.ButterKnife;
 
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.FavouriteHolder> {
 
-    List<MovieData> movieData;
-    private Context context;
 
-    public FavouriteAdapter(List<MovieData> movieData, Context context) {
-        this.movieData = movieData;
-        this.context = context;
+
+    Fragment fragment;
+    ArrayList<CommonFavModule> commonFavModule;
+
+    public FavouriteAdapter(Fragment fragment, ArrayList<CommonFavModule> commonFavModule) {
+        this.fragment = fragment;
+        this.commonFavModule = commonFavModule;
     }
 
     @NonNull
@@ -42,8 +49,9 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
     @Override
     public void onBindViewHolder(@NonNull FavouriteHolder holder, int position) {
 
-        holder.movieName.setText(movieData.get(position).getMovieName());
-
+        holder.movieName.setText(commonFavModule.get(position).getName());
+        holder.movieDescription.setText(commonFavModule.get(position).getShortDiscrp());
+        holder.movieImage.setImageURI(commonFavModule.get(position).getImagUrl());
 
 
 
@@ -52,21 +60,25 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
     @Override
     public int getItemCount() {
 
-        Log.d("FAB_SIZE", "getItemCount: "+movieData.size());
-        return movieData.size();
+        return commonFavModule.size();
+    }
+
+    public void update(ArrayList<CommonFavModule> commonFavModule) {
+        this.commonFavModule = commonFavModule;
+        notifyDataSetChanged();
     }
 
     public class FavouriteHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.movieImage)
-        ImageView movieImage;
+        SimpleDraweeView movieImage;
 
         @BindView(R.id.movieName)
-        OTTTextView movieName;
+        TextView movieName;
 
 
         @BindView(R.id.movieDescription)
-        OTTTextView movieDescription;
+        TextView movieDescription;
 
         public FavouriteHolder(@NonNull View itemView)
         {

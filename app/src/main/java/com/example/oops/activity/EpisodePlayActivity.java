@@ -2,6 +2,7 @@ package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,15 +24,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.oops.DataClass.EpisodeData;
 import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.EpisodeResponse;
+import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.DemoDownloadService;
 import com.example.oops.Utils.DownloadTracker;
+import com.example.oops.Utils.RecyclerItemClickListener;
 import com.example.oops.Utils.TrackKey;
+import com.example.oops.Utils.ViewUtils;
+import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
@@ -39,6 +49,8 @@ import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
+import com.example.oops.retrofit.AppService;
+import com.example.oops.retrofit.ServiceGenerator;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -60,6 +72,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -68,10 +81,15 @@ import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
 import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
@@ -108,10 +126,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     DefaultTrackSelector.Parameters qualityParams;
 
-
+    @BindView(R.id.recylerview)
+    RecyclerView recylerview;
 
     private DataSource.Factory dataSourceFactory;
-
+    ArrayList<EpisodeData> episodeDataArrayList;
 
     private DefaultTrackSelector trackSelector;
 
@@ -133,10 +152,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
 
 
-    private String videoUrl= "https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8";
+    private String videoUrl,Abv,stringPosition,see;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
+    int removePosition;
 
 
 
@@ -146,13 +166,18 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     AppCompatTextView txtVideoHeading;
     @BindView(R.id.txtSoryLine)
     AppCompatTextView txtSoryLine;
-    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId;
+    @BindView(R.id.txtVideoType)
+            AppCompatTextView txtVideoType;
+    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
     private AppDatabase database;
     private List<Video> videoUriList = new ArrayList<>();
     private List<Subtitle> subtitleList = new ArrayList<>();
 ImageButton nextBtn;
+    EpisodeAdapter episodeAdapter;
+    String sessionID;
+
 ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
@@ -188,6 +213,18 @@ ImageView imgDownload;
         name = i.getStringExtra("name");
         episodeId = i.getStringExtra("episodeId");
         videourl = i.getStringExtra("videourl");
+        sessionID = i.getStringExtra("sessionID");
+        txtVideoType.setText("Episode : " + episodeNo);
+    Abv = i.getStringExtra("Abv");
+
+        json =i.getStringExtra("json");
+//        Log.i("Ahhhhn",""+removePosition);
+        episodeDataArrayList = new ArrayList<>();
+        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recylerview.setLayoutManager(mLayoutManager);
+        recylerview.setItemAnimator(new DefaultItemAnimator());
+        recylerview.setAdapter(episodeAdapter);
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -222,6 +259,7 @@ ImageView imgDownload;
         setLayout();
         initializeDb();
         makeListOfUri();
+      callGetEpisodeList();
     }
 
     private void setLayout() {
@@ -238,7 +276,108 @@ ImageView imgDownload;
         database = null;
 
     }
+    private void callGetEpisodeList() {
+        episodeDataArrayList.clear();
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            Dialog dialog = ViewUtils.getProgressBar(EpisodePlayActivity.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("seasonId", sessionID);
+            Call call = apiService.getEdpisodes(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(EpisodePlayActivity.this).clearNonTouchableFlags(EpisodePlayActivity.this);
+                    dialog.dismiss();
+                    EpisodeResponse authResponse = (EpisodeResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Test", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            if (authResponse.getData() != null) {
+                                setDataEpisode(authResponse.getData());
 
+
+//                                List<Epis>
+
+                            }
+                               /* setData(authResponse.getData());
+                            videoUrl= authResponse.getData().getVideoLink();*/
+                            recylerview.addOnItemTouchListener(
+                                    new RecyclerItemClickListener(EpisodePlayActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, int position) {
+                                            // TODO Handle item click
+                                            stringPosition = String.valueOf(position);
+                                            episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                                            Intent i = new Intent(EpisodePlayActivity.this,Episode1.class);
+                                            i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+                                            i.putExtra("name",name);
+                                            i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+                                            i.putExtra("episodeNo",episodeNo);
+                                            i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+                                            i.putExtra("storyDescription",storyDescription);
+                                            i.putExtra("sessionID",sessionID);
+                                            i.putExtra("Abv",stringPosition);
+
+
+
+
+
+                                            startActivity(i);
+
+
+
+                                        }
+                                    }));
+
+                        } else {
+
+                            Toast.makeText(EpisodePlayActivity.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(EpisodePlayActivity.this).showDialog(EpisodePlayActivity.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(EpisodePlayActivity.this).clearNonTouchableFlags(EpisodePlayActivity.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(EpisodePlayActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setDataEpisode(ArrayList<EpisodeData> data) {
+        episodeDataArrayList.clear();
+     episodeDataArrayList = data;
+        ArrayList<String> cars = new ArrayList<String>();
+        for (int i1 = 0; i1 < episodeDataArrayList.size(); i1++) {
+
+            cars.add(episodeDataArrayList.get(i1).getVideoLink());
+
+            Log.i("ABCB",""+cars.add(episodeDataArrayList.get(i1).getVideoLink()));
+        }
+        removePosition = Integer.parseInt(Abv);
+        episodeDataArrayList.remove(removePosition);
+       episodeAdapter.notifyDataSetChanged();
+       episodeAdapter.update(episodeDataArrayList);
+
+
+
+
+
+    }
     private void makeListOfUri() {
         videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
 

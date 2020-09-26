@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background"
     android:orientation="vertical">
 
@@ -19,155 +20,18 @@
             android:orientation="vertical">
 
 
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="@string/introductory_order"
-                android:textColor="@color/white"
-
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/header_background"
-                android:orientation="horizontal">
-
-                <com.example.oops.custom.OTTTextView
-                    android:id="@+id/txtCouponCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="@string/offers"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-
-            <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:padding="@dimen/_5sdp"
-
-                >
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_column="1"
-                        android:text="•"
-                        android:textColor="@color/white"></TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:text="@string/unlimited_Hd_Stream"
-                        android:textColor="@color/white">
-
-                    </TextView>
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_column="1"
-                        android:text="•"
-                        android:textColor="@color/white"></TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:text="@string/download_offline"
-                        android:textColor="@color/white"></TextView>
-                </TableRow>
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_column="1"
-                        android:text="•"
-                        android:textColor="@color/white"></TextView>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_column="2"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:text="@string/regional_content"
-                        android:textColor="@color/white"></TextView>
-                </TableRow>
-
-            </TableLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/header_background"
-                android:orientation="horizontal">
-
-                <com.example.oops.custom.OTTTextView
-                    android:id="@+id/txtVideoType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="@string/coupans_code"
-                    android:textColor="@color/white" />
-
-            </LinearLayout>
-
-
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:layout_marginTop="15dp"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:text="@string/select_a_package"
-                android:textColor="@color/white"
-
-                />
-
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/Subscrib_plans_RV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margin_from_left"
                 android:layout_marginTop="20dp"
+                tools:listitem="@layout/subscription_offers_item_lists"
                 android:layout_marginRight="@dimen/margin_from_right">
 
             </androidx.recyclerview.widget.RecyclerView>
 
 
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/margin_from_left"
-                android:drawablePadding="10dp"
-                android:gravity="center_vertical"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
-                android:text="All the above packages are for one time purchase only.\n We dont renew your subscribtion automatically"
-                android:textColor="@color/white"
-
-                />
 
 
         </LinearLayout>

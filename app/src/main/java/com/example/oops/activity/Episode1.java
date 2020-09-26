@@ -1,22 +1,21 @@
 package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -29,23 +28,20 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.oops.DataClass.CategoryListData;
-import com.example.oops.DataClass.MovieDeatilsData;
+import com.bumptech.glide.Glide;
+import com.example.oops.DataClass.EpisodeData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
-import com.example.oops.ResponseClass.CategoryResponse;
-import com.example.oops.ResponseClass.CommonResponse;
-import com.example.oops.ResponseClass.MovieDeatilsResponse;
+import com.example.oops.ResponseClass.EpisodeResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.DemoDownloadService;
 import com.example.oops.Utils.DownloadTracker;
+import com.example.oops.Utils.RecyclerItemClickListener;
 import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
-import com.example.oops.adapter.RelatedAdapter;
+import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDetailsTable;
-import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
@@ -53,7 +49,6 @@ import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -90,7 +85,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -103,46 +97,11 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class VideoPlay extends Activity implements View.OnClickListener, DownloadTracker.Listener {
-    @BindView(R.id.txtVideoHeading)
-    AppCompatTextView txtVideoHeading;
-    String stxtVideoHeading;
+public class Episode1  extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
 
-    @BindView(R.id.txtContentType)
-    AppCompatTextView txtContentType;
-    @BindView(R.id.txtRate)
-    AppCompatTextView txtRate;
-    @BindView(R.id.txtVideoType)
-    AppCompatTextView txtVideoType;
-    @BindView(R.id.txtSoryLine)
-    AppCompatTextView txtSoryLine;
-    @BindView(R.id.txtCastName)
-    AppCompatTextView txtCastName;
-    @BindView(R.id.txtDirectorName)
-    AppCompatTextView txtDirectorName;
-    @BindView(R.id.recylerview)
-    RecyclerView recylerview;
-    @BindView(R.id.sdvImage)
-    SimpleDraweeView sdvImage;
-    @BindView(R.id.txtHeading)
-    AppCompatTextView txtHeading;
-    @BindView(R.id.imgPlayVideo)
-    AppCompatImageView imgPlayVideo;
 
-    @BindView(R.id.like)
-    ImageView like;
-
-    private AppDatabase database;
-    private List<Subtitle> subtitleList = new ArrayList<>();
-    ArrayList<CategoryListData> categoryList;
-    RelatedAdapter relatedAdapter;
-    LinearLayout linearLayout;
-    ImageView imgDownload;
-    private List<Video> videoUriList = new ArrayList<>();
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
-
-    String movieId;
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -150,11 +109,12 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
     ImageView img;
-
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
+
+
 
 
     LinearLayout llParentContainer;
@@ -164,9 +124,11 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
     DefaultTrackSelector.Parameters qualityParams;
 
+    @BindView(R.id.recylerview)
+    RecyclerView recylerview;
 
     private DataSource.Factory dataSourceFactory;
-
+    ArrayList<EpisodeData> episodeDataArrayList;
 
     private DefaultTrackSelector trackSelector;
 
@@ -180,29 +142,41 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
 
     Button btnAbc;
+    String millisInString;
 
     private DownloadTracker downloadTracker;
     private DownloadManager downloadManager;
     private DownloadHelper myDownloadHelper;
 
 
-    private String videoUrl;
+
+    private String videoUrl,Abv,stringPosition,see;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
-    MovieDetailsTable movieDetailsTable;
-    MovieDownloadDatabase mdb;
-    String subTitle, videoLink, audioLink, addOn, releaseDate, movieName, thumbnailImage, movieType, shortDescription, longDescription, directorName, trailerLink, bannerLink, categoryName, cast;
-    Context context;
-    int movieCategory;
-    String millisInString;
-    //    DownloadRequest myDownloadRequest;
-    int movieid;
-    String sMovie;
+    int removePosition;
 
-    @BindView(R.id.imgBackPressed)
-    ImageView imgBackPressed;
 
+
+    @BindView(R.id.sdvImage)
+    com.facebook.drawee.view.SimpleDraweeView sdvImage;
+    @BindView(R.id.txtVideoHeading)
+    AppCompatTextView txtVideoHeading;
+    @BindView(R.id.txtSoryLine)
+    AppCompatTextView txtSoryLine;
+    @BindView(R.id.txtVideoType)
+    AppCompatTextView txtVideoType;
+    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
+    @BindView(R.id.imgPlayVideo)
+    AppCompatImageView imgPlayVideo;
+    private AppDatabase database;
+    private List<Video> videoUriList = new ArrayList<>();
+    private List<Subtitle> subtitleList = new ArrayList<>();
+    ImageButton nextBtn;
+    EpisodeAdapter episodeAdapter;
+    String sessionID;
+
+    ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -220,27 +194,35 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+
         dataSourceFactory = buildDataSourceFactory();
         if (CookieHandler.getDefault() != DEFAULT_COOKIE_MANAGER) {
             CookieHandler.setDefault(DEFAULT_COOKIE_MANAGER);
         }
-        setContentView(R.layout.video_player);
+        setContentView(R.layout.episodeplayactivity);
         ButterKnife.bind(this);
-        setLayout();
-        initializeDb();
+        Intent i = this.getIntent();
+        episodeThumnailImage = i.getStringExtra("episodeThumnailImage");
+        episodeNo = i.getStringExtra("episodeNo");
+        storyDescription = i.getStringExtra("storyDescription");
+        name = i.getStringExtra("name");
+        episodeId = i.getStringExtra("episodeId");
+        videourl = i.getStringExtra("videourl");
+        sessionID = i.getStringExtra("sessionID");
+        txtVideoType.setText("Episode : " + episodeNo);
+        Abv = i.getStringExtra("Abv");
 
-        if (getIntent() != null) {
-            movieId = getIntent().getStringExtra("moviesId");
-            String name = getIntent().getStringExtra("name");
-
-
-            txtVideoHeading.setText(name);
-            txtHeading.setVisibility(View.GONE);
-
-            callGetMoviesDetails(movieId);
-        }
-//        movieid = Integer.parseInt(movieId);
-        linearLayout = (LinearLayout) findViewById(R.id.linearLayout);
+        json =i.getStringExtra("json");
+//        Log.i("Ahhhhn",""+removePosition);
+        episodeDataArrayList = new ArrayList<>();
+        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recylerview.setLayoutManager(mLayoutManager);
+        recylerview.setItemAnimator(new DefaultItemAnimator());
+        recylerview.setAdapter(episodeAdapter);
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -254,7 +236,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         Ooops application = (Ooops) getApplication();
         downloadTracker = application.getDownloadTracker();
         downloadManager = application.getDownloadManager();
-        mdb = MovieDownloadDatabase.getInstance(getApplicationContext());
+
 
         try {
             DownloadService.start(this, DemoDownloadService.class);
@@ -262,32 +244,29 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             DownloadService.startForeground(this, DemoDownloadService.class);
         }
         handler = new Handler();
-
-
-        imgDownload = (ImageView) findViewById(R.id.imgDownload);
-//        prepareView();
-        imgDownload.setOnClickListener(VideoPlay.this);
-//        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
-//        videoDurationInSeconds = videoDurationInSeconds % 60 ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        millisInString = dateFormat.format(new Date());
+        millisInString  = dateFormat.format(new Date());
+        imgDownload = findViewById(R.id.imgDownload);
 
-
-        runnableCode = new Runnable() {
-            @Override
-            public void run() {
-//               observerVideoStatus();
-                handler.postDelayed(this, 1000);
-            }
-        };
-
-        handler.post(runnableCode);
-        imgBackPressed.setVisibility(View.VISIBLE);
-
-
+        imgDownload.setOnClickListener(this);
+        Glide.with(this)
+                .load(episodeThumnailImage)
+                .into(sdvImage);
+        txtVideoHeading.setText(name);
+        txtSoryLine.setText(storyDescription);
+        setLayout();
+        initializeDb();
+        makeListOfUri();
+        callGetEpisodeList();
     }
 
+    private void setLayout() {
+        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
+    }
 
+    private void initializeDb() {
+        database = AppDatabase.Companion.getDatabase(getApplicationContext());
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -295,78 +274,72 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         database = null;
 
     }
-
-    private void setLayout() {
-
-        categoryList = new ArrayList<>();
-        relatedAdapter = new RelatedAdapter(VideoPlay.this, categoryList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recylerview.setLayoutManager(mLayoutManager);
-        recylerview.setItemAnimator(new DefaultItemAnimator());
-        recylerview.setAdapter(relatedAdapter);
-
-
-        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
-    }
-
-    private void initializeDb() {
-        database = AppDatabase.Companion.getDatabase(getApplicationContext());
-    }
-
-    @OnClick(R.id.imgBackPressed)
-    public void setImgBackPressed() {
-        onBackPressed();
-    }
-
-
-
-    private void addAndRemoveLike(boolean selected) {
+    private void callGetEpisodeList() {
+        episodeDataArrayList.clear();
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
+            Dialog dialog = ViewUtils.getProgressBar(Episode1.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
             Map<String, String> entityMap = new HashMap<>();
             entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
             entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("type", String.valueOf("Movie"));
-            entityMap.put("serMovId", String.valueOf(movieId));
-
-            Call call = apiService.addAndRemoveFavurite(entityMap);
+            entityMap.put("seasonId", sessionID);
+            Call call = apiService.getEdpisodes(entityMap);
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    AppCommon.getInstance(Episode1.this).clearNonTouchableFlags(Episode1.this);
                     dialog.dismiss();
-                    CommonResponse authResponse = (CommonResponse) response.body();
+                    EpisodeResponse authResponse = (EpisodeResponse) response.body();
                     if (authResponse != null) {
                         Log.i("Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
-                                if (authResponse.getMessage().equals("Added To Favourite Successfully")) {
-                                    like.setSelected(true);
-                                } else {
-                                    like.setSelected(false);
-                                }
+                                setDataEpisode(authResponse.getData());
+
+//                                List<Epis>
+
                             }
                                /* setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();*/
+                            recylerview.addOnItemTouchListener(
+                                    new RecyclerItemClickListener(Episode1.this, new RecyclerItemClickListener.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View view, int position) {
+                                            // TODO Handle item click
+                                            stringPosition = String.valueOf(position);
+                                            episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                                            Intent i = new Intent(Episode1.this,EpisodePlayActivity.class);
+                                            i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+                                            i.putExtra("name",name);
+                                            i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+                                            i.putExtra("episodeNo",episodeNo);
+                                            i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+                                            i.putExtra("storyDescription",storyDescription);
+                                            i.putExtra("sessionID",sessionID);
+                                            i.putExtra("Abv",stringPosition);
 
+
+                                            startActivity(i);
+
+                                        }
+                                    }));
 
                         } else {
 
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Episode1.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
+                        AppCommon.getInstance(Episode1.this).showDialog(Episode1.this, "Server Error");
                     }
                 }
 
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    AppCommon.getInstance(Episode1.this).clearNonTouchableFlags(Episode1.this);
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Episode1.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -377,163 +350,20 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         }
     }
 
-
-    private void callGetMoviesDetails(String movieId) {
-
-        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
-            AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
-            Map<String, String> entityMap = new HashMap<>();
-            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId", String.valueOf(movieId));
-            Call call = apiService.MOVIE_DEATILS_RESPONSE_CALL(entityMap);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    dialog.dismiss();
-                    MovieDeatilsResponse authResponse = (MovieDeatilsResponse) response.body();
-                    if (authResponse != null) {
-                        Log.i("Test", new Gson().toJson(authResponse));
-                        if (authResponse.getCode() == 200) {
-                            if (authResponse.getData() != null)
-                                setData(authResponse.getData());
-                            videoUrl = authResponse.getData().getVideoLink();
-                            movieName = authResponse.getData().getMovieName();
-                            thumbnailImage = authResponse.getData().getImageLink();
-                            sMovie = authResponse.getData().getMovieId();
-//                            movieid = Integer.parseInt(sMovie);
-                            movieType = authResponse.getData().getMovieType();
-                            shortDescription = authResponse.getData().getMovieShortDescription();
-                            longDescription = authResponse.getData().getMovieLongDescription();
-                            directorName = authResponse.getData().getDirector();
-                            trailerLink = authResponse.getData().getTrailerLink();
-                            bannerLink = authResponse.getData().getBannerLink();
-                            categoryName = authResponse.getData().getCategoryName();
-                            cast = authResponse.getData().getCast();
-                            movieCategory = authResponse.getData().getMovieCategory();
-                            videoLink = authResponse.getData().getVideoLink();
-                            audioLink = authResponse.getData().getAudioFile();
-                            addOn = authResponse.getData().getAddedOn();
-                            releaseDate = authResponse.getData().getReleaseDate();
-                            subTitle = authResponse.getData().getSubtitles();
+    private void setDataEpisode(ArrayList<EpisodeData> data) {
+        episodeDataArrayList.clear();
+        episodeDataArrayList = data;
+        removePosition = Integer.parseInt(Abv);
+        episodeDataArrayList.remove(removePosition);
+        episodeAdapter.notifyDataSetChanged();
+        episodeAdapter.update(episodeDataArrayList);
 
 
-                        } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
-                }
-            });
 
 
-        } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
-        }
     }
-
-    private void callRelativeMovies(MovieDeatilsData data) {
-
-        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
-            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
-            AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
-            Map<String, String> entityMap = new HashMap<>();
-            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId", String.valueOf(data.getMovieId()));
-            entityMap.put("category", String.valueOf(data.getMovieCategory()));
-            Call call = apiService.GetRelativeMovies(entityMap);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    dialog.dismiss();
-                    CategoryResponse authResponse = (CategoryResponse) response.body();
-                    if (authResponse != null) {
-                        Log.i("Response::", new Gson().toJson(authResponse));
-                        if (authResponse.getCode() == 200) {
-                            if (authResponse.getData() != null)
-                                if (authResponse.getData().size() != 0) {
-                                    categoryList = authResponse.getData();
-                                    relatedAdapter.upadate(authResponse.getData());
-                                }
-                        } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                    dialog.dismiss();
-                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-
-        } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void setData(MovieDeatilsData data) {
-        callRelativeMovies(data);
-
-
-        if(data.getIsFavourite()==0){
-            like.setSelected(false);
-
-        }else {
-            like.setSelected(true);
-        }
-        if (data.getMovieLongDescription() != null)
-            txtSoryLine.setText(data.getMovieLongDescription());
-        else
-            txtSoryLine.setText("N/A");
-
-        if (data.getCast() != null)
-            txtCastName.setText(data.getCast());
-        else
-            txtCastName.setText("N/A");
-
-        if (data.getDirector() != null)
-            txtDirectorName.setText(data.getDirector());
-        else
-            txtDirectorName.setText("N/A");
-
-        if (data.getCategoryName() != null)
-            txtVideoType.setText(data.getCategoryName());
-        else
-            txtVideoType.setText("N/A");
-        if(data.getBannerLink() != null && !data.getBannerLink().equals(""))
-        sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
-        makeListOfUri(data);
-    }
-
-
-    private void makeListOfUri(MovieDeatilsData data) {
-        videoUriList.add(new Video(data.getVideoLink(), Long.getLong("zero", 1)));
+    private void makeListOfUri() {
+        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
 
         /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
 
@@ -546,6 +376,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         }
 
     }
+
 
     private VideoSource makeVideoSource(List<Video> videos, int index) {
         setVideosWatchLength();
@@ -580,11 +411,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         startActivityForResult(intent, REQUEST_CODE);
     }
 
-    public void clickRelativeMovies(int adapterPosition) {
-        startActivity(new Intent(this, VideoPlay.class)
-                .putExtra("moviesId", categoryList.get(adapterPosition).getMovieId())
-                .putExtra("name", categoryList.get(adapterPosition).getMovieName()));
-    }
 
 
     @Override
@@ -593,6 +419,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         releasePlayer();
         clearStartPosition();
         setIntent(intent);
+
+
 
 
     }
@@ -640,11 +468,19 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
+
+
+
+
+
+
+
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
+
 
 
             case R.id.imgDownload:
@@ -671,11 +507,16 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
+
+
+
+
+
     private void fetchDownloadOptions() {
         trackKeys.clear();
 
         if (pDialog == null || !pDialog.isShowing()) {
-            pDialog = new ProgressDialog(VideoPlay.this);
+            pDialog = new ProgressDialog(Episode1.this);
             pDialog.setTitle(null);
             pDialog.setCancelable(false);
             pDialog.setMessage("Preparing Download Options...");
@@ -683,7 +524,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         }
 
 
-        DownloadHelper downloadHelper = DownloadHelper.forHls(VideoPlay.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(VideoPlay.this));
+        DownloadHelper downloadHelper = DownloadHelper.forHls(Episode1.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(Episode1.this));
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -703,6 +544,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                         }
                     }
                 }
+
 
 
                 if (pDialog != null && pDialog.isShowing()) {
@@ -727,26 +569,24 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this,R.style.MyDialogTheme1);
-      //  builder.setTitle("Select Download Format");
-        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(Episode1.this);
+        builder.setTitle("Select Download Format");
         int checkedItem = 1;
 
 
         for (int i = 0; i < trackKeyss.size(); i++) {
             TrackKey trackKey = trackKeyss.get(i);
             long bitrate = trackKey.getTrackFormat().bitrate;
-            long getInBytes = (bitrate * 128) / 8;
+            long getInBytes =  (bitrate * 128)/8;
             String getInMb = AppUtil.formatFileSize(getInBytes);
-            String videoResoultionDashSize = " " + trackKey.getTrackFormat().height + "      (" + getInMb + ")";
+            String videoResoultionDashSize =  " "+trackKey.getTrackFormat().height +"      ("+getInMb+")";
             optionsToDownload.add(i, videoResoultionDashSize);
         }
 
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
-                VideoPlay.this, // Context
-                R.layout.mytextview, // Layout
+                Episode1.this, // Context
+                android.R.layout.simple_list_item_single_choice, // Layout
                 optionsToDownload // List
         );
 
@@ -765,6 +605,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                         .setMaxVideoSize(trackKey.getTrackFormat().width, trackKey.getTrackFormat().height)
                         .setMaxVideoBitrate(trackKey.getTrackFormat().bitrate)
                         .build();
+
 
 
             }
@@ -787,6 +628,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
                 }
 
+
+
                 DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
                 if (downloadRequest.streamKeys.isEmpty()) {
                     // All tracks were deselected in the dialog. Don't start the download.
@@ -805,12 +648,11 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         AlertDialog dialog = builder.create();
         dialog.setCancelable(true);
         dialog.show();
-
     }
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-        DownloadRequest myDownloadRequest = downloadRequestt;
+        DownloadRequest   myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
@@ -819,6 +661,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
             return;
         } else {
+
 
 
             saveTask();
@@ -830,13 +673,14 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
+
     private void initializePlayer() {
 
 
         TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory();
 
         //    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, null, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
-        RenderersFactory renderersFactory = ((Ooops) getApplication()).buildRenderersFactory(true);
+        RenderersFactory renderersFactory =  ((Ooops) getApplication()).buildRenderersFactory(true)  ;
 
         trackSelector = new DefaultTrackSelector(trackSelectionFactory);
         trackSelector.setParameters(trackSelectorParameters);
@@ -854,11 +698,18 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         );
 
 
+
+
+
+
+
     }
 
     private boolean shouldDownload(Format track) {
         return track.height != 240 && track.sampleMimeType.equalsIgnoreCase("video/avc");
     }
+
+
 
 
     /**
@@ -867,6 +718,10 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private DataSource.Factory buildDataSourceFactory() {
         return ((Ooops) getApplication()).buildDataSourceFactory();
     }
+
+
+
+
 
 
     private void setProgress() {
@@ -880,6 +735,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             public void run() {
 
 
+
                 handler.postDelayed(this, 1000);
 
             }
@@ -887,11 +743,27 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
+
+
+
+
+
+
+
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
     }
+
+
+
+
+
+
+
+
+
 
 
     @Override
@@ -942,10 +814,11 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
-                if (download.request.uri.toString().equals(videoUrl)) {
+                if(download.request.uri.toString().equals(videoUrl)){
 
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
+
 
 
                 break;
@@ -973,6 +846,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         updateTrackSelectorParameters();
 
 
+
         trackSelector = null;
 
 
@@ -985,11 +859,17 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
+
     private void clearStartPosition() {
         startAutoPlay = true;
         startWindow = C.INDEX_UNSET;
         startPosition = C.TIME_UNSET;
     }
+
+
+
+
+
 
 
     private void saveTask() {
@@ -1003,13 +883,13 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                 //creating a task
                 VideoDownloadTable task = new VideoDownloadTable();
                 task.setTimestamp(millisInString);
-                task.setMovieId(movieId);
-                task.setMovieName(movieName);
-                task.setMovieType(categoryName);
+                task.setMovieId(episodeId);
+                task.setMovieName(name);
+                task.setMovieType("Web Series");
                 task.setUrlVideo(videoUrl);
-                task.setMovieDescription(shortDescription);
-                task.setUrlImage(thumbnailImage);
-                Log.i("SUNIL!", videoUrl);
+                task.setMovieDescription(storyDescription);
+                task.setUrlImage(episodeThumnailImage);
+
                 //adding to database
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                         .videoDownloadDao()
@@ -1031,12 +911,9 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
 
-    @OnClick(R.id.like)
-    public void setLike() {
-        if (like.isSelected()) {
-            like.setSelected(false);
-        } else
-            like.setSelected(true);
-        addAndRemoveLike(like.isSelected());
-    }
+
+
+
+
+
 }

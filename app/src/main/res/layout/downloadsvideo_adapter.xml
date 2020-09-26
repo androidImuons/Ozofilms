@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="@dimen/_5sdp"
-
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/_80sdp"
+    android:layout_marginTop="@dimen/_5sdp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -15,102 +13,102 @@
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="300dp"
-            android:layout_height="100dp"
             android:id="@+id/imgDownload"
-            android:scaleType="fitXY"
-            android:layout_weight="1"
-            android:background="@drawable/more_action_top_image"></androidx.appcompat.widget.AppCompatImageView>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:background="@drawable/more_action_top_image"
+            android:scaleType="fitXY"/>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="5"
+            android:gravity="center_vertical"
             android:orientation="vertical">
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
 
+            <com.example.oops.custom.OTTTextView
                 android:id="@+id/txtTimeStamp"
-                android:textColor="@color/white"
-                android:textSize="0sp"></com.example.oops.custom.OTTTextView>
-
-            <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:id="@+id/txtMovieName"
-android:textColor="@color/white"
-                android:textSize="18sp"></com.example.oops.custom.OTTTextView>
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:id="@+id/txtMovieType"
-                android:textColor="@color/white"
-                android:textSize="14sp"></com.example.oops.custom.OTTTextView>
-            <com.example.oops.custom.OTTTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:textColor="@color/white"
-                android:id="@+id/txtMovieID"
-                android:textSize="0dp"></com.example.oops.custom.OTTTextView>
+                android:textSize="0sp" />
 
             <com.example.oops.custom.OTTTextView
+                android:id="@+id/txtMovieName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sdp"/>
+
+            <com.example.oops.custom.OTTTextView
+                android:id="@+id/txtMovieType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-android:textColor="@color/white"
+                android:text=""
+                android:visibility="gone"
+                android:textColor="@color/white"
+                android:textSize="14sp"/>
+
+
+            <com.example.oops.custom.OTTTextView
                 android:id="@+id/txtDescription"
-                android:textSize="12sp"></com.example.oops.custom.OTTTextView>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:lines="3"
+                android:textSize="12sp"/>
 
             <TextView
-                android:visibility="gone"
+                android:id="@+id/tv_downloaded_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
-                android:textSize="@dimen/_10sdp"
-                android:id="@+id/tv_downloaded_percentage"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:text="50/100 MB - 50%"
                 android:background="@android:color/white"
+                android:text="50/100 MB - 50%"
+                android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@android:color/black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
-                android:textSize="@dimen/_10sdp"
                 android:id="@+id/tv_downloaded_status"
-                android:textAppearance="?android:textAppearanceMedium"
-                android:text="Download Status Paused"
-                android:background="@android:color/white"
-                android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:text="Download Status Paused"
+                android:textAppearance="?android:textAppearanceMedium"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_10sdp"
+                android:visibility="gone" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
 
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
 
-<!--         </LinearLayout>-->
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:id="@+id/img_overflow"
+            <!--         </LinearLayout>-->
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/img_overflow"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="@color/white"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_baseline_delete_24"/>
 
-            android:layout_gravity="bottom"
-            app:srcCompat="@drawable/ic_menu_overflow"></androidx.appcompat.widget.AppCompatImageView>
-
-           mageView>
+            mageView>
         </LinearLayout>
     </LinearLayout>
-
 
 
 </LinearLayout>

@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.oops.DataClass.CommonFavModule;
 import com.example.oops.DataClass.FavouriteData;
 import com.example.oops.DataClass.MovieData;
+import com.example.oops.DataClass.SeriesData;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.FavouriteResponse;
 import com.example.oops.Utils.AppCommon;
@@ -55,12 +57,12 @@ public class FavouriteFragment extends Fragment {
 
     FavouriteAdapter favouriteAdapter;
 
+    ArrayList<CommonFavModule> commonFavModule;
+
     ArrayList<ArrayList<MovieData>> movieDataArrayList;
 
     ArrayList<FavouriteData> favouriteDataArrayList;
     List<MovieData> students;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -81,14 +83,13 @@ public class FavouriteFragment extends Fragment {
         return view;
     }
 
-
     private void init() {
-        movieDataArrayList = new ArrayList<ArrayList<MovieData>>();
-        favouriteDataArrayList = new ArrayList<>();
-
+        commonFavModule = new ArrayList<>();
+        favouriteAdapter = new FavouriteAdapter(this , commonFavModule);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(favouriteAdapter);
     }
 
     private void callFavouriteApi() {
@@ -115,24 +116,8 @@ public class FavouriteFragment extends Fragment {
                         if (authResponse != null) {
                             Log.i("FABVOURITE_LIST", new Gson().toJson(authResponse));
                             if (authResponse.getCode() == 200) {
-                                //setDataMovies(authResponse.getData());
-
-
                                 favouriteDataArrayList= authResponse.getData();
-
-
-                                for(FavouriteData favouriteData:favouriteDataArrayList){
-
-                                    movieDataArrayList.add(favouriteData.getMovie());
-                                }
-
-
-                              //  favouriteAdapter = new FavouriteAdapter(movieDataArrayList, getContext());
-                                recyclerView.setAdapter(favouriteAdapter);
-
-
-
-
+                                setData(favouriteDataArrayList);
                             } else {
                                 Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
@@ -159,5 +144,26 @@ public class FavouriteFragment extends Fragment {
             // no internet
             Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void setData(ArrayList<FavouriteData> favouriteDataArrayList) {
+        if(favouriteDataArrayList.get(0).getMovie().size() != 0){
+            for(int i = 0 ; i < favouriteDataArrayList.get(0).getMovie().size() ; i++){
+                MovieData movieData = favouriteDataArrayList.get(0).getMovie().get(i);
+                commonFavModule.add(new CommonFavModule(movieData.getMovieName()
+                        ,movieData.getMovieShortDescription(),movieData.getImageLink()
+                        ,movieData.getMovieId(),"mov",movieData.getId()));
+            }
+        }
+
+        if(favouriteDataArrayList.get(0).getSeries().size() != 0){
+            for(int i = 0 ; i < favouriteDataArrayList.get(0).getSeries().size() ; i++){
+                SeriesData movieData = favouriteDataArrayList.get(0).getSeries().get(i);
+                commonFavModule.add(new CommonFavModule(movieData.getSeriesName()
+                        ,movieData.getSeriesShortDescription(),movieData.getImageLink()
+                        ,movieData.getSeriesId(),"ser",movieData.getId()));
+            }
+        }
+        favouriteAdapter.update(commonFavModule);
     }
 }

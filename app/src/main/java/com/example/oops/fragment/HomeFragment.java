@@ -209,7 +209,7 @@ public class HomeFragment extends Fragment {
         viewPager.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
         viewPager.setIndicatorSelectedColor(Color.WHITE);
         viewPager.setIndicatorUnselectedColor(Color.GRAY);
-        viewPager.setScrollTimeInSec(4); //set scroll delay in seconds :
+        viewPager.setScrollTimeInSec(3); //set scroll delay in seconds :
         viewPager.startAutoCycle();
        /* ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity() , sliderDataArrayList);
 
