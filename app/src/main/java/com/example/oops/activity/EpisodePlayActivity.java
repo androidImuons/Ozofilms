@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.EpisodeData;
-import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.EpisodeResponse;
@@ -43,7 +42,6 @@ import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
@@ -74,10 +72,6 @@ import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -130,7 +124,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     List<TrackKey> trackKeys = new ArrayList<>();
     List<String> optionsToDownload = new ArrayList<String>();
 
-    List<EpisodeData> dataList=new ArrayList<>();
+    List<EpisodeData> videoListOfUri =new ArrayList<>();
 
     DefaultTrackSelector.Parameters qualityParams;
 
@@ -230,7 +224,7 @@ ImageView imgDownload;
 
 
 
-       dataList = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
+       videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
 
 
 
@@ -400,8 +394,8 @@ ImageView imgDownload;
 
 
     private void makeListOfUri() {
-        for(int l=0;l<dataList.size();l++){
-            stringVideo=dataList.get(l).getVideoLink();
+        for(int l = 0; l< videoListOfUri.size(); l++){
+            stringVideo= videoListOfUri.get(l).getVideoLink();
             videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
 
         }
