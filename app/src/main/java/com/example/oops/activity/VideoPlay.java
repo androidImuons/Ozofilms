@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -102,7 +103,7 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class VideoPlay extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
+public class VideoPlay extends Activity implements View.OnClickListener, DownloadTracker.Listener {
     @BindView(R.id.txtVideoHeading)
     AppCompatTextView txtVideoHeading;
     String stxtVideoHeading;
@@ -129,7 +130,8 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
     AppCompatImageView imgPlayVideo;
 
     @BindView(R.id.like)
-    AppCompatImageView like;
+    ImageView like;
+
     private AppDatabase database;
     private List<Subtitle> subtitleList = new ArrayList<>();
     ArrayList<CategoryListData> categoryList;
@@ -197,6 +199,9 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
     //    DownloadRequest myDownloadRequest;
     int movieid;
     String sMovie;
+
+    @BindView(R.id.imgBackPressed)
+    ImageView imgBackPressed;
 
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
@@ -277,6 +282,7 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
         };
 
         handler.post(runnableCode);
+        imgBackPressed.setVisibility(View.VISIBLE);
 
 
     }
@@ -313,15 +319,6 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
     }
 
 
-    @OnClick(R.id.like)
-    void setLike() {
-        if (like.isSelected()) {
-            like.setSelected(false);
-
-        } else
-            like.setSelected(true);
-        addAndRemoveLike(like.isSelected());
-    }
 
     private void addAndRemoveLike(boolean selected) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -505,10 +502,10 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
 
 
         if(data.getIsFavourite()==0){
-            like.setEnabled(false);
+            like.setSelected(false);
 
         }else {
-            like.setEnabled(true);
+            like.setSelected(true);
         }
         if (data.getMovieLongDescription() != null)
             txtSoryLine.setText(data.getMovieLongDescription());
@@ -1034,4 +1031,12 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
     }
 
 
+    @OnClick(R.id.like)
+    public void setLike() {
+        if (like.isSelected()) {
+            like.setSelected(false);
+        } else
+            like.setSelected(true);
+        addAndRemoveLike(like.isSelected());
+    }
 }

@@ -102,6 +102,7 @@
                 android:id="@+id/img_overflow"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:tint="@color/white"
                 android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_baseline_delete_24"/>
 
