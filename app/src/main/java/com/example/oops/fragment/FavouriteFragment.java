@@ -119,7 +119,7 @@ public class FavouriteFragment extends Fragment {
 
 
                                 favouriteDataArrayList= authResponse.getData();
-                                
+
 
                                 for(FavouriteData favouriteData:favouriteDataArrayList){
 
