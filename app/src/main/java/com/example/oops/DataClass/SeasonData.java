@@ -31,6 +31,11 @@ public class SeasonData {
     @SerializedName("thumbnailLink")
     @Expose
     private String thumbnailLink;
+    @SerializedName("trailerLink")
+    @Expose
+    private String trailerLink;
+
+
 
     public Integer getId() {
         return id;
@@ -102,6 +107,14 @@ public class SeasonData {
 
     public void setThumbnailLink(String thumbnailLink) {
         this.thumbnailLink = thumbnailLink;
+    }
+
+    public String getTrailerLink() {
+        return trailerLink;
+    }
+
+    public void setTrailerLink(String trailerLink) {
+        this.trailerLink = trailerLink;
     }
 
     @Override

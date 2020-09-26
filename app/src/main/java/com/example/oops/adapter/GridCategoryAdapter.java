@@ -45,7 +45,8 @@ public class GridCategoryAdapter extends RecyclerView.Adapter<GridCategoryAdapte
 
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
-        holder.moviesImage.setController( AppCommon.getInstance(activity).getDraweeController(holder.moviesImage , categoryList.get(position).getImageLink() , 500));
+        if(categoryList.get(position).getImageLink() != null && !categoryList.get(position).getImageLink().isEmpty() )
+            holder.moviesImage.setController( AppCommon.getInstance(activity).getDraweeController(holder.moviesImage , categoryList.get(position).getImageLink() , 500));
         holder.moviesNmae.setText(categoryList.get(position).getMovieName());
     }
 

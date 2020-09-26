@@ -9,7 +9,7 @@
 
     <include layout="@layout/header_layout"/>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -117,7 +117,7 @@
                 <com.example.oops.custom.OTTTextView
                     android:id="@+id/txtVideoType"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
 
                     android:layout_weight="1"
                     android:gravity="center_vertical"
@@ -207,7 +207,7 @@
                 <com.example.oops.custom.OTTTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/episode"
+                    android:text="@string/most_like"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -228,6 +228,6 @@
                 android:layout_marginBottom="20dp"
                 tools:listitem="@layout/category_item" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>

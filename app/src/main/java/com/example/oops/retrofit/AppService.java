@@ -141,4 +141,6 @@ public interface AppService {
     @FormUrlEncoded
     @POST("subscription/getPlans")
     Call<SubscriptionPlansResponse> allSubscribtionPlansAPi(@FieldMap Map<String, String> entityMap);
+
+
 }

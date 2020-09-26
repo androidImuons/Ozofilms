@@ -46,6 +46,9 @@
     <string name="rs">\u20B9</string>
     <string name="strike_text">1. <strike>StrikeThrough</strike> Using strike</string>
 
+    <!--Subscription -->
+    <string name="series">Series</string>
+
 
 
 
@@ -148,6 +151,7 @@
     <string name="facebook_app_id">321229779184351</string>
     <string name="fb_login_protocol_scheme">fb321229779184351</string>
     <string name="seasons">Seasons</string>
+    <string name="most_like">Most like this</string>
 
 
 </resources>

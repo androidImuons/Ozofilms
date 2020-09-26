@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="@dimen/_100sdp"
     android:layout_marginBottom="10dp"
     android:background="@drawable/coupon_bg">
 
@@ -17,21 +17,23 @@
         android:weightSum="2"
         android:orientation="horizontal">
 
-        <com.example.oops.custom.OTTTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            android:layout_weight=".5"
-            android:layout_marginRight="@dimen/_2sdp"
-            android:text="@string/rs"/>
+<!--        <com.example.oops.custom.OTTTextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="@dimen/_10sdp"-->
+<!--            android:layout_weight=".5"-->
+<!--            android:layout_marginRight="@dimen/_2sdp"-->
+<!--            android:text="@string/rs"/>-->
 
         <com.example.oops.custom.OTTTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="@dimen/_10sdp"
-            android:id="@+id/tVdiscountAmount"
+            android:textSize="@dimen/_14sdp"
+            android:textStyle="bold"
+
+            android:id="@+id/tVplanName"
             android:layout_weight=".5"
             android:layout_marginRight="@dimen/_10sdp"
             android:text="900"/>
@@ -66,8 +68,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/linearLayout2"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayout1"
         android:orientation="horizontal">
 
 

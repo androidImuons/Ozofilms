@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,7 @@ import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CategoryResponse;
+import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
@@ -100,7 +103,7 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class VideoPlay extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
+public class VideoPlay extends Activity implements View.OnClickListener, DownloadTracker.Listener {
     @BindView(R.id.txtVideoHeading)
     AppCompatTextView txtVideoHeading;
     String stxtVideoHeading;
@@ -122,15 +125,19 @@ public class VideoPlay extends AppCompatActivity implements View.OnClickListener
     @BindView(R.id.sdvImage)
     SimpleDraweeView sdvImage;
     @BindView(R.id.txtHeading)
-    AppCompatTextView  txtHeading;
+    AppCompatTextView txtHeading;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
+
+    @BindView(R.id.like)
+    ImageView like;
+
     private AppDatabase database;
     private List<Subtitle> subtitleList = new ArrayList<>();
     ArrayList<CategoryListData> categoryList;
     RelatedAdapter relatedAdapter;
-LinearLayout linearLayout;
-ImageView imgDownload;
+    LinearLayout linearLayout;
+    ImageView imgDownload;
     private List<Video> videoUriList = new ArrayList<>();
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
@@ -143,12 +150,11 @@ ImageView imgDownload;
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
     ImageView img;
+
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
-
-
 
 
     LinearLayout llParentContainer;
@@ -157,7 +163,6 @@ ImageView imgDownload;
     List<String> optionsToDownload = new ArrayList<String>();
 
     DefaultTrackSelector.Parameters qualityParams;
-
 
 
     private DataSource.Factory dataSourceFactory;
@@ -181,20 +186,23 @@ ImageView imgDownload;
     private DownloadHelper myDownloadHelper;
 
 
-
-  private String videoUrl ;
+    private String videoUrl;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
-MovieDetailsTable movieDetailsTable;
+    MovieDetailsTable movieDetailsTable;
     MovieDownloadDatabase mdb;
-    String subTitle,videoLink,audioLink,addOn,releaseDate,movieName,thumbnailImage,movieType,shortDescription,longDescription,directorName,trailerLink,bannerLink,categoryName,cast;
+    String subTitle, videoLink, audioLink, addOn, releaseDate, movieName, thumbnailImage, movieType, shortDescription, longDescription, directorName, trailerLink, bannerLink, categoryName, cast;
     Context context;
     int movieCategory;
     String millisInString;
     //    DownloadRequest myDownloadRequest;
     int movieid;
     String sMovie;
+
+    @BindView(R.id.imgBackPressed)
+    ImageView imgBackPressed;
+
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -221,8 +229,8 @@ MovieDetailsTable movieDetailsTable;
         setLayout();
         initializeDb();
 
-        if(getIntent()!= null){
-            movieId= getIntent().getStringExtra("moviesId");
+        if (getIntent() != null) {
+            movieId = getIntent().getStringExtra("moviesId");
             String name = getIntent().getStringExtra("name");
 
 
@@ -256,14 +264,13 @@ MovieDetailsTable movieDetailsTable;
         handler = new Handler();
 
 
-
         imgDownload = (ImageView) findViewById(R.id.imgDownload);
 //        prepareView();
         imgDownload.setOnClickListener(VideoPlay.this);
 //        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
 //        videoDurationInSeconds = videoDurationInSeconds % 60 ;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         millisInString  = dateFormat.format(new Date());
+        millisInString = dateFormat.format(new Date());
 
 
         runnableCode = new Runnable() {
@@ -275,10 +282,10 @@ MovieDetailsTable movieDetailsTable;
         };
 
         handler.post(runnableCode);
+        imgBackPressed.setVisibility(View.VISIBLE);
 
 
     }
-
 
 
     @Override
@@ -288,10 +295,11 @@ MovieDetailsTable movieDetailsTable;
         database = null;
 
     }
+
     private void setLayout() {
 
         categoryList = new ArrayList<>();
-        relatedAdapter = new RelatedAdapter(VideoPlay.this , categoryList );
+        relatedAdapter = new RelatedAdapter(VideoPlay.this, categoryList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
@@ -306,8 +314,67 @@ MovieDetailsTable movieDetailsTable;
     }
 
     @OnClick(R.id.imgBackPressed)
-    public  void setImgBackPressed(){
+    public void setImgBackPressed() {
         onBackPressed();
+    }
+
+
+
+    private void addAndRemoveLike(boolean selected) {
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("type", String.valueOf("Movie"));
+            entityMap.put("serMovId", String.valueOf(movieId));
+
+            Call call = apiService.addAndRemoveFavurite(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    dialog.dismiss();
+                    CommonResponse authResponse = (CommonResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("Test", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            if (authResponse.getData() != null) {
+                                if (authResponse.getMessage().equals("Added To Favourite Successfully")) {
+                                    like.setSelected(true);
+                                } else {
+                                    like.setSelected(false);
+                                }
+                            }
+                               /* setData(authResponse.getData());
+                            videoUrl= authResponse.getData().getVideoLink();*/
+
+
+                        } else {
+
+                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -316,11 +383,11 @@ MovieDetailsTable movieDetailsTable;
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class , AppCommon.getInstance(this).getToken());
-            Map<String , String> entityMap = new HashMap<>();
-            entityMap.put("id" , String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId" , String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId" , String.valueOf(movieId));
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("movieId", String.valueOf(movieId));
             Call call = apiService.MOVIE_DEATILS_RESPONSE_CALL(entityMap);
             call.enqueue(new Callback() {
                 @Override
@@ -331,16 +398,16 @@ MovieDetailsTable movieDetailsTable;
                     if (authResponse != null) {
                         Log.i("Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            if(authResponse.getData() != null)
-                            setData(authResponse.getData());
-                            videoUrl= authResponse.getData().getVideoLink();
-movieName = authResponse.getData().getMovieName();
-thumbnailImage = authResponse.getData().getImageLink();
-                            sMovie =authResponse.getData().getMovieId();
+                            if (authResponse.getData() != null)
+                                setData(authResponse.getData());
+                            videoUrl = authResponse.getData().getVideoLink();
+                            movieName = authResponse.getData().getMovieName();
+                            thumbnailImage = authResponse.getData().getImageLink();
+                            sMovie = authResponse.getData().getMovieId();
 //                            movieid = Integer.parseInt(sMovie);
-movieType = authResponse.getData().getMovieType();
-shortDescription =authResponse.getData().getMovieShortDescription();
-longDescription = authResponse.getData().getMovieLongDescription();
+                            movieType = authResponse.getData().getMovieType();
+                            shortDescription = authResponse.getData().getMovieShortDescription();
+                            longDescription = authResponse.getData().getMovieLongDescription();
                             directorName = authResponse.getData().getDirector();
                             trailerLink = authResponse.getData().getTrailerLink();
                             bannerLink = authResponse.getData().getBannerLink();
@@ -378,17 +445,18 @@ longDescription = authResponse.getData().getMovieLongDescription();
             Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
         }
     }
+
     private void callRelativeMovies(MovieDeatilsData data) {
 
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             Dialog dialog = ViewUtils.getProgressBar(VideoPlay.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
-            AppService apiService = ServiceGenerator.createService(AppService.class , AppCommon.getInstance(this).getToken());
-            Map<String , String> entityMap = new HashMap<>();
-            entityMap.put("id" , String.valueOf(AppCommon.getInstance(this).getId()));
-            entityMap.put("userId" , String.valueOf(AppCommon.getInstance(this).getUserId()));
-            entityMap.put("movieId" , String.valueOf(data.getMovieId()));
-            entityMap.put("category" , String.valueOf(data.getMovieCategory()));
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("movieId", String.valueOf(data.getMovieId()));
+            entityMap.put("category", String.valueOf(data.getMovieCategory()));
             Call call = apiService.GetRelativeMovies(entityMap);
             call.enqueue(new Callback() {
                 @Override
@@ -399,8 +467,8 @@ longDescription = authResponse.getData().getMovieLongDescription();
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            if(authResponse.getData() != null)
-                                if(authResponse.getData().size()!= 0) {
+                            if (authResponse.getData() != null)
+                                if (authResponse.getData().size() != 0) {
                                     categoryList = authResponse.getData();
                                     relatedAdapter.upadate(authResponse.getData());
                                 }
@@ -431,33 +499,41 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
     private void setData(MovieDeatilsData data) {
         callRelativeMovies(data);
-        if(data.getMovieLongDescription() != null)
-        txtSoryLine.setText(data.getMovieLongDescription());
+
+
+        if(data.getIsFavourite()==0){
+            like.setSelected(false);
+
+        }else {
+            like.setSelected(true);
+        }
+        if (data.getMovieLongDescription() != null)
+            txtSoryLine.setText(data.getMovieLongDescription());
         else
             txtSoryLine.setText("N/A");
 
-        if(data.getCast() != null)
+        if (data.getCast() != null)
             txtCastName.setText(data.getCast());
         else
             txtCastName.setText("N/A");
 
-        if(data.getDirector() != null)
+        if (data.getDirector() != null)
             txtDirectorName.setText(data.getDirector());
         else
             txtDirectorName.setText("N/A");
 
-        if(data.getCategoryName() != null)
+        if (data.getCategoryName() != null)
             txtVideoType.setText(data.getCategoryName());
         else
             txtVideoType.setText("N/A");
-
-        sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage , data.getBannerLink() , 1024));
+        if(data.getBannerLink() != null && !data.getBannerLink().equals(""))
+        sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
         makeListOfUri(data);
     }
 
 
     private void makeListOfUri(MovieDeatilsData data) {
-        videoUriList.add(new Video(data.getVideoLink() , Long.getLong("zero" , 1)));
+        videoUriList.add(new Video(data.getVideoLink(), Long.getLong("zero", 1)));
 
         /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
 
@@ -505,9 +581,9 @@ longDescription = authResponse.getData().getMovieLongDescription();
     }
 
     public void clickRelativeMovies(int adapterPosition) {
-        startActivity(new Intent(this , VideoPlay.class)
-                .putExtra("moviesId" , categoryList.get(adapterPosition).getMovieId())
-                .putExtra("name" , categoryList.get(adapterPosition).getMovieName()));
+        startActivity(new Intent(this, VideoPlay.class)
+                .putExtra("moviesId", categoryList.get(adapterPosition).getMovieId())
+                .putExtra("name", categoryList.get(adapterPosition).getMovieName()));
     }
 
 
@@ -517,8 +593,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
         releasePlayer();
         clearStartPosition();
         setIntent(intent);
-
-
 
 
     }
@@ -566,13 +640,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
     }
 
 
-
-
-
-
-
-
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onClick(View view) {
@@ -580,12 +647,11 @@ longDescription = authResponse.getData().getMovieLongDescription();
         switch (view.getId()) {
 
 
-
             case R.id.imgDownload:
 //                if (DatabaseClient.getInstance(this).getAppDatabase().videoDownloadDao().isDataExist(movieid. )) {
-                    fetchDownloadOptions();
+                fetchDownloadOptions();
 
-                    // data not exist.
+                // data not exist.
 //                    Toast.makeText(VideoPlay.this," Not Data Exist"+movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
 
 //                } else {
@@ -603,11 +669,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
 
     }
-
-
-
-
-
 
 
     private void fetchDownloadOptions() {
@@ -644,7 +705,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
                 }
 
 
-
                 if (pDialog != null && pDialog.isShowing()) {
                     pDialog.dismiss();
                 }
@@ -667,24 +727,26 @@ longDescription = authResponse.getData().getMovieLongDescription();
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this);
-        builder.setTitle("Select Download Format");
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this,R.style.MyDialogTheme1);
+      //  builder.setTitle("Select Download Format");
+        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
+
         int checkedItem = 1;
 
 
         for (int i = 0; i < trackKeyss.size(); i++) {
             TrackKey trackKey = trackKeyss.get(i);
             long bitrate = trackKey.getTrackFormat().bitrate;
-            long getInBytes =  (bitrate * 128)/8;
+            long getInBytes = (bitrate * 128) / 8;
             String getInMb = AppUtil.formatFileSize(getInBytes);
-            String videoResoultionDashSize =  " "+trackKey.getTrackFormat().height +"      ("+getInMb+")";
+            String videoResoultionDashSize = " " + trackKey.getTrackFormat().height + "      (" + getInMb + ")";
             optionsToDownload.add(i, videoResoultionDashSize);
         }
 
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
                 VideoPlay.this, // Context
-                android.R.layout.simple_list_item_single_choice, // Layout
+                R.layout.mytextview, // Layout
                 optionsToDownload // List
         );
 
@@ -703,7 +765,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
                         .setMaxVideoSize(trackKey.getTrackFormat().width, trackKey.getTrackFormat().height)
                         .setMaxVideoBitrate(trackKey.getTrackFormat().bitrate)
                         .build();
-
 
 
             }
@@ -726,8 +787,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
                 }
 
-
-
                 DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
                 if (downloadRequest.streamKeys.isEmpty()) {
                     // All tracks were deselected in the dialog. Don't start the download.
@@ -746,11 +805,12 @@ longDescription = authResponse.getData().getMovieLongDescription();
         AlertDialog dialog = builder.create();
         dialog.setCancelable(true);
         dialog.show();
+
     }
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-      DownloadRequest   myDownloadRequest = downloadRequestt;
+        DownloadRequest myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
@@ -759,7 +819,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
 
             return;
         } else {
-
 
 
             saveTask();
@@ -771,14 +830,13 @@ longDescription = authResponse.getData().getMovieLongDescription();
     }
 
 
-
     private void initializePlayer() {
 
 
         TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory();
 
         //    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, null, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
-        RenderersFactory renderersFactory =  ((Ooops) getApplication()).buildRenderersFactory(true)  ;
+        RenderersFactory renderersFactory = ((Ooops) getApplication()).buildRenderersFactory(true);
 
         trackSelector = new DefaultTrackSelector(trackSelectionFactory);
         trackSelector.setParameters(trackSelectorParameters);
@@ -796,18 +854,11 @@ longDescription = authResponse.getData().getMovieLongDescription();
         );
 
 
-
-
-
-
-
     }
 
     private boolean shouldDownload(Format track) {
         return track.height != 240 && track.sampleMimeType.equalsIgnoreCase("video/avc");
     }
-
-
 
 
     /**
@@ -816,10 +867,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
     private DataSource.Factory buildDataSourceFactory() {
         return ((Ooops) getApplication()).buildDataSourceFactory();
     }
-
-
-
-
 
 
     private void setProgress() {
@@ -833,7 +880,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
             public void run() {
 
 
-
                 handler.postDelayed(this, 1000);
 
             }
@@ -841,27 +887,11 @@ longDescription = authResponse.getData().getMovieLongDescription();
     }
 
 
-
-
-
-
-
-
-
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
     }
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -912,11 +942,10 @@ longDescription = authResponse.getData().getMovieLongDescription();
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
-                if(download.request.uri.toString().equals(videoUrl)){
+                if (download.request.uri.toString().equals(videoUrl)) {
 
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
-
 
 
                 break;
@@ -944,7 +973,6 @@ longDescription = authResponse.getData().getMovieLongDescription();
         updateTrackSelectorParameters();
 
 
-
         trackSelector = null;
 
 
@@ -957,17 +985,11 @@ longDescription = authResponse.getData().getMovieLongDescription();
     }
 
 
-
     private void clearStartPosition() {
         startAutoPlay = true;
         startWindow = C.INDEX_UNSET;
         startPosition = C.TIME_UNSET;
     }
-
-
-
-
-
 
 
     private void saveTask() {
@@ -987,7 +1009,7 @@ longDescription = authResponse.getData().getMovieLongDescription();
                 task.setUrlVideo(videoUrl);
                 task.setMovieDescription(shortDescription);
                 task.setUrlImage(thumbnailImage);
-Log.i("SUNIL!",videoUrl);
+                Log.i("SUNIL!", videoUrl);
                 //adding to database
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                         .videoDownloadDao()
@@ -1009,7 +1031,12 @@ Log.i("SUNIL!",videoUrl);
     }
 
 
-
-
-
+    @OnClick(R.id.like)
+    public void setLike() {
+        if (like.isSelected()) {
+            like.setSelected(false);
+        } else
+            like.setSelected(true);
+        addAndRemoveLike(like.isSelected());
+    }
 }
