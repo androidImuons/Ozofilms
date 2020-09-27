@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -603,8 +604,10 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this);
-        builder.setTitle("Select Download Format");
+        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this,R.style.MyDialogTheme1);
+       // builder.setTitle("Select Download Format");
+        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format </font>"));
+
         int checkedItem = 1;
 
 
@@ -620,7 +623,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
                 EpisodePlayActivity.this, // Context
-                R.layout.single_choice, // Layout
+                R.layout.mytextview, // Layout
                 optionsToDownload // List
         );
 
