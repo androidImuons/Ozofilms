@@ -30,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.EpisodeData;
-import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.EpisodeResponse;
@@ -43,7 +42,6 @@ import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.data.database.AppDatabase;
-import com.example.oops.data.database.MovieDownloadDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
@@ -73,6 +71,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -80,6 +79,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +104,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
-
+    DownloadHelper downloadHelper;
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
     private static final String KEY_WINDOW = "window";
@@ -118,11 +118,13 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
 
 
-
+    DownloadRequest downloadRequest;
     LinearLayout llParentContainer;
 
     List<TrackKey> trackKeys = new ArrayList<>();
     List<String> optionsToDownload = new ArrayList<String>();
+
+    List<EpisodeData> videoListOfUri =new ArrayList<>();
 
     DefaultTrackSelector.Parameters qualityParams;
 
@@ -167,18 +169,22 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.txtSoryLine)
     AppCompatTextView txtSoryLine;
     @BindView(R.id.txtVideoType)
-            AppCompatTextView txtVideoType;
+    AppCompatTextView txtVideoType;
     String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
     private AppDatabase database;
     private List<Video> videoUriList = new ArrayList<>();
     private List<Subtitle> subtitleList = new ArrayList<>();
-ImageButton nextBtn;
+    ImageButton nextBtn;
     EpisodeAdapter episodeAdapter;
     String sessionID;
+    String JSON;
+    String  stringVideo;
 
-ImageView imgDownload;
+    List<EpisodeData> episodeDataList;
+
+    ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -214,8 +220,17 @@ ImageView imgDownload;
         episodeId = i.getStringExtra("episodeId");
         videourl = i.getStringExtra("videourl");
         sessionID = i.getStringExtra("sessionID");
+        JSON = i.getStringExtra("Json");
+
+
+
+        videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
+
+
+
+
         txtVideoType.setText("Episode : " + episodeNo);
-    Abv = i.getStringExtra("Abv");
+        Abv = i.getStringExtra("Abv");
 
         json =i.getStringExtra("json");
 //        Log.i("Ahhhhn",""+removePosition);
@@ -259,7 +274,7 @@ ImageView imgDownload;
         setLayout();
         initializeDb();
         makeListOfUri();
-      callGetEpisodeList();
+        callGetEpisodeList();
     }
 
     private void setLayout() {
@@ -323,10 +338,8 @@ ImageView imgDownload;
                                             i.putExtra("Abv",stringPosition);
 
 
-
-
-
                                             startActivity(i);
+
 
 
 
@@ -360,7 +373,7 @@ ImageView imgDownload;
 
     private void setDataEpisode(ArrayList<EpisodeData> data) {
         episodeDataArrayList.clear();
-     episodeDataArrayList = data;
+        episodeDataArrayList = data;
         ArrayList<String> cars = new ArrayList<String>();
         for (int i1 = 0; i1 < episodeDataArrayList.size(); i1++) {
 
@@ -370,22 +383,23 @@ ImageView imgDownload;
         }
         removePosition = Integer.parseInt(Abv);
         episodeDataArrayList.remove(removePosition);
-       episodeAdapter.notifyDataSetChanged();
-       episodeAdapter.update(episodeDataArrayList);
+        episodeAdapter.notifyDataSetChanged();
+        episodeAdapter.update(episodeDataArrayList);
 
 
 
 
 
     }
+
+
     private void makeListOfUri() {
-        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
+        for(int l = 0; l< videoListOfUri.size(); l++){
+            stringVideo= videoListOfUri.get(l).getVideoLink();
+            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
 
-        /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
+        }
 
-        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
-        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
-*/
         if (database.videoDao().getAllUrls().size() == 0) {
             database.videoDao().insertAllVideoUrl(videoUriList);
             database.videoDao().insertAllSubtitleUrl(subtitleList);
@@ -536,11 +550,15 @@ ImageView imgDownload;
             pDialog.setTitle(null);
             pDialog.setCancelable(false);
             pDialog.setMessage("Preparing Download Options...");
+
             pDialog.show();
         }
 
+//            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+             downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videourl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
 
-        DownloadHelper downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
+
+
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -602,7 +620,7 @@ ImageView imgDownload;
         // Initialize a new array adapter instance
         ArrayAdapter arrayAdapter = new ArrayAdapter<String>(
                 EpisodePlayActivity.this, // Context
-                android.R.layout.simple_list_item_single_choice, // Layout
+                R.layout.single_choice, // Layout
                 optionsToDownload // List
         );
 
@@ -645,8 +663,13 @@ ImageView imgDownload;
                 }
 
 
+//                    videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+                     downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videourl));
 
-                DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
+
+
+
+
                 if (downloadRequest.streamKeys.isEmpty()) {
                     // All tracks were deselected in the dialog. Don't start the download.
                     return;
@@ -830,7 +853,7 @@ ImageView imgDownload;
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
-                if(download.request.uri.toString().equals(videoUrl)){
+                if(download.request.uri.toString().equals(videourl)){
 
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
@@ -896,20 +919,25 @@ ImageView imgDownload;
             @Override
             protected Void doInBackground(Void... voids) {
 
-                //creating a task
-                VideoDownloadTable task = new VideoDownloadTable();
-                task.setTimestamp(millisInString);
-                task.setMovieId(episodeId);
-                task.setMovieName(name);
-                task.setMovieType("Web Series");
-                task.setUrlVideo(videoUrl);
-                task.setMovieDescription(storyDescription);
-                task.setUrlImage(episodeThumnailImage);
+//                    videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+                    VideoDownloadTable task = new VideoDownloadTable();
+                    task.setTimestamp(millisInString);
+                    task.setMovieId(episodeId);
+                    task.setMovieName(name);
+                    task.setMovieType("Web Series");
+                    task.setUrlVideo( videourl);
+                    task.setMovieDescription(storyDescription);
+                    task.setUrlImage(episodeThumnailImage);
 
-                //adding to database
-                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                        .videoDownloadDao()
-                        .insert(task);
+                    //adding to database
+                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                            .videoDownloadDao()
+                            .insert(task);
+
+
+
+                //creating a task
+
                 return null;
             }
 

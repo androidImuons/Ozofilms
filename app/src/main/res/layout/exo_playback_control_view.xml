@@ -63,7 +63,9 @@ android:visibility="gone"
 
 
 
-
+        <ImageButton
+            android:id="@+id/btn_prev"
+            style="@style/ExoMediaButton.Previous" />
         <ImageButton
             android:id="@id/exo_rew"
             style="@style/ExoMediaButton.Rewind" />

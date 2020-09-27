@@ -268,7 +268,7 @@ public class SearchHere extends Fragment {
             startActivity(new Intent(getContext(), VideoPlayerSeries.class)
                     .putExtra("seriesId", searchDataArrayList.get(adapterPosition).getMovieId())
                     .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
-            Toast.makeText(getContext(), ""+searchDataArrayList.get(adapterPosition).getMovieId(), Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getContext(), ""+searchDataArrayList.get(adapterPosition).getMovieId(), Toast.LENGTH_SHORT).show();
         }
     }
 }
