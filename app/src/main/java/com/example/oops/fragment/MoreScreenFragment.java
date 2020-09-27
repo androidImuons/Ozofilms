@@ -116,7 +116,7 @@ public class MoreScreenFragment extends Fragment {
         AlertDialog.Builder adb = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme1);
         adb.setTitle(getResources().getString(R.string.app_name));
         adb.setIcon(R.mipmap.ic_launcher_round);
-        adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>Logout </font>"));
+        adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>Logout </font>")); 
         adb.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure you want to logout? </font>"));
        // adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
         adb.setPositiveButton(getResources().getString(R.string.ok),
