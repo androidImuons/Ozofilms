@@ -2,7 +2,7 @@
 <resources>
     <!--Video Quality-->
     <dimen name="margin_from_left">25dp</dimen>
-    <dimen name="margin_from_right">10dp</dimen>
+    <dimen name="margin_from_right">25dp</dimen>
     <dimen name="margin_more_screen">25dp</dimen>
 <!--   login button size -->
     <dimen name="login_button_size">18sp</dimen>

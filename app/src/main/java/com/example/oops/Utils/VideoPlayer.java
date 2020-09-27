@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -20,6 +21,8 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
+import com.example.oops.R;
+import com.example.oops.activity.VideoPlay;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.model.VideoSource;
 import com.google.android.exoplayer2.C;
@@ -201,12 +204,12 @@ public class VideoPlayer {
                         MyTrackSelectionView.getDialog(activity, trackSelector,
                                 rendererIndex,
                                 exoPlayer.getVideoFormat().bitrate);
+                dialogPair.first.setTitle( Html.fromHtml("<font color='#FFFFFF'>Quality </font>"));
                 dialogPair.second.setShowDisableOption(false);
                 dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
                 dialogPair.second.animate();
                 Log.d(TAG, "dialogPair.first.getListView()" + dialogPair.first.getListView());
                 dialogPair.first.show();
-
             }
 
         }

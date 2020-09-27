@@ -98,6 +98,8 @@ public class ChangePassword extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getSuccess() == 200) {
+
+
                             Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_LONG).show();
                             onBackPressed();
 //                          Response
@@ -114,6 +116,7 @@ public class ChangePassword extends AppCompatActivity {
                     dialog.dismiss();
                     AppCommon.getInstance(ChangePassword.this).clearNonTouchableFlags(ChangePassword.this);
                     // loaderView.setVisibility(View.GONE);
+                    Log.d("ERROR_PASS", "onFailure: "+call.toString());
                     Toast.makeText(ChangePassword.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });

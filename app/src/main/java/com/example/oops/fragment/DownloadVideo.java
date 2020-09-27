@@ -86,7 +86,7 @@ public class DownloadVideo extends Fragment {
 
                  adapter = new DownloadVideoAdapter(getActivity(), tasks);
                 recylerview.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();f
             }
         }
 
