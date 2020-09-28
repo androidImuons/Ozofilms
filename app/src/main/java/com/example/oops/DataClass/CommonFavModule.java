@@ -45,7 +45,7 @@ public class CommonFavModule {
         this.movSerId = movSerId;
     }
 
-    public String getType() {
+    public String getType(String mov) {
         return type;
     }
 

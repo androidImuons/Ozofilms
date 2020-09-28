@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.example.oops.DataClass.ResponseData;
 import com.example.oops.DataClass.SocialData;
@@ -59,9 +60,9 @@ public class EnterPin extends AppCompatActivity {
     AppCompatImageView imgLogout;
     @BindView(R.id.forgotPin)
     TextView forgotPin;
-    @BindView(R.id.tVuser)
-    TextView userName;
 
+    @BindView(R.id.tVuser)
+    AppCompatTextView userName;
 
     SocialData socialData;
 

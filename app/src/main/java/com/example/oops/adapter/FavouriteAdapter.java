@@ -1,11 +1,13 @@
 package com.example.oops.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,8 @@ import com.example.oops.DataClass.CommonFavModule;
 import com.example.oops.DataClass.FavouriteData;
 import com.example.oops.DataClass.MovieData;
 import com.example.oops.R;
+import com.example.oops.activity.VideoPlay;
+import com.example.oops.activity.VideoPlayerSeries;
 import com.example.oops.custom.OTTTextView;
 import com.example.oops.fragment.FavouriteFragment;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -29,14 +33,14 @@ import butterknife.ButterKnife;
 public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.FavouriteHolder> {
 
 
-
     Fragment fragment;
     ArrayList<CommonFavModule> commonFavModule;
+    Context context;
 
-
-    public FavouriteAdapter(Fragment fragment, ArrayList<CommonFavModule> commonFavModule) {
+    public FavouriteAdapter(Fragment fragment, Context context, ArrayList<CommonFavModule> commonFavModule) {
         this.fragment = fragment;
         this.commonFavModule = commonFavModule;
+        this.context = context;
     }
 
     @NonNull
@@ -54,7 +58,28 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         holder.movieDescription.setText(commonFavModule.get(position).getShortDiscrp());
         holder.movieImage.setImageURI(commonFavModule.get(position).getImagUrl());
 
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//if(!commonFavModule.get(position).getType("mov")=null){
+                if (commonFavModule.get(position).getType("mov").equalsIgnoreCase("mov")) {
+                    Intent j = new Intent(context, VideoPlay.class);
+                    j.putExtra("moviesId", commonFavModule.get(position).getMovSerId());
+                    j.putExtra("name", commonFavModule.get(position).getName());
+                    context.startActivity(j);
 
+                                }
+                else   if (commonFavModule.get(position).getType("ser").equalsIgnoreCase("ser")) {
+                    Intent j = new Intent(context, VideoPlayerSeries.class);
+                    j.putExtra("seriesId", commonFavModule.get(position).getMovSerId());
+                    j.putExtra("name", commonFavModule.get(position).getName());
+                    context.startActivity(j);
+
+                }
+
+
+            }
+        });
 
     }
 
@@ -76,13 +101,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
 
         @BindView(R.id.movieName)
         TextView movieName;
-
+        @BindView(R.id.linearLayout)
+        LinearLayout linearLayout;
 
         @BindView(R.id.movieDescription)
         TextView movieDescription;
 
-        public FavouriteHolder(@NonNull View itemView)
-        {
+        public FavouriteHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 

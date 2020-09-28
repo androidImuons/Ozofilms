@@ -90,7 +90,7 @@ public class FavouriteFragment extends Fragment {
 
     private void init() {
         commonFavModule = new ArrayList<>();
-        favouriteAdapter = new FavouriteAdapter(this , commonFavModule);
+        favouriteAdapter = new FavouriteAdapter(this , getActivity(),commonFavModule);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -160,22 +160,7 @@ public class FavouriteFragment extends Fragment {
                         ,movieData.getMovieId(),"mov",movieData.getId()));
 
 
-                recyclerView.addOnItemTouchListener(
-                        new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                // TODO Handle item click
 
-
-    Intent j = new Intent(getActivity(), VideoPlay.class);
-    j.putExtra("moviesId", movieData.getMovieId());
-    j.putExtra("name", movieData.getMovieName());
-    startActivity(j);
-
-
-
-                            }
-                        }));
 
             }
 
@@ -189,25 +174,8 @@ public class FavouriteFragment extends Fragment {
                         ,movieData.getSeriesId(),"ser",movieData.getId()));
 
 
-                recyclerView.addOnItemTouchListener(
-                        new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                // TODO Handle item click
 
 
-
-
-                                    Intent j = new Intent(getActivity(), VideoPlayerSeries.class);
-                                    j.putExtra("seriesId", movieData.getSeriesId());
-                                    j.putExtra("name", movieData.getSeriesName());
-                                    startActivity(j);
-
-
-
-
-                            }
-                        }));
 
             }
         }
