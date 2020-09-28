@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.oops.DataClass.MoviesData;
@@ -50,6 +52,8 @@ public class SubscriptionActivity extends AppCompatActivity {
 
     SubscriptionPlanAdapter subscriptionPlanAdapter;
     ArrayList<PlansData> plansDataArrayList;
+    @BindView(R.id.imgBackPressed)
+    AppCompatImageView imgBackPressed;
 
 
     @Override
@@ -62,6 +66,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
         init();
         loadPlansApi();
+        imgBackPressed.setVisibility(View.VISIBLE);
 
 
 

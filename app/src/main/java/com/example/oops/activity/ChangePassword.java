@@ -53,6 +53,7 @@ public class ChangePassword extends AppCompatActivity {
         setContentView(R.layout.changepassword);
         ButterKnife.bind(this);
         initView();
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
     @OnClick(R.id.imgBackPressed)
     public  void setImgBackPressed(){

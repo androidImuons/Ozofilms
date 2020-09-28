@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
 
 import com.example.oops.EntityClass.ChangePinEntity;
 import com.example.oops.EntityClass.LoginEntity;
@@ -48,11 +50,15 @@ public class ChangePin extends AppCompatActivity {
     AppCompatButton btnSubmit;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
+    @BindView(R.id.txtHeading)
+    AppCompatTextView txtHeading;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.change_pin);
         ButterKnife.bind(this);
+        imgBackPressed.setVisibility(View.VISIBLE);
+        txtHeading.setText("Change Pin");
     }
 
 

@@ -60,6 +60,7 @@ public class Profile extends AppCompatActivity {
         ButterKnife.bind(this);
         setData();
         initView();
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
     @OnClick(R.id.imgBackPressed)
     public  void setImgBackPressed(){

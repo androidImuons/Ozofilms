@@ -34,6 +34,7 @@ public class LanguageOption extends AppCompatActivity {
         setContentView(R.layout.languageoption);
         ButterKnife.bind(this);
         initView();
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
 
     private void initView() {

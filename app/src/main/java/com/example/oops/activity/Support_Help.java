@@ -56,6 +56,7 @@ public class Support_Help extends AppCompatActivity {
         setContentView(R.layout.support_help);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.support_help));
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.imgBackPressed)

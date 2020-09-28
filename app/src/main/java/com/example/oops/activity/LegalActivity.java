@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class LegalActivity extends AppCompatActivity {
         setContentView(R.layout.legal_activity);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.legal));
+        imgBackPressed.setVisibility(View.VISIBLE);
 
     }
     @OnClick(R.id.imgBackPressed)

@@ -43,6 +43,7 @@ RelativeLayout changepin;
         setContentView(R.layout.appsetting);
         ButterKnife.bind(this);
         initView();
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
 
     private void initView() {

@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class VideoPlayBack extends AppCompatActivity {
         setContentView(R.layout.video_playback);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.video_playback));
+        imgBackPressed.setVisibility(View.VISIBLE);
 
 
     }

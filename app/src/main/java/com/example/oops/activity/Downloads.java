@@ -28,6 +28,7 @@ AppCompatTextView txtHeading;
         setContentView(R.layout.downloads);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.downloads));
+        imgBackPressed.setVisibility(View.VISIBLE);
     }
     @OnClick(R.id.imgBackPressed)
     public  void setImgBackPressed(){

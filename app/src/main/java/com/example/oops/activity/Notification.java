@@ -2,6 +2,7 @@ package com.example.oops.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,7 @@ public class Notification extends AppCompatActivity {
         setContentView(R.layout.notification);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.notification));
+        imgBackPressed.setVisibility(View.VISIBLE);
 
     }
     @OnClick(R.id.imgBackPressed)
