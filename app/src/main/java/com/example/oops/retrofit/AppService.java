@@ -11,6 +11,7 @@ import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.LogoutEntity;
 import com.example.oops.EntityClass.ProfileEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
+import com.example.oops.EntityClass.SupportHelpEntity;
 import com.example.oops.ResponseClass.AllMoviesResponse;
 import com.example.oops.ResponseClass.CategoryResponse;
 import com.example.oops.ResponseClass.CommonResponse;
@@ -56,7 +57,7 @@ public interface AppService {
 
     //    Change Password
     @POST("user/changePassword")
-    Call<RegistrationResponse> ChangePasswordApi(@Body ChangePasswordEntitiy changePasswordEntitiy);
+    Call<CommonResponseObject> ChangePasswordApi(@Body ChangePasswordEntitiy changePasswordEntitiy);
 
     @POST("user/editProfile")
     Call<EditProfileResponse> ProfileApi(@Body ProfileEntity profileEntity);
@@ -141,6 +142,9 @@ public interface AppService {
     @FormUrlEncoded
     @POST("subscription/getPlans")
     Call<SubscriptionPlansResponse> allSubscribtionPlansAPi(@FieldMap Map<String, String> entityMap);
+
+    @POST("user/support")
+    Call<LogoutResponse> supportUser(@Body SupportHelpEntity supportHelpEntity);
 
 
 }

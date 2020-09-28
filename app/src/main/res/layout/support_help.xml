@@ -83,6 +83,7 @@
                     android:id="@+id/editTexEmail"
                     style="@style/EdiTText"
                     android:hint="@string/email"
+                    android:background="@null"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"></com.example.oops.custom.OTTEditText>

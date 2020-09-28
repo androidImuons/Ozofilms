@@ -1,6 +1,7 @@
 package com.example.oops.fragment;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +22,11 @@ import com.example.oops.DataClass.SeriesData;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.FavouriteResponse;
 import com.example.oops.Utils.AppCommon;
+import com.example.oops.Utils.RecyclerItemClickListener;
 import com.example.oops.Utils.ViewUtils;
+import com.example.oops.activity.EpisodePlayActivity;
+import com.example.oops.activity.VideoPlay;
+import com.example.oops.activity.VideoPlayerSeries;
 import com.example.oops.adapter.FavouriteAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
@@ -153,7 +158,27 @@ public class FavouriteFragment extends Fragment {
                 commonFavModule.add(new CommonFavModule(movieData.getMovieName()
                         ,movieData.getMovieShortDescription(),movieData.getImageLink()
                         ,movieData.getMovieId(),"mov",movieData.getId()));
+
+
+                recyclerView.addOnItemTouchListener(
+                        new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                // TODO Handle item click
+
+
+    Intent j = new Intent(getActivity(), VideoPlay.class);
+    j.putExtra("moviesId", movieData.getMovieId());
+    j.putExtra("name", movieData.getMovieName());
+    startActivity(j);
+
+
+
+                            }
+                        }));
+
             }
+
         }
 
         if(favouriteDataArrayList.get(0).getSeries().size() != 0){
@@ -162,6 +187,28 @@ public class FavouriteFragment extends Fragment {
                 commonFavModule.add(new CommonFavModule(movieData.getSeriesName()
                         ,movieData.getSeriesShortDescription(),movieData.getImageLink()
                         ,movieData.getSeriesId(),"ser",movieData.getId()));
+
+
+                recyclerView.addOnItemTouchListener(
+                        new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                // TODO Handle item click
+
+
+
+
+                                    Intent j = new Intent(getActivity(), VideoPlayerSeries.class);
+                                    j.putExtra("seriesId", movieData.getSeriesId());
+                                    j.putExtra("name", movieData.getSeriesName());
+                                    startActivity(j);
+
+
+
+
+                            }
+                        }));
+
             }
         }
         favouriteAdapter.update(commonFavModule);
