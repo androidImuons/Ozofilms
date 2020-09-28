@@ -161,7 +161,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private Handler handler;
     int removePosition;
 
-
+    ArrayList<Integer> hiddenPositions = new ArrayList<>();
 
     @BindView(R.id.sdvImage)
     com.facebook.drawee.view.SimpleDraweeView sdvImage;
@@ -241,6 +241,37 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
         recylerview.setAdapter(episodeAdapter);
+        recylerview.addOnItemTouchListener(
+                new RecyclerItemClickListener(EpisodePlayActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // TODO Handle item click
+                        stringPosition ="";
+                        stringPosition = String.valueOf(position);
+
+
+
+                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                        Intent i = new Intent(EpisodePlayActivity.this,EpisodePlayActivity.class);
+                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+                        i.putExtra("name",name);
+                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+                        i.putExtra("episodeNo",episodeNo);
+                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+                        i.putExtra("storyDescription",storyDescription);
+                        i.putExtra("sessionID",sessionID);
+                        i.putExtra("Abv",stringPosition);
+                        i.putExtra("Json",json);
+
+
+
+                        startActivity(i);
+                        Log.i("ACD",stringPosition);
+
+
+
+                    }
+                }));
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -293,7 +324,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     }
     private void callGetEpisodeList() {
-        episodeDataArrayList.clear();
+
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             Dialog dialog = ViewUtils.getProgressBar(EpisodePlayActivity.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
@@ -321,31 +352,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                             }
                                /* setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();*/
-                            recylerview.addOnItemTouchListener(
-                                    new RecyclerItemClickListener(EpisodePlayActivity.this, new RecyclerItemClickListener.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(View view, int position) {
-                                            // TODO Handle item click
-                                            stringPosition = String.valueOf(position);
-                                            episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                                            Intent i = new Intent(EpisodePlayActivity.this,Episode1.class);
-                                            i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
-                                            i.putExtra("name",name);
-                                            i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
-                                            i.putExtra("episodeNo",episodeNo);
-                                            i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
-                                            i.putExtra("storyDescription",storyDescription);
-                                            i.putExtra("sessionID",sessionID);
-                                            i.putExtra("Abv",stringPosition);
 
-
-                                            startActivity(i);
-
-
-
-
-                                        }
-                                    }));
 
                         } else {
 
@@ -375,13 +382,9 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private void setDataEpisode(ArrayList<EpisodeData> data) {
         episodeDataArrayList.clear();
         episodeDataArrayList = data;
-        ArrayList<String> cars = new ArrayList<String>();
-        for (int i1 = 0; i1 < episodeDataArrayList.size(); i1++) {
+        json = new Gson().toJson(episodeDataArrayList);
 
-            cars.add(episodeDataArrayList.get(i1).getVideoLink());
 
-            Log.i("ABCB",""+cars.add(episodeDataArrayList.get(i1).getVideoLink()));
-        }
         removePosition = Integer.parseInt(Abv);
         episodeDataArrayList.remove(removePosition);
         episodeAdapter.notifyDataSetChanged();

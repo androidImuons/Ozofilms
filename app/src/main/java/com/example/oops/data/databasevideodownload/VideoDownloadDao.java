@@ -24,5 +24,5 @@ public interface VideoDownloadDao {
     void update(VideoDownloadTable videoDownloadTable);
 
     @Query("SELECT * FROM videodownload_table WHERE movieId = :movieId")
-    boolean isDataExist(boolean movieId);
+    int isDataExist(boolean movieId);
 }
