@@ -71,6 +71,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -78,6 +79,7 @@ import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -163,6 +165,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     @BindView(R.id.txtVideoHeading)
     AppCompatTextView txtVideoHeading;
     @BindView(R.id.txtSoryLine)
+
     AppCompatTextView txtSoryLine;
     @BindView(R.id.txtVideoType)
     AppCompatTextView txtVideoType;
@@ -174,8 +177,10 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private List<Subtitle> subtitleList = new ArrayList<>();
     ImageButton nextBtn;
     EpisodeAdapter episodeAdapter;
+    String  stringVideo;
     String sessionID;
-
+    String JSON;
+    List<EpisodeData> videoListOfUri =new ArrayList<>();
     ImageView imgDownload;
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
@@ -215,14 +220,17 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         txtVideoType.setText("Episode : " + episodeNo);
         Abv = i.getStringExtra("Abv");
 
-        json =i.getStringExtra("json");
+        JSON =i.getStringExtra("json");
+
 //        Log.i("Ahhhhn",""+removePosition);
         episodeDataArrayList = new ArrayList<>();
+        videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
         episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
         recylerview.setAdapter(episodeAdapter);
+
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -363,7 +371,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
 
     }
     private void makeListOfUri() {
-        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
+        for(int l = 0; l< videoListOfUri.size(); l++){
+            stringVideo= videoListOfUri.get(l).getVideoLink();
+            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+
+        }
+//        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
 
         /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
 
