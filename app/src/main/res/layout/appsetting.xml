@@ -172,8 +172,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
-
+        android:visibility="gone"
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -181,7 +180,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:text="@string/video_playback"
             android:textColor="@color/white"
@@ -193,6 +192,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/imgArrowVideoPlayBack"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
             android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
@@ -203,6 +203,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:visibility="gone"
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -210,7 +211,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:text="@string/downloads"
             android:textColor="@color/white"
@@ -222,6 +223,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:id="@+id/imgArrowDownloads"
+            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
             android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>

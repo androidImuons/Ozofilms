@@ -16,6 +16,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.example.oops.EntityClass.ChangePasswordEntitiy;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
@@ -84,30 +85,34 @@ public class ChangePassword extends AppCompatActivity {
     }
 
     private void callApi(String oldPassword, String newPassword) {
+
+        Log.d("PASSWORDS", "callApi: "+oldPassword+ "  "+newPassword);
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             final Dialog dialog = ViewUtils.getProgressBar(ChangePassword.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
             Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy( AppCommon.getInstance(this).getUserId(), oldPassword, newPassword , AppCommon.getInstance(this).getId()));
+
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {
                     AppCommon.getInstance(ChangePassword.this).clearNonTouchableFlags(ChangePassword.this);
                     dialog.dismiss();
-                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
+                    CommonResponse authResponse = (CommonResponse) response.body();
                     if (authResponse != null) {
-                        Log.i("Response::", new Gson().toJson(authResponse));
-                        if (authResponse.getSuccess() == 200) {
+                        Log.d("FORGOT_PASSWORD", new Gson().toJson(response));
+
+                        if (authResponse.getCode() == 200) {
 
 
-                            Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(ChangePassword.this, authResponse.getMessage(), Toast.LENGTH_LONG).show();
                             onBackPressed();
 //                          Response
                         } else {
-                            Toast.makeText(ChangePassword.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChangePassword.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        AppCommon.getInstance(ChangePassword.this).showDialog(ChangePassword.this, "Server Error");
+                       // AppCommon.getInstance(ChangePassword.this).showDialog(ChangePassword.this, "Server Error");
                     }
                 }
 

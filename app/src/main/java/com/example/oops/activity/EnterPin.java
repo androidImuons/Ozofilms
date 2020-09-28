@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -58,6 +59,8 @@ public class EnterPin extends AppCompatActivity {
     AppCompatImageView imgLogout;
     @BindView(R.id.forgotPin)
     TextView forgotPin;
+    @BindView(R.id.tVuser)
+    TextView userName;
 
 
     SocialData socialData;
@@ -74,6 +77,18 @@ public class EnterPin extends AppCompatActivity {
             imgLogout.setVisibility(View.GONE);
             forgotPin.setVisibility(View.GONE);
 
+
+        }
+        if(socialData==null) {
+            ResponseData userData = new Gson().fromJson(AppCommon.getInstance(this).getUserObject() , ResponseData.class);
+
+            imgLogout.setVisibility(View.VISIBLE);
+            forgotPin.setVisibility(View.VISIBLE);
+            userName.setText(userData.getUserName());
+
+
+        }else {
+            userName.setText(socialData.getUserName());
         }
 
         et1.addTextChangedListener(new TextWatcher() {
@@ -291,10 +306,13 @@ public class EnterPin extends AppCompatActivity {
 
     @OnClick(R.id.imgLogout)
     public void setImgLogout() {
-        AlertDialog.Builder adb = new AlertDialog.Builder(this);
-        adb.setTitle(getResources().getString(R.string.app_name));
+        AlertDialog.Builder adb = new AlertDialog.Builder(this,R.style.MyDialogTheme1);
+       // adb.setTitle(getResources().getString(R.string.app_name));
+        adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>TEEVOREEL</font>"));
         adb.setIcon(R.mipmap.ic_launcher_round);
-        adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+      //  adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+        adb.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure you want to logout? </font>"));
+
         adb.setPositiveButton(getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)

@@ -33,6 +33,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
     Fragment fragment;
     ArrayList<CommonFavModule> commonFavModule;
 
+
     public FavouriteAdapter(Fragment fragment, ArrayList<CommonFavModule> commonFavModule) {
         this.fragment = fragment;
         this.commonFavModule = commonFavModule;
