@@ -59,6 +59,7 @@
                 style="@style/TextInCenter"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
+                android:id="@+id/tVuser"
                 android:layout_marginRight="20dp"
                 android:text="user"
                 android:textSize="13sp"/>
