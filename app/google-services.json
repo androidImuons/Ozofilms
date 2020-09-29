@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "805036049673",
+    "firebase_url": "https://teevoreel-app-1600671229920.firebaseio.com",
+    "project_id": "teevoreel-app-1600671229920",
+    "storage_bucket": "teevoreel-app-1600671229920.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805036049673:android:5e0f422e2f886140607fd8",
+        "android_client_info": {
+          "package_name": "com.example.oops"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805036049673-net13bl1okkp3jf0vovafu9r2d246h5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoKpziglMPqlC056FHV_60-a_q-h77Mqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805036049673-net13bl1okkp3jf0vovafu9r2d246h5c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805036049673-s92rn4r8addqp4kgksh1vllt4l1ks9r1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.oops.com"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
