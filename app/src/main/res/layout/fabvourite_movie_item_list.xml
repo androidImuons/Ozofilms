@@ -25,23 +25,24 @@
         android:gravity="center"
         android:orientation="vertical"
         >
-        <TextView
+        <com.example.oops.custom.OTTTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="1"
             android:textColor="@color/white"
             android:id="@+id/movieName"
-            android:textSize="@dimen/_14sdp"
-            android:fontFamily="@font/futura_n"
+            android:textSize="@dimen/_12sdp"
+            android:fontFamily="@font/futura_light_bt"
             />
-        <TextView
+        <com.example.oops.custom.OTTTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="3"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_10sdp"
             android:textColor="@color/white"
             android:id="@+id/movieDescription"
             android:fontFamily="@font/futura_light_bt"
+
             />
 
     </LinearLayout>

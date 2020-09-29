@@ -100,12 +100,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         SimpleDraweeView movieImage;
 
         @BindView(R.id.movieName)
-        TextView movieName;
+        OTTTextView movieName;
+
         @BindView(R.id.linearLayout)
         LinearLayout linearLayout;
 
         @BindView(R.id.movieDescription)
-        TextView movieDescription;
+        OTTTextView movieDescription;
 
         public FavouriteHolder(@NonNull View itemView) {
             super(itemView);
