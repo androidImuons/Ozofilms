@@ -12,6 +12,7 @@ import android.provider.ContactsContract;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -88,6 +89,7 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ButterKnife.bind(this);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -127,7 +129,6 @@ public class Login extends Activity {
         } catch (Exception e) {
             Log.e(TAG, "printHashKey()", e);
         }
-
     }
 
     @OnClick(R.id.sign_in_button)

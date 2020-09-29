@@ -221,16 +221,44 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         Abv = i.getStringExtra("Abv");
 
         JSON =i.getStringExtra("json");
+        videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
 
 //        Log.i("Ahhhhn",""+removePosition);
         episodeDataArrayList = new ArrayList<>();
-        videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
+
         episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
         recylerview.setAdapter(episodeAdapter);
+        recylerview.addOnItemTouchListener(
+                new RecyclerItemClickListener(Episode1.this, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        // TODO Handle item click
+                        stringPosition ="";
+                        stringPosition = String.valueOf(position);
 
+
+
+                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                        Intent i = new Intent(Episode1.this,Episode1.class);
+                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+                        i.putExtra("name",name);
+                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+                        i.putExtra("episodeNo",episodeNo);
+                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+                        i.putExtra("storyDescription",storyDescription);
+                        i.putExtra("sessionID",sessionID);
+                        i.putExtra("Abv",stringPosition);
+                        i.putExtra("Json",json);
+
+
+
+                        startActivity(i);
+                        Log.i("ACD",stringPosition);
+                    }
+                }));
         if (savedInstanceState != null) {
             trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
@@ -310,28 +338,28 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                             }
                                /* setData(authResponse.getData());
                             videoUrl= authResponse.getData().getVideoLink();*/
-                            recylerview.addOnItemTouchListener(
-                                    new RecyclerItemClickListener(Episode1.this, new RecyclerItemClickListener.OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(View view, int position) {
-                                            // TODO Handle item click
-                                            stringPosition = String.valueOf(position);
-                                            episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                                            Intent i = new Intent(Episode1.this,EpisodePlayActivity.class);
-                                            i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
-                                            i.putExtra("name",name);
-                                            i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
-                                            i.putExtra("episodeNo",episodeNo);
-                                            i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
-                                            i.putExtra("storyDescription",storyDescription);
-                                            i.putExtra("sessionID",sessionID);
-                                            i.putExtra("Abv",stringPosition);
-
-
-                                            startActivity(i);
-
-                                        }
-                                    }));
+//                            recylerview.addOnItemTouchListener(
+//                                    new RecyclerItemClickListener(Episode1.this, new RecyclerItemClickListener.OnItemClickListener() {
+//                                        @Override
+//                                        public void onItemClick(View view, int position) {
+//                                            // TODO Handle item click
+//                                            stringPosition = String.valueOf(position);
+//                                            episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+//                                            Intent i = new Intent(Episode1.this,EpisodePlayActivity.class);
+//                                            i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+//                                            i.putExtra("name",name);
+//                                            i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+//                                            i.putExtra("episodeNo",episodeNo);
+//                                            i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+//                                            i.putExtra("storyDescription",storyDescription);
+//                                            i.putExtra("sessionID",sessionID);
+//                                            i.putExtra("Abv",stringPosition);
+//
+//
+//                                            startActivity(i);
+//
+//                                        }
+//                                    }));
 
                         } else {
 
