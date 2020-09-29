@@ -187,6 +187,7 @@ public class VideoPlayerSeries extends Activity {
             movieId1 = String.valueOf(movieId);
             callGetSessionApi(movieId);
         }
+        imgBackPressed.setVisibility(View.VISIBLE);
         setLayout();
         initializeDb();
 

@@ -351,7 +351,7 @@ public class EnterPin extends AppCompatActivity {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             AppCommon.getInstance(EnterPin.this).clearPreference();
-                            startActivity(new Intent(EnterPin.this, EnterPin.class));
+                            startActivity(new Intent(EnterPin.this, Login.class));
                             finishAffinity();
                             Toast.makeText(EnterPin.this, "Logout Successfully", Toast.LENGTH_SHORT).show();
 
