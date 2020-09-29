@@ -1,10 +1,13 @@
 package com.example.oops.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.oops.R;
+import com.example.oops.Utils.AppCommon;
 import com.example.oops.fragment.DownloadVideo;
 import com.example.oops.fragment.FavouriteFragment;
 import com.example.oops.fragment.HomeFragment;
@@ -32,6 +36,8 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
+
+
         loadFragment(new HomeFragment());
 //        viewPager = (ViewPager) findViewById(R.id.viewPager);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);

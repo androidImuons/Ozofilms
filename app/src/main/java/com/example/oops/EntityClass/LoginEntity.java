@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class LoginEntity implements Serializable {
 
-    String email , password;
+    String email , password ,deviceId;
 
-    public LoginEntity(String email, String password) {
+    public LoginEntity(String email, String password,String deviceId) {
         this.email = email;
         this.password = password;
+        this.deviceId = deviceId;
     }
 
     public String getEmail() {
@@ -25,5 +26,13 @@ public class LoginEntity implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

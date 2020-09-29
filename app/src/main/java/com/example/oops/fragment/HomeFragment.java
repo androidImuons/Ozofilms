@@ -253,6 +253,7 @@ public class HomeFragment extends Fragment {
 
     public void moviesDeatils(String movieId, String name) {
         startActivity(new Intent(getContext() , VideoPlay.class)
-        .putExtra("moviesId" , movieId).putExtra("name" , name));
+                .putExtra("moviesId" , movieId).putExtra("name" , name)
+                .putExtra("fav",""));
     }
 }

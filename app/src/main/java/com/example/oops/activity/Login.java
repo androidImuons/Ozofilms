@@ -89,7 +89,7 @@ public class Login extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ButterKnife.bind(this);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -167,6 +167,7 @@ public class Login extends Activity {
             entityMap.put("countryName", "India");
             entityMap.put("socialID", personId);
             entityMap.put("socialAccount", "Gmail");
+            entityMap.put("deviceId",fireBase);
             Call call = apiService.socialLogin(entityMap);
             call.enqueue(new Callback() {
                 @Override
@@ -228,7 +229,7 @@ public class Login extends Activity {
             final Dialog dialog = ViewUtils.getProgressBar(Login.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.LoginApi(new LoginEntity(email, password));
+            Call call = apiService.LoginApi(new LoginEntity(email, password,fireBase));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

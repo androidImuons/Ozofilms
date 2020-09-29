@@ -123,9 +123,9 @@ public class SearchHere extends Fragment {
     private void init() {
         searchDataArrayList = new ArrayList<>();
         gridCategoryAdapter = new GridSearchAdapter(this, searchDataArrayList);
-       // AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 500);
+        // AutoFitGridLayoutManager layoutManager = new AutoFitGridLayoutManager(this, 500);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 3 , RecyclerView.VERTICAL , false);
-       // LinearLayoutManager mLayoutManagerMy = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
+        // LinearLayoutManager mLayoutManagerMy = new LinearLayoutManager(getContext() , LinearLayoutManager.VERTICAL , false);
 
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
@@ -154,7 +154,7 @@ public class SearchHere extends Fragment {
         }
         if (AppCommon.getInstance(getContext()).isConnectingToInternet(getContext())) {
             if(!swiperefresh.isRefreshing())
-            dialog = ViewUtils.getProgressBar(getActivity());
+                dialog = ViewUtils.getProgressBar(getActivity());
             AppCommon.getInstance(getContext()).setNonTouchableFlags(getActivity());
             AppService apiService = ServiceGenerator.createService(AppService.class);
             Map<String, String> entityMap = new HashMap<>();
@@ -174,7 +174,7 @@ public class SearchHere extends Fragment {
                 public void onResponse(Call call, Response response) {
                     AppCommon.getInstance(getContext()).clearNonTouchableFlags(getActivity());
                     if(!swiperefresh.isRefreshing())
-                    dialog.dismiss();
+                        dialog.dismiss();
                     else
                         swiperefresh.setRefreshing(false);
                     if (finalIsMovies == 1) {
@@ -233,7 +233,7 @@ public class SearchHere extends Fragment {
     }
 
     private void setDataMovies(ArrayList<MoviesSearchModule> data) {
-       // searchDataArrayList = new ArrayList<>();
+        // searchDataArrayList = new ArrayList<>();
 
         for (int i = 0; i < data.size(); i++) {
             boolean isMovieValue;
@@ -263,12 +263,13 @@ public class SearchHere extends Fragment {
         if(isMovies ==1) {
             startActivity(new Intent(getContext(), VideoPlay.class)
                     .putExtra("moviesId", searchDataArrayList.get(adapterPosition).getMovieId())
-                    .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
+                    .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName())
+                    .putExtra("fav",""));
         }else {
             startActivity(new Intent(getContext(), VideoPlayerSeries.class)
                     .putExtra("seriesId", searchDataArrayList.get(adapterPosition).getMovieId())
                     .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
-         //   Toast.makeText(getContext(), ""+searchDataArrayList.get(adapterPosition).getMovieId(), Toast.LENGTH_SHORT).show();
+            //   Toast.makeText(getContext(), ""+searchDataArrayList.get(adapterPosition).getMovieId(), Toast.LENGTH_SHORT).show();
         }
     }
 }

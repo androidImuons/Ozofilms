@@ -66,9 +66,10 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
                     Intent j = new Intent(context, VideoPlay.class);
                     j.putExtra("moviesId", commonFavModule.get(position).getMovSerId());
                     j.putExtra("name", commonFavModule.get(position).getName());
+                    j.putExtra("fav","fav");
                     context.startActivity(j);
 
-                                }
+                }
                 else   if (commonFavModule.get(position).getType("ser").equalsIgnoreCase("ser")) {
                     Intent j = new Intent(context, VideoPlayerSeries.class);
                     j.putExtra("seriesId", commonFavModule.get(position).getMovSerId());
@@ -100,13 +101,12 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.Favo
         SimpleDraweeView movieImage;
 
         @BindView(R.id.movieName)
-        OTTTextView movieName;
-
+        TextView movieName;
         @BindView(R.id.linearLayout)
         LinearLayout linearLayout;
 
         @BindView(R.id.movieDescription)
-        OTTTextView movieDescription;
+        TextView movieDescription;
 
         public FavouriteHolder(@NonNull View itemView) {
             super(itemView);

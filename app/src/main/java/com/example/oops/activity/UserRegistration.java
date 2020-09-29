@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -30,7 +31,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -63,7 +67,7 @@ public class UserRegistration extends AppCompatActivity {
     CheckBox checkBox2;
     @BindView(R.id.editTextPin)
     EditText editTextPin;
-@BindView(R.id.countrySpinner)
+    @BindView(R.id.countrySpinner)
     AppCompatSpinner countrySpinner;
     List<String> spinnerCountryList;
     GoogleSignInClient mGoogleSignInClient;
@@ -72,12 +76,32 @@ public class UserRegistration extends AppCompatActivity {
 
     @BindView(R.id.login_button)
     LoginButton login_button;
+    String fireBase;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_registration);
         ButterKnife.bind(this);
         getCountryList();
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.i("getInstanceId failed::", task.getException().toString());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        fireBase = task.getResult().getToken();
+
+                        // Log and toast
+                        // String msg = getString(R.string.msg_token_fmt, token);
+                        Log.i("token::", fireBase);
+                        //   Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -134,6 +158,7 @@ public class UserRegistration extends AppCompatActivity {
             entityMap.put("countryName", "India");
             entityMap.put("socialID", personId);
             entityMap.put("socialAccount", "Gmail");
+            entityMap.put("deviceId",fireBase);
             Call call = apiService.socialLogin(entityMap);
             call.enqueue(new Callback() {
                 @Override
@@ -213,7 +238,7 @@ public class UserRegistration extends AppCompatActivity {
             final Dialog dialog = ViewUtils.getProgressBar(UserRegistration.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.RegisterApiCall(new RegistrationEntity(name, emailId, password, phoneNumber, "free" , pin));
+            Call call = apiService.RegisterApiCall(new RegistrationEntity(name, emailId, password, phoneNumber, "free" , pin,fireBase));
             call.enqueue(new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) {

@@ -309,10 +309,10 @@ public class EnterPin extends AppCompatActivity {
     @OnClick(R.id.imgLogout)
     public void setImgLogout() {
         AlertDialog.Builder adb = new AlertDialog.Builder(this,R.style.MyDialogTheme1);
-       // adb.setTitle(getResources().getString(R.string.app_name));
+        // adb.setTitle(getResources().getString(R.string.app_name));
         adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>TEEVOREEL</font>"));
         adb.setIcon(R.mipmap.ic_launcher_round);
-      //  adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
+        //  adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
         adb.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure you want to logout? </font>"));
 
         adb.setPositiveButton(getResources().getString(R.string.ok),

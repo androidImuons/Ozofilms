@@ -142,7 +142,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
 
-    String movieId;
+    String movieId,sMsg;
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -177,7 +177,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private int startWindow;
 
     private long startPosition;
-
+@BindView(R.id.txtMessage)
+        AppCompatTextView txtMessage;
 
     Button btnAbc;
 
@@ -232,7 +233,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         if (getIntent() != null) {
             movieId = getIntent().getStringExtra("moviesId");
             String name = getIntent().getStringExtra("name");
-
+            sMsg = getIntent().getStringExtra("fav");
 
             txtVideoHeading.setText(name);
             txtHeading.setVisibility(View.GONE);
@@ -473,8 +474,17 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                                     relatedAdapter.upadate(authResponse.getData());
                                 }
                         } else {
+if(sMsg.equals("fav")){
+    txtMessage.setText("No like Related Movie Found");
+    txtMessage.setVisibility(View.VISIBLE);
+    Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
+}
+else if(!sMsg.equals("fav")){
+    txtMessage.setText("No like Related Movie Found");
+    txtMessage.setVisibility(View.VISIBLE);
+    Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+}
 
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
