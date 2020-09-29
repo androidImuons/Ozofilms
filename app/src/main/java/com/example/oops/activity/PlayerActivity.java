@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -94,7 +95,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.activity_player);
+
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         getDataFromIntent();
         setupLayout();
         initSource();
@@ -212,7 +216,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onStart() {
         super.onStart();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         if (player != null)
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
             player.resumePlayer();
 
     }
@@ -220,8 +226,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onResume() {
         super.onResume();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         hideSystemUi();
         if (player != null)
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
             player.resumePlayer();
 
     }
@@ -229,7 +237,9 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onPause() {
         super.onPause();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         if (player != null)
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
             player.releasePlayer();
 
     }
@@ -368,7 +378,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     private void showSubtitleDialog() {
         //init subtitle dialog
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN);
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.MyDialogTheme);
 
 
@@ -379,10 +389,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         alertDialog = builder.create();
 
         // set the height and width of dialog
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
+        LayoutParams layoutParams = new LayoutParams();
         layoutParams.copyFrom(alertDialog.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        layoutParams.width = LayoutParams.WRAP_CONTENT;
+        layoutParams.height = LayoutParams.WRAP_CONTENT;
         layoutParams.gravity = Gravity.CENTER;
 
         alertDialog.getWindow().setAttributes(layoutParams);
@@ -466,7 +476,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     protected void slideToChangeBrightness(float deltaY) {
         Window window = PlayerUtils.scanForActivity(this).getWindow();
-        WindowManager.LayoutParams attributes = window.getAttributes();
+        LayoutParams attributes = window.getAttributes();
         int height = PlayerUtils.getScreenHeight(getApplicationContext(), false);
         if (mBrightness == -1.0f) mBrightness = 0.5f;
         float brightness = deltaY * 2 / height * 1.0f + mBrightness;

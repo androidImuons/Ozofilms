@@ -1,6 +1,7 @@
 package com.example.oops.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.oops.DataClass.SliderData;
 import com.example.oops.R;
+import com.example.oops.activity.VideoPlay;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
@@ -56,6 +58,14 @@ public class SliderAdapter  extends
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                if (sliderData.get(position).getType("mov").equalsIgnoreCase("mov")) {
+                    Intent j = new Intent(context, VideoPlay.class);
+                    j.putExtra("moviesId", sliderData.get(position).getMovieId());
+                    j.putExtra("name", sliderData.get(position).getMovieName());
+                    context.startActivity(j);
+
+//                }
                 Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
             }
         });

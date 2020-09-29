@@ -77,6 +77,7 @@ public class EnterPin extends AppCompatActivity {
             socialData = new Gson().fromJson(getIntent().getStringExtra("data"), SocialData.class);
             imgLogout.setVisibility(View.GONE);
             forgotPin.setVisibility(View.GONE);
+            forgotPin.setEnabled(false);
 
 
         }
