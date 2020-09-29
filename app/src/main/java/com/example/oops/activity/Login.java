@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -40,7 +41,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
 
 import java.security.MessageDigest;
@@ -77,12 +81,32 @@ public class Login extends Activity {
 
     @BindView(R.id.login_button)
     LoginButton login_button;
+    String fireBase;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         ButterKnife.bind(this);
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.i("getInstanceId failed::", task.getException().toString());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        fireBase = task.getResult().getToken();
+
+                        // Log and toast
+                        // String msg = getString(R.string.msg_token_fmt, token);
+                        Log.i("token::", fireBase);
+                        //   Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -103,6 +127,7 @@ public class Login extends Activity {
         } catch (Exception e) {
             Log.e(TAG, "printHashKey()", e);
         }
+
     }
 
     @OnClick(R.id.sign_in_button)
