@@ -8,6 +8,7 @@
     android:orientation="vertical"
     >
     <com.google.android.exoplayer2.ui.PlayerView
+
         android:id="@+id/demo_player_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,6 +18,7 @@
         app:fastforward_increment="10000"
         app:player_layout_id="@layout/exo_simple_player_view"
         app:resize_mode="fit"
+        app:surface_type="texture_view"
         app:rewind_increment="10000"
         app:show_timeout="5000"
         app:use_controller="true">

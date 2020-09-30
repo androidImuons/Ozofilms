@@ -81,7 +81,7 @@ public class FavouriteFragment extends Fragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                //searchDataArrayList.clear();
+                favouriteDataArrayList.clear();
                 callFavouriteApi();
             }
         });
@@ -98,6 +98,7 @@ public class FavouriteFragment extends Fragment {
     }
 
     private void callFavouriteApi() {
+
         if (AppCommon.getInstance(getContext()).isConnectingToInternet(getContext())) {
             if(!swiperefresh.isRefreshing())
                 dialog = ViewUtils.getProgressBar(getActivity());
