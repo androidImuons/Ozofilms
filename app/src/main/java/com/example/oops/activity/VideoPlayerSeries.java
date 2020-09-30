@@ -318,7 +318,7 @@ public class VideoPlayerSeries extends Activity {
         json = new Gson().toJson(episodeDataArrayList);
 
 
-        Log.d("SDOOSDVVD", "setDataEpisode: "+episodeDataArrayList);
+
 
         makeListOfUri(data);
     }
@@ -353,11 +353,8 @@ public class VideoPlayerSeries extends Activity {
                 }));
         videoUriList.add(new Video(videoUrl , Long.getLong("zero" , 1)));
 
-        /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
 
-        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
-        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
-*/
+
         if (database.videoDao().getAllUrls().size() == 0) {
             database.videoDao().insertAllVideoUrl(videoUriList);
             database.videoDao().insertAllSubtitleUrl(subtitleList);
@@ -367,29 +364,8 @@ public class VideoPlayerSeries extends Activity {
 
     private void getInit() {
 
-     /*   adapter =
-                new ArrayAdapter<SeasonData>(getApplicationContext(), android.R.layout.simple_spinner_dropdown_item, data);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        seasonSpinner.setAdapter(adapter);
-        seasonSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View v,
-                                       int postion, long arg3) {
-                // TODO Auto-generated method stub
-
-                callGetEpisodeList(postion);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-
-     */
     }
 
     private void callGetSessionApi(String movieId) {
@@ -570,6 +546,7 @@ public class VideoPlayerSeries extends Activity {
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
+
         startActivityForResult(intent, REQUEST_CODE);
     }
 

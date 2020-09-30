@@ -95,8 +95,11 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
         setContentView(R.layout.activity_player);
+
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         getDataFromIntent();
         setupLayout();
@@ -105,6 +108,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     private void getDataFromIntent() {
         videoSource = getIntent().getParcelableExtra("videoSource");
+        Log.d("AHDHHD",""+videoSource);
     }
 
     private void setupLayout() {
@@ -215,28 +219,36 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onStart() {
         super.onStart();
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         if (player != null)
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
             player.resumePlayer();
 
     }
 
     @Override
     public void onResume() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
         super.onResume();
+
         hideSystemUi();
         if (player != null)
+
             player.resumePlayer();
 
     }
 
     @Override
     public void onPause() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+        }
         super.onPause();
+
         if (player != null)
+
             player.releasePlayer();
 
     }
@@ -467,7 +479,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void disableNextButtonOnLastVideo(boolean disable) {
+        if(disable){
+            nextBtn.setImageResource(R.drawable.exo_disable_next_btn);
+            nextBtn.setEnabled(false);
+            return;
+        }
 
+        nextBtn.setImageResource(R.drawable.exo_next_btn);
+        nextBtn.setEnabled(true);
     }
 
 

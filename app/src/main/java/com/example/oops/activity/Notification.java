@@ -28,7 +28,7 @@ public class Notification extends AppCompatActivity {
     AppCompatImageView imgBackPressed;
     @BindView(R.id.switchButton)
     Switch switchButton;
-
+String str1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,18 +37,21 @@ public class Notification extends AppCompatActivity {
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.notification));
         imgBackPressed.setVisibility(View.VISIBLE);
+       switchButton.setChecked(Boolean.parseBoolean(AppCommon.getInstance(Notification.this).getNotificationObj()));
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (switchButton.isChecked()) {
-
-                    AppCommon.getInstance(Notification.this).storeNotificationObject("true");
+                    str1 = switchButton.getTextOn().toString();
+                    Toast.makeText(Notification.this,""+str1,Toast.LENGTH_LONG).show();
+                    AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
                 }
                 else {
-
-                    AppCommon.getInstance(Notification.this).storeNotificationObject("false");
+                    str1 = switchButton.getTextOff().toString();
+                    Toast.makeText(Notification.this,""+str1,Toast.LENGTH_LONG).show();
+                    AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
 
 
                 }
