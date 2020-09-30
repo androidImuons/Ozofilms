@@ -470,7 +470,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void disableNextButtonOnLastVideo(boolean disable) {
+        if(disable){
+            nextBtn.setImageResource(R.drawable.exo_disable_next_btn);
+            nextBtn.setEnabled(false);
+            return;
+        }
 
+        nextBtn.setImageResource(R.drawable.exo_next_btn);
+        nextBtn.setEnabled(true);
     }
 
 

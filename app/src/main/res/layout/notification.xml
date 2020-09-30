@@ -34,6 +34,9 @@
             android:layout_alignParentRight="true"
             android:id="@+id/switchButton"
             android:layout_centerVertical="true"
+
+            android:textOff="OFF"
+            android:textOn="ON"
             android:layout_marginRight="@dimen/margin_from_right"
             android:buttonTint="@color/login_button_color"
             android:trackTint="@color/white"

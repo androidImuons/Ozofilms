@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,8 +37,8 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
-
-
+        Log.d("dhdhjj",""+AppCommon.getInstance(this).getNotificationObj());
+//Toast.makeText(Dashboard.this,""+,Toast.LENGTH_SHORT).show();
         loadFragment(new HomeFragment());
 //        viewPager = (ViewPager) findViewById(R.id.viewPager);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
