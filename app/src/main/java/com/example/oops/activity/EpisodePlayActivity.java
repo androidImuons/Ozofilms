@@ -83,6 +83,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -399,8 +400,15 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     private void makeListOfUri() {
         for(int l = 0; l< videoListOfUri.size(); l++){
-            stringVideo= videoListOfUri.get(l).getVideoLink();
-            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+           stringVideo= videoListOfUri.get(l).getVideoLink();
+
+//            Iterator<Video> i = videoUriList.iterator();
+//            String abc = String.valueOf(i.next());
+          videoUriList.add(new Video(stringVideo, Long.getLong("zero", 1)));
+//             videoUriList.add(new Video(abcg, Long.getLong("zero", 1)));
+
+//          String abc = String.valueOf(stringVideo.contains(videourl));
+//          Log.d("dfdfff",abcg);
 
         }
 

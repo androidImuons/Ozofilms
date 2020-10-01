@@ -171,6 +171,7 @@ public class VideoPlayerSeries extends Activity {
     ArrayList<ArrayList<EpisodeData>> list;
     String thumbnailImage,categoryName;
     String see;
+    String trailerLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,6 +279,9 @@ public class VideoPlayerSeries extends Activity {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
                                 see = data.get(position).getSeasonId();
+                                 trailerLink = data.get(position).getTrailerLink();
+                                 Log.d("trailerLink",trailerLink);
+                                makeListOfUri();
 //                                List<Epis>
 
                             }
@@ -320,11 +324,11 @@ public class VideoPlayerSeries extends Activity {
 
 
 
-        makeListOfUri(data);
+
     }
 
 
-    private void makeListOfUri(ArrayList<EpisodeData> data) {
+    private void makeListOfUri() {
 
 
         recylerview.addOnItemTouchListener(
@@ -344,6 +348,7 @@ public class VideoPlayerSeries extends Activity {
                         i.putExtra("sessionID",see);
                         i.putExtra("Abv",stringPosition);
                         i.putExtra("Json",json);
+                        Log.d("JSON!",""+json);
 
 
 
@@ -351,7 +356,7 @@ public class VideoPlayerSeries extends Activity {
 
                     }
                 }));
-        videoUriList.add(new Video(videoUrl , Long.getLong("zero" , 1)));
+        videoUriList.add(new Video(trailerLink, Long.getLong("zero" , 1)));
 
 
 
