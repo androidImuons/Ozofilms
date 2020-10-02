@@ -1,6 +1,7 @@
 package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.media.AudioManager;
@@ -26,25 +27,40 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cj.videoprogressview.LightProgressView;
 import com.cj.videoprogressview.VolumeProgressView;
+import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
+import com.example.oops.ResponseClass.MovieDeatilsResponse;
+import com.example.oops.Utils.AppCommon;
+import com.example.oops.Utils.MyPreference;
 import com.example.oops.Utils.PlayerController;
 import com.example.oops.Utils.PlayerUtils;
 import com.example.oops.Utils.VideoPlayer;
 
+import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.SubtitleAdapter;
 import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.model.VideoSource;
+import com.example.oops.retrofit.AppService;
+import com.example.oops.retrofit.ServiceGenerator;
 import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.gson.Gson;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, PlayerController {
 
     private static final String TAG = "PlayerActivity";
     private PlayerView playerView;
     private VideoPlayer player;
-    private ImageButton mute, unMute, subtitle, setting, preBtn,retry,nextBtn, back;
+    private ImageButton mute, unMute, subtitle, setting, preBtn, retry, nextBtn, back;
     private ProgressBar progressBar;
     private AlertDialog alertDialog;
     private boolean mFirstTouch;
@@ -61,8 +77,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     GestureDetector mGestureDetector;
     protected int mStreamVolume;
     protected float mBrightness;
-
-
 
 
     private final AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener =
@@ -88,14 +102,14 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                     }
                 }
             };
-
+    private int nextFlag;
 
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
         setContentView(R.layout.activity_player);
@@ -104,11 +118,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         getDataFromIntent();
         setupLayout();
         initSource();
+        nextFlag = 0;
     }
 
     private void getDataFromIntent() {
         videoSource = getIntent().getParcelableExtra("videoSource");
-        Log.d("AHDHHD",""+videoSource);
+        Log.d("AHDHHD", "" + videoSource);
     }
 
     private void setupLayout() {
@@ -162,10 +177,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         );
 
 
-
-
-
-
         playerView.setOnTouchListener(new OnSwipeTouchListener(PlayerActivity.this) {
 
             public void onSwipeTop(float diffY) {
@@ -199,8 +210,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         });
 
 
-
-
         //optional setting
         playerView.getSubtitleView().setVisibility(View.GONE);
 //        player.seekToOnDoubleTap();
@@ -228,7 +237,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onResume() {
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
         super.onResume();
@@ -242,7 +251,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onPause() {
-        if(android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         }
         super.onPause();
@@ -313,8 +322,16 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_next:
 
 
-                player.seekToNext();
-                checkIfVideoHasSubtitle();
+                  //player.seekToNext();
+                if (checkIfVideoHasSubtitle()) {
+
+                    nextFlag = nextFlag + 1;
+                    callNextVideoToPlay(nextFlag-1);
+                    Log.d("palyer activity", "subtitle true");
+                } else {
+                    Log.d("palyer activity", "subtitle false");
+                }
+
                 break;
             case R.id.btn_prev:
                 player.seekToPrevious();
@@ -322,6 +339,17 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             default:
                 break;
+        }
+    }
+
+    private void callNextVideoToPlay(int nextFlag) {
+        Log.d("nextflag", "next "+nextFlag);
+        Log.d("videplyaer size", "size "+MyPreference.videoPlayList.size());
+        if (nextFlag <MyPreference.videoPlayList.size()) {
+            Log.d("next movie", "next movie");
+            callGetMoviesDetails(MyPreference.videoPlayList.get(nextFlag));
+        } else {
+            Log.d("pnext movie", "no next movie");
         }
     }
 
@@ -450,7 +478,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-
     @Override
     public void showRetryBtn(boolean visible) {
         retry.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -479,11 +506,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void disableNextButtonOnLastVideo(boolean disable) {
-        if(disable){
+        if (disable) {
             nextBtn.setImageResource(R.drawable.exo_disable_next_btn);
             nextBtn.setEnabled(false);
             return;
         }
+
 
         nextBtn.setImageResource(R.drawable.exo_next_btn);
         nextBtn.setEnabled(true);
@@ -561,14 +589,13 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             }
 
 
-
             @Override
             public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
                 if (e1 == null || e2 == null) {
                     mVolumeProgressView.setVisibility(View.GONE);
                     mLightPeogressView.setVisibility(View.GONE);
                     return false;
-                }else{
+                } else {
                     mFirstTouch = true;
                     mChangeBrightness = false;
                     mChangeVolume = false;
@@ -657,5 +684,58 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         public void onSwipeBottom(float diffY) {
         }
 
+    }
+
+    private void callGetMoviesDetails(String movieId) {
+
+        if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
+            Dialog dialog = ViewUtils.getProgressBar(PlayerActivity.this);
+            AppCommon.getInstance(this).setNonTouchableFlags(this);
+            AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
+            Map<String, String> entityMap = new HashMap<>();
+            entityMap.put("id", String.valueOf(AppCommon.getInstance(this).getId()));
+            entityMap.put("userId", String.valueOf(AppCommon.getInstance(this).getUserId()));
+            entityMap.put("movieId", String.valueOf(movieId));
+            Call call = apiService.MOVIE_DEATILS_RESPONSE_CALL(entityMap);
+            call.enqueue(new Callback() {
+                @Override
+                public void onResponse(Call call, Response response) {
+                    AppCommon.getInstance(PlayerActivity.this).clearNonTouchableFlags(PlayerActivity.this);
+                    dialog.dismiss();
+                    MovieDeatilsResponse authResponse = (MovieDeatilsResponse) response.body();
+                    if (authResponse != null) {
+                        Log.i("player activity", new Gson().toJson(authResponse));
+                        if (authResponse.getCode() == 200) {
+                            if (authResponse.getData() != null) {
+                                changevideo(authResponse.getData());
+                            }
+
+                        } else {
+
+                            Toast.makeText(PlayerActivity.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        AppCommon.getInstance(PlayerActivity.this).showDialog(PlayerActivity.this, "Server Error");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call call, Throwable t) {
+                    dialog.dismiss();
+                    AppCommon.getInstance(PlayerActivity.this).clearNonTouchableFlags(PlayerActivity.this);
+                    // loaderView.setVisibility(View.GONE);
+                    Toast.makeText(PlayerActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+        } else {
+            // no internet
+            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void changevideo(MovieDeatilsData data) {
+        player.prepareNextVideo(data);
     }
 }
