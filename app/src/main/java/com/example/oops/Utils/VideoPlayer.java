@@ -21,9 +21,12 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
+import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.R;
 import com.example.oops.activity.VideoPlay;
+import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.database.Subtitle;
+import com.example.oops.data.database.Video;
 import com.example.oops.data.model.VideoSource;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -43,6 +46,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VideoPlayer {
     private final String CLASS_NAME = VideoPlayer.class.getName();
     private static final String TAG = "VideoPlayer";
@@ -58,7 +64,7 @@ public class VideoPlayer {
     private CacheDataSourceFactory cacheDataSourceFactory;
     private VideoSource videoSource;
     private boolean isLock = false;
-
+    private AppDatabase database;
     public VideoPlayer(PlayerView playerView,
                        Context context,
                        VideoSource videoSource,
@@ -71,6 +77,7 @@ public class VideoPlayer {
         this.index = videoSource.getSelectedSourceIndex();
         initializePlayer();
 
+        database = AppDatabase.Companion.getDatabase(context);
     }
 
     /******************************************************************
@@ -104,7 +111,43 @@ public class VideoPlayer {
         //resume video
         seekToSelectedPosition(videoSource.getVideos().get(index).getWatchedLength(), false);
 
-        if (videoSource.getVideos().size() == 1 || isLastVideo())
+      //  if (videoSource.getVideos().size() == 1 || isLastVideo())
+            if(MyPreference.videoPlayList.size()!=0){
+                playerController.disableNextButtonOnLastVideo(false);
+            }else{
+                playerController.disableNextButtonOnLastVideo(true);
+            }
+
+    }
+
+    public void prepareNextVideo(MovieDeatilsData data){
+         List<Video> videoUriList = new ArrayList<>();
+        videoUriList.add(new Video(data.getVideoLink(), Long.getLong("zero", 1)));
+        List<Subtitle> subtitleList = new ArrayList<>();
+        if (database.videoDao().getAllUrls().size() == 0) {
+            database.videoDao().insertAllVideoUrl(videoUriList);
+            database.videoDao().insertAllSubtitleUrl(subtitleList);
+        }
+
+        List<VideoSource.SingleVideo> singleVideos = new ArrayList<>();
+        for (int i = 0; i < videoUriList.size(); i++) {
+
+            singleVideos.add(i, new VideoSource.SingleVideo(
+                    videoUriList.get(i).getVideoUrl(),
+                    database.videoDao().getAllSubtitles(i + 1),
+                    videoUriList.get(i).getWatchedLength())
+            );
+
+        }
+        videoSource= new VideoSource(singleVideos, 0);
+
+
+
+        mediaSource = buildMediaSource(videoSource.getVideos().get(0), cacheDataSourceFactory);
+        exoPlayer.prepare(mediaSource, true, true);
+        if (videoSource.getVideos().get(0).getWatchedLength() != null)
+            seekToSelectedPosition(videoSource.getVideos().get(0).getWatchedLength(), false);
+        if (isLastVideo())
             playerController.disableNextButtonOnLastVideo(true);
     }
 
