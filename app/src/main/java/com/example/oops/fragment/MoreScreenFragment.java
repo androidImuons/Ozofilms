@@ -119,7 +119,7 @@ public class MoreScreenFragment extends Fragment {
         adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>Logout </font>"));
         adb.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure you want to logout? </font>"));
        // adb.setMessage(getResources().getString(R.string.r_u_sure_logout_message));
-        adb.setPositiveButton(getResources().getString(R.string.ok),
+        adb.setPositiveButton(getResources().getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                     @Override
@@ -131,7 +131,7 @@ public class MoreScreenFragment extends Fragment {
                     }
 
                 });
-        adb.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+        adb.setNegativeButton(getString(R.string.no_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
