@@ -117,7 +117,6 @@ public class VideoPlayerSeries extends Activity {
     @BindView(R.id.sdvImage)
     SimpleDraweeView sdvImage;
 
-
     @BindView(R.id.seasonList)
     RelativeLayout seasonList;
 

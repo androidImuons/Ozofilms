@@ -168,6 +168,13 @@ AppCompatTextView txtTimeStamp;
                                         }
                                     });
 
+                    alertDialogBuilder.setNegativeButton("No,Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
 
                     AlertDialog alertDialog = alertDialogBuilder.create();
                     alertDialog.show();
