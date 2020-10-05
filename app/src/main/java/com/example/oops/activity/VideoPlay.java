@@ -143,7 +143,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
 
-    String movieId,sMsg;
+    String movieId,sMsg = "";
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -589,6 +589,7 @@ else if(!sMsg.equals("fav")){
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
+        intent.putExtra("selectedPosition","0");
         startActivityForResult(intent, REQUEST_CODE);
     }
 

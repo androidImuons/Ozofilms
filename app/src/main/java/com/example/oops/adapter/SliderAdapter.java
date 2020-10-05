@@ -63,10 +63,11 @@ public class SliderAdapter  extends
                     Intent j = new Intent(context, VideoPlay.class);
                     j.putExtra("moviesId", sliderData.get(position).getMovieId());
                     j.putExtra("name", sliderData.get(position).getMovieName());
+                   j.putExtra("fav","");
                     context.startActivity(j);
 
 //                }
-                Toast.makeText(context, "This is item in position " + position, Toast.LENGTH_SHORT).show();
+
             }
         });
     }

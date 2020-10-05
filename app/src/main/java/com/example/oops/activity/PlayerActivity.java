@@ -2,6 +2,7 @@ package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -50,7 +51,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private boolean mFirstTouch;
     private boolean mChangeBrightness;
     private boolean mChangeVolume;
-
+    int selectedPosition=0;
     private VideoSource videoSource;
 
     private boolean disableBackPress = false;
@@ -108,6 +109,10 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     private void getDataFromIntent() {
         videoSource = getIntent().getParcelableExtra("videoSource");
+        Intent i = this.getIntent();
+
+        selectedPosition = Integer.parseInt(i.getStringExtra("selectedPosition"));
+//       selectedPosition=Integer.valueOf(getIntent().getParcelableExtra("selectedPosition"));
         Log.d("AHDHHD",""+videoSource);
     }
 
@@ -148,7 +153,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        player = new VideoPlayer(playerView, getApplicationContext(), videoSource, this);
+        player = new VideoPlayer(playerView, getApplicationContext(), videoSource, this,selectedPosition);
 
         checkIfVideoHasSubtitle();
 
