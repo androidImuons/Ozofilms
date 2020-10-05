@@ -51,6 +51,7 @@ import static java.security.AccessController.getContext;
 
 
 public class MoreScreenFragment extends Fragment {
+
     @BindView(R.id.txtLogout)
     AppCompatTextView txtLogout;
     @BindView(R.id.txtAppSetting)
@@ -65,7 +66,6 @@ public class MoreScreenFragment extends Fragment {
     public MoreScreenFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -96,19 +96,15 @@ public class MoreScreenFragment extends Fragment {
         startActivity(new Intent(getActivity(), Support_Help.class));
     }
 
-
-
     @OnClick(R.id.txtSub)
     public void setSubscription() {
         startActivity(new Intent(getActivity(), SubscriptionActivity.class));
     }
 
-
     @OnClick(R.id.txtLegal)
     public void setTxtLegal() {
         startActivity(new Intent(getActivity(), LegalActivity.class));
     }
-
 
     private void logoutUser() {
 

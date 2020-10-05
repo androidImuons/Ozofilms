@@ -175,7 +175,9 @@ public class EnterPin extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
 
-                if (s.length() == 0) {
+                if (s.length() == 1) {
+                    AppCommon.getInstance(EnterPin.this).onHideKeyBoard(EnterPin.this);
+                }else if (s.length() == 0) {
                     et3.requestFocus();
                 }
             }

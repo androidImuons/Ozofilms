@@ -77,16 +77,14 @@
                 android:textSize="@dimen/_10sdp"
                 android:visibility="gone" />
 
-            <TextView
+            <com.example.oops.custom.OTTTextView
                 android:id="@+id/tv_downloaded_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
                 android:text="Download Status Paused"
-                android:textAppearance="?android:textAppearanceMedium"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_10sdp"
-                android:visibility="gone" />
+                />
         </LinearLayout>
 
         <LinearLayout

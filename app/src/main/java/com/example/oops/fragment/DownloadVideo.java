@@ -63,9 +63,6 @@ public class DownloadVideo extends Fragment {
 
     }
 
-
-
-
     private void getTasks() {
         class GetTasks extends AsyncTask<Void, Void, List<VideoDownloadTable>> {
 

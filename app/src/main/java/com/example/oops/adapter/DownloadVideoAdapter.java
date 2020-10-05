@@ -6,6 +6,7 @@ import android.content.Context;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
@@ -40,11 +41,12 @@ import com.google.android.exoplayer2.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAdapter.MyViewHolder> {
+public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdapter.MyViewHolder> {
     private Context mCtx;
     private List<VideoDownloadTable> taskList;
     VideoDownloadTable task;
@@ -55,6 +57,7 @@ public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAda
         this.taskList = taskList;
 
     }
+
     @Override
     public DownloadVideoAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -62,7 +65,6 @@ public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAda
 
         return new DownloadVideoAdapter.MyViewHolder(itemView);
     }
-
 
 
     public void onBindViewHolder(DownloadVideoAdapter.MyViewHolder holder, int position, List<Object> payloads) {
@@ -107,12 +109,43 @@ public class DownloadVideoAdapter  extends RecyclerView.Adapter<DownloadVideoAda
     @Override
     public void onBindViewHolder(DownloadVideoAdapter.MyViewHolder holder, int position) {
         VideoDownloadTable t = taskList.get(position);
-     holder.txtMovieName.setText(t.getMovieName());
+        holder.txtMovieName.setText(t.getMovieName());
         holder.txtMovieType.setText(t.getMovieType());
         Glide.with(mCtx).load(t.getUrlImage()).into(holder.imgDownload);
         holder.txtDescription.setText(t.getMovieDescription());
-holder.txtTimeStamp.setText(t.getTimestamp());
+        holder.txtTimeStamp.setText(t.getTimestamp());
+        holder.tvDownloadVideoStatus.setText(String.valueOf(t.getTimestamp()));
+        daysFind(t , holder , position);
 
+    }
+
+    private void daysFind(VideoDownloadTable t, MyViewHolder holder, int position) {
+        long finalDaymili = TimeUnit.DAYS.toMillis(15);
+        long downloadMili = Long.parseLong(t.getTimestamp());
+        finalDaymili = downloadMili + finalDaymili;
+        long currenttime= System.currentTimeMillis();
+        if(currenttime > finalDaymili){
+            // 15 days complete
+            VideoDownloadTable task = taskList.get(position);
+            taskList.remove(position);
+            deleteTask(task);
+        }else {
+            // leass then 15 days
+            long diff = currenttime - finalDaymili;
+            long days = TimeUnit.MILLISECONDS.toDays(finalDaymili -currenttime);
+            if(days >= 5) {
+                holder.tvDownloadVideoStatus.setText(String.valueOf(days) + " Days Left");
+                holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#228B22"));
+            }
+            else if(days == 0) {
+                holder.tvDownloadVideoStatus.setText("Video will expire today");
+                holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#800000"));
+            }else{
+
+                holder.tvDownloadVideoStatus.setText(String.valueOf(days)+" Days Left");
+                holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#800000"));
+            }
+        }
     }
 
     @Override
@@ -120,7 +153,7 @@ holder.txtTimeStamp.setText(t.getTimestamp());
         return taskList.size();
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.imgDownload)
         AppCompatImageView imgDownload;
         @BindView(R.id.txtMovieName)
@@ -128,15 +161,16 @@ holder.txtTimeStamp.setText(t.getTimestamp());
         @BindView(R.id.txtMovieType)
         AppCompatTextView txtMovieType;
         @BindView(R.id.txtDescription)
-AppCompatTextView txtDescription;
-@BindView(R.id.tv_downloaded_percentage)
+        AppCompatTextView txtDescription;
+        @BindView(R.id.tv_downloaded_percentage)
         TextView tvDownloadVideoPercentage;
-@BindView(R.id.tv_downloaded_status)
+        @BindView(R.id.tv_downloaded_status)
         TextView tvDownloadVideoStatus;
-@BindView(R.id.img_overflow)
-AppCompatImageView img_overflow;
-@BindView(R.id.txtTimeStamp)
-AppCompatTextView txtTimeStamp;
+        @BindView(R.id.img_overflow)
+        AppCompatImageView img_overflow;
+        @BindView(R.id.txtTimeStamp)
+        AppCompatTextView txtTimeStamp;
+
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -151,22 +185,22 @@ AppCompatTextView txtTimeStamp;
                     //Uncomment the below code to Set the message and title from the strings.xml file
 //                    builder.setMessage(R.string.dialog_message) .setTitle(R.string.dialog_title);
 
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx,R.style.MyDialogTheme1);
-                    alertDialogBuilder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Remove movie </font>"));
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx, R.style.MyDialogTheme1);
+                    alertDialogBuilder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Remove movie </font>"));
                     alertDialogBuilder.setIcon(R.drawable.ic_delete);
 
 //                    alertDialogBuilder.setMessage("Are you sure, You want to remove this movie ?");
-                    alertDialogBuilder.setMessage( Html.fromHtml("<font color='#FFFFFF'>Are you sure, You want to remove this movie ?</font>"));
+                    alertDialogBuilder.setMessage(Html.fromHtml("<font color='#FFFFFF'>Are you sure, You want to remove this movie ?</font>"));
 
                     alertDialogBuilder.setPositiveButton("yes",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface arg0, int arg1) {
-                                                             VideoDownloadTable task = taskList.get(getAdapterPosition());
-                deleteTask(task);
-                                            Toast.makeText(mCtx,"You clicked yes button",Toast.LENGTH_LONG).show();
-                                        }
-                                    });
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    VideoDownloadTable task = taskList.get(getAdapterPosition());
+                                    taskList.remove(getAdapterPosition());
+                                    deleteTask(task);
+                                }
+                            });
 
                     alertDialogBuilder.setNegativeButton("No,Cancel", new DialogInterface.OnClickListener() {
                         @Override
@@ -192,10 +226,9 @@ AppCompatTextView txtTimeStamp;
             Intent intent = new Intent(mCtx, OfflinePlayerActivity.class);
             intent.putExtras(bundle);
             mCtx.startActivity(intent);
-            android.util.Log.i("SUNIL2",""+task.getUrlVideo());
+            android.util.Log.i("SUNIL2", "" + task.getUrlVideo());
 
         }
-
 
 
     }
@@ -207,11 +240,12 @@ AppCompatTextView txtTimeStamp;
                 DatabaseClient.getInstance(mCtx).getAppDatabase().videoDownloadDao().delete(task);
                 return null;
             }
+
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-
-                getTasks();
+                notifyDataSetChanged();
+               // getTasks();
 //                Intent i = new Intent(mCtx,DownloadVideo.class);
 //                mCtx.startActivity(i);
 
@@ -222,8 +256,6 @@ AppCompatTextView txtTimeStamp;
         dt.execute();
 
     }
-
-
 
 
     private void getTasks() {
@@ -242,7 +274,7 @@ AppCompatTextView txtTimeStamp;
             @Override
             protected void onPostExecute(List<VideoDownloadTable> tasks) {
                 super.onPostExecute(tasks);
-
+               // notifyDataSetChanged();
 //                Intent i = new Intent(mCtx,DownloadVideo.class);
 //                mCtx.startActivity(i);
 //                mCtx.startActivity(mCtx,DownloadVideo.class);
@@ -253,7 +285,7 @@ AppCompatTextView txtTimeStamp;
         GetTasks gt = new GetTasks();
         gt.execute();
     }
-    }
+}
 
 
 

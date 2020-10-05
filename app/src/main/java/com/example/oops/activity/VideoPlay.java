@@ -272,9 +272,10 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         imgDownload.setOnClickListener(VideoPlay.this);
 //        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
 //        videoDurationInSeconds = videoDurationInSeconds % 60 ;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        millisInString = dateFormat.format(new Date());
-
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       // millisInString = dateFormat.format(new Date());
+        long time= System.currentTimeMillis();
+        millisInString = String.valueOf(time);
 
         runnableCode = new Runnable() {
             @Override
