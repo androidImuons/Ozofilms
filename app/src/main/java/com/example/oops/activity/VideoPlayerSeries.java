@@ -38,6 +38,7 @@ import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.DemoDownloadService;
 import com.example.oops.Utils.DownloadTracker;
+import com.example.oops.Utils.MyPreference;
 import com.example.oops.Utils.RecyclerItemClickListener;
 import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
@@ -140,7 +141,7 @@ public class VideoPlayerSeries extends Activity {
     EpisodeAdapter episodeAdapter;
     SeasonAdapter seasonAdapter;
     private AppDatabase database;
-    String videoUrl,episodeNo,episodeThumnailImage,episodeId,stringPosition;
+    String videoUrl, episodeNo, episodeThumnailImage, episodeId, stringPosition;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     ImageView imgDownload;
@@ -150,8 +151,6 @@ public class VideoPlayerSeries extends Activity {
     DefaultTrackSelector.Parameters qualityParams;
 
     ProgressDialog pDialog;
-
-
 
 
     private boolean startAutoPlay;
@@ -165,11 +164,11 @@ public class VideoPlayerSeries extends Activity {
     private DownloadTracker downloadTracker;
     private DownloadManager downloadManager;
     private DownloadHelper myDownloadHelper;
-    String movieId,json,movieId1;
-    String millisInString,name,storyDescription;
+    String movieId, json, movieId1;
+    String millisInString, name, storyDescription;
     private Handler handler;
     ArrayList<ArrayList<EpisodeData>> list;
-    String thumbnailImage,categoryName;
+    String thumbnailImage, categoryName;
     String see;
     String trailerLink;
     int selectedPosition;
@@ -194,10 +193,6 @@ public class VideoPlayerSeries extends Activity {
         initializeDb();
 
 
-
-
-
-
         try {
             DownloadService.start(this, DemoDownloadService.class);
         } catch (IllegalStateException e) {
@@ -205,7 +200,7 @@ public class VideoPlayerSeries extends Activity {
         }
         handler = new Handler();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        millisInString  = dateFormat.format(new Date());
+        millisInString = dateFormat.format(new Date());
 
 
         imgDownload = (ImageView) findViewById(R.id.imgDownload);
@@ -222,17 +217,18 @@ public class VideoPlayerSeries extends Activity {
         handler.post(runnableCode);
 
 
-
         //getInit();
     }
+
     @OnClick(R.id.imgBackPressed)
-    public void setImgBackPressed(){
+    public void setImgBackPressed() {
         onBackPressed();
     }
+
     private void setLayout() {
 
         episodeDataArrayList = new ArrayList<>();
-        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
+        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(), episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
@@ -240,7 +236,7 @@ public class VideoPlayerSeries extends Activity {
 
         data = new ArrayList<>();
         seasonAdapter = new SeasonAdapter(this, data);
-        RecyclerView.LayoutManager mLayoutManager1 = new GridLayoutManager(this ,3 , RecyclerView.VERTICAL , false);
+        RecyclerView.LayoutManager mLayoutManager1 = new GridLayoutManager(this, 3, RecyclerView.VERTICAL, false);
         seasonRecycleView.setLayoutManager(mLayoutManager1);
         seasonRecycleView.setItemAnimator(new DefaultItemAnimator());
         seasonRecycleView.setAdapter(seasonAdapter);
@@ -251,6 +247,7 @@ public class VideoPlayerSeries extends Activity {
     private void initializeDb() {
         database = AppDatabase.Companion.getDatabase(getApplicationContext());
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -258,6 +255,7 @@ public class VideoPlayerSeries extends Activity {
         database = null;
 
     }
+
     private void callGetEpisodeList(int position) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
             Dialog dialog = ViewUtils.getProgressBar(VideoPlayerSeries.this);
@@ -275,13 +273,13 @@ public class VideoPlayerSeries extends Activity {
                     dialog.dismiss();
                     EpisodeResponse authResponse = (EpisodeResponse) response.body();
                     if (authResponse != null) {
-                        Log.i("Test", new Gson().toJson(authResponse));
+                        Log.i("videoplayer Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
                                 see = data.get(position).getSeasonId();
-                                 trailerLink = data.get(position).getTrailerLink();
-                                 Log.d("trailerLink",trailerLink);
+                                trailerLink = data.get(position).getTrailerLink();
+                                Log.d("trailerLink", trailerLink);
                                 makeListOfUri();
 //                                List<Epis>
 
@@ -323,9 +321,6 @@ public class VideoPlayerSeries extends Activity {
         json = new Gson().toJson(episodeDataArrayList);
 
 
-
-
-
     }
 
 
@@ -338,27 +333,26 @@ public class VideoPlayerSeries extends Activity {
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
                         stringPosition = String.valueOf(position);
-                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                        Intent i = new Intent(getApplicationContext(),EpisodePlayActivity.class);
-                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
-                        i.putExtra("name",name);
-                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
-                        i.putExtra("episodeNo",episodeNo);
-                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
-                        i.putExtra("storyDescription",storyDescription);
-                        i.putExtra("sessionID",see);
-                        i.putExtra("Abv",stringPosition);
-                        i.putExtra("Json",json);
-                        Log.d("JSON!",""+json);
-
+                        episodeNo = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                        Intent i = new Intent(getApplicationContext(), EpisodePlayActivity.class);
+                        i.putExtra("videourl", episodeDataArrayList.get(position).getVideoLink());
+                        i.putExtra("name", name);
+                        i.putExtra("episodeThumnailImage", episodeDataArrayList.get(position).getThumbnailLink());
+                        i.putExtra("episodeNo", episodeNo);
+                        i.putExtra("episodeId", episodeDataArrayList.get(position).getEpisodeId());
+                        i.putExtra("storyDescription", storyDescription);
+                        i.putExtra("sessionID", see);
+                        i.putExtra("Abv", stringPosition);
+                        i.putExtra("Json", json);
+                        Log.d("JSON!", "" + json);
 
 
                         startActivity(i);
 
                     }
                 }));
-        videoUriList.add(new Video(trailerLink, Long.getLong("zero" , 1)));
 
+        videoUriList.add(new Video(trailerLink, Long.getLong("zero", 1)));
 
 
         if (database.videoDao().getAllUrls().size() == 0) {
@@ -369,7 +363,6 @@ public class VideoPlayerSeries extends Activity {
     }
 
     private void getInit() {
-
 
 
     }
@@ -431,7 +424,7 @@ public class VideoPlayerSeries extends Activity {
         seasonAdapter.update(data);
         sdvImage.setImageURI(data.get(0).getThumbnailLink());
         txtSoryLine.setText(data.get(0).getSeasonDetails());
-        for(int i=0;i<data.size();i++){
+        for (int i = 0; i < data.size(); i++) {
 
             thumbnailImage = data.get(i).getThumbnailLink();
             storyDescription = data.get(i).getSeasonDetails();
@@ -439,27 +432,27 @@ public class VideoPlayerSeries extends Activity {
 
         }
 
-        seasonbtn.setText("Season "+data.get(0).getSeasonNo());
+        seasonbtn.setText("Season " + data.get(0).getSeasonNo());
         callGetEpisodeList(0);        //   adapter.notifyDataSetChanged();
     }
 
     public void setSeasonClick(int adapterPosition) {
         callGetEpisodeList(adapterPosition);
         seasonList.setVisibility(View.GONE);
-        seasonbtn.setText("Season "+data.get(adapterPosition).getSeasonNo());
+        seasonbtn.setText("Season " + data.get(adapterPosition).getSeasonNo());
     }
 
     @OnClick(R.id.seasonbtn)
-    void setClick(){
+    void setClick() {
         seasonList.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.like)
-    void  setLike(){
-        if(like.isSelected()){
+    void setLike() {
+        if (like.isSelected()) {
             like.setSelected(false);
 
-        }else
+        } else
             like.setSelected(true);
         addAndRemoveLike(like.isSelected());
     }
@@ -486,9 +479,9 @@ public class VideoPlayerSeries extends Activity {
                         Log.i("Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
-                                if(authResponse.getMessage().equals("Added To Favourite Successfully")){
+                                if (authResponse.getMessage().equals("Added To Favourite Successfully")) {
                                     like.setSelected(true);
-                                }else {
+                                } else {
                                     like.setSelected(false);
                                 }
                             }
@@ -555,14 +548,6 @@ public class VideoPlayerSeries extends Activity {
 
         startActivityForResult(intent, REQUEST_CODE);
     }
-
-
-
-
-
-
-
-
 
 
 }

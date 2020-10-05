@@ -1,4 +1,11 @@
 package com.example.oops.Utils;
+
+import com.example.oops.activity.VideoPlay;
+import com.example.oops.data.database.Video;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /*
  * Created by Tabish on 06-05-2020.
  */
@@ -26,4 +33,5 @@ public class MyPreference {
     public static String notificationObj = "NotificationObj";
     public static String GameToken = "gameToken";
     public static String SocialType = "SocialType";
+    public static List<String> videoPlayList=new ArrayList<>();
 }

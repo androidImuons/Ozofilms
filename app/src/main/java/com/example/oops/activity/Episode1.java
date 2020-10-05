@@ -328,7 +328,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                     dialog.dismiss();
                     EpisodeResponse authResponse = (EpisodeResponse) response.body();
                     if (authResponse != null) {
-                        Log.i("Test", new Gson().toJson(authResponse));
+                        Log.i("episode1 Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
