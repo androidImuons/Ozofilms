@@ -113,11 +113,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
     ImageView img;
+
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
-
 
 
     DownloadRequest downloadRequest;
@@ -126,7 +126,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     List<TrackKey> trackKeys = new ArrayList<>();
     List<String> optionsToDownload = new ArrayList<String>();
 
-    List<EpisodeData> videoListOfUri =new ArrayList<>();
+    List<EpisodeData> videoListOfUri = new ArrayList<>();
 
     DefaultTrackSelector.Parameters qualityParams;
 
@@ -155,8 +155,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private DownloadHelper myDownloadHelper;
 
 
-
-    private String videoUrl,Abv,stringPosition,see,sPosition;
+    private String videoUrl, Abv, stringPosition, see, sPosition;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
@@ -172,7 +171,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     AppCompatTextView txtSoryLine;
     @BindView(R.id.txtVideoType)
     AppCompatTextView txtVideoType;
-    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
+    String videourl, name, storyDescription, episodeNo, episodeThumnailImage, episodeId, json;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
     private AppDatabase database;
@@ -182,12 +181,14 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     EpisodeAdapter episodeAdapter;
     String sessionID;
     String JSON;
-    String  stringVideo;
+    String stringVideo;
     int selectedPosition;
 
     List<EpisodeData> episodeDataList;
 
     ImageView imgDownload;
+    private EpisodeData episodeRemoveObj;
+
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -226,19 +227,16 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         JSON = i.getStringExtra("Json");
 
 
-
         videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
-
-
 
 
         txtVideoType.setText("Episode : " + episodeNo);
         sPosition = i.getStringExtra("Abv");
 
-        json =i.getStringExtra("json");
+        json = i.getStringExtra("json");
 //        Log.i("Ahhhhn",""+removePosition);
         episodeDataArrayList = new ArrayList<>();
-        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
+        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(), episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
@@ -248,11 +246,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
-                        stringPosition ="";
+                        stringPosition = "";
                         stringPosition = String.valueOf(position);
 
-                        selectedPosition=position;
-                        Toast.makeText(EpisodePlayActivity.this,""+selectedPosition,Toast.LENGTH_LONG).show();
+                        selectedPosition = position;
+                        Toast.makeText(EpisodePlayActivity.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
 
                         txtVideoHeading.setText(episodeDataArrayList.get(position).getEpisodeName());
 //                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
@@ -268,11 +266,17 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 //                        i.putExtra("Json",json);
 
 
-
 //                        startActivity(i);
 //                        Log.i("ACD",stringPosition);
 
 
+                        if (episodeRemoveObj != null) {
+                            episodeDataArrayList.add(episodeRemoveObj);
+                        }
+                        episodeRemoveObj = episodeDataArrayList.get(position);
+                        episodeDataArrayList.remove(position);
+                        episodeAdapter.notifyDataSetChanged();
+                        episodeAdapter.update(episodeDataArrayList);
 
                     }
                 }));
@@ -298,7 +302,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         }
         handler = new Handler();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        millisInString  = dateFormat.format(new Date());
+        millisInString = dateFormat.format(new Date());
         imgDownload = findViewById(R.id.imgDownload);
 
         imgDownload.setOnClickListener(this);
@@ -320,6 +324,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private void initializeDb() {
         database = AppDatabase.Companion.getDatabase(getApplicationContext());
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -327,6 +332,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         database = null;
 
     }
+
     private void callGetEpisodeList() {
 
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -388,36 +394,21 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         episodeDataArrayList = data;
         json = new Gson().toJson(episodeDataArrayList);
 
-
-
-
-
         removePosition = Integer.parseInt(sPosition);
         episodeDataArrayList.get(removePosition);
 
-        EpisodeData obj=episodeDataArrayList.get(removePosition);
 
-
-        episodeDataArrayList.remove(removePosition);
-        episodeAdapter.notifyDataSetChanged();
         episodeAdapter.update(episodeDataArrayList);
-
-        episodeDataArrayList.add(obj);
-
-
-
-
-
     }
 
 
     private void makeListOfUri() {
-        for(int l = 0; l< videoListOfUri.size(); l++){
-           stringVideo= videoListOfUri.get(l).getVideoLink();
+        for (int l = 0; l < videoListOfUri.size(); l++) {
+            stringVideo = videoListOfUri.get(l).getVideoLink();
 
 //            Iterator<Video> i = videoUriList.iterator();
 //            String abc = String.valueOf(i.next());
-          videoUriList.add(new Video(stringVideo, Long.getLong("zero", 1)));
+            videoUriList.add(new Video(stringVideo, Long.getLong("zero", 1)));
 //             videoUriList.add(new Video(abcg, Long.getLong("zero", 1)));
 
 //          String abc = String.valueOf(stringVideo.contains(videourl));
@@ -463,10 +454,9 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
-        intent.putExtra("selectedPosition",sPosition);
+        intent.putExtra("selectedPosition", sPosition);
         startActivityForResult(intent, REQUEST_CODE);
     }
-
 
 
     @Override
@@ -475,8 +465,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         releasePlayer();
         clearStartPosition();
         setIntent(intent);
-
-
 
 
     }
@@ -524,19 +512,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
-
-
-
-
-
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onClick(View view) {
 
         switch (view.getId()) {
-
 
 
             case R.id.imgDownload:
@@ -563,11 +543,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
-
-
-
-
     private void fetchDownloadOptions() {
         trackKeys.clear();
 
@@ -581,10 +556,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         }
 
 //            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
-             downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videourl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
-
-
-
+        downloadHelper = DownloadHelper.forHls(EpisodePlayActivity.this, Uri.parse(videourl), dataSourceFactory, new DefaultRenderersFactory(EpisodePlayActivity.this));
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -604,7 +576,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                         }
                     }
                 }
-
 
 
                 if (pDialog != null && pDialog.isShowing()) {
@@ -629,9 +600,9 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this,R.style.MyDialogTheme1);
-       // builder.setTitle("Select Download Format");
-        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format </font>"));
+        AlertDialog.Builder builder = new AlertDialog.Builder(EpisodePlayActivity.this, R.style.MyDialogTheme1);
+        // builder.setTitle("Select Download Format");
+        builder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Select Download Format </font>"));
 
         int checkedItem = 1;
 
@@ -639,9 +610,9 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         for (int i = 0; i < trackKeyss.size(); i++) {
             TrackKey trackKey = trackKeyss.get(i);
             long bitrate = trackKey.getTrackFormat().bitrate;
-            long getInBytes =  (bitrate * 128)/8;
+            long getInBytes = (bitrate * 128) / 8;
             String getInMb = AppUtil.formatFileSize(getInBytes);
-            String videoResoultionDashSize =  " "+trackKey.getTrackFormat().height +"      ("+getInMb+")";
+            String videoResoultionDashSize = " " + trackKey.getTrackFormat().height + "      (" + getInMb + ")";
             optionsToDownload.add(i, videoResoultionDashSize);
         }
 
@@ -669,7 +640,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                         .build();
 
 
-
             }
         });
         // Set the a;ert dialog positive button
@@ -692,10 +662,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
 
 //                    videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
-                     downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videourl));
-
-
-
+                downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videourl));
 
 
                 if (downloadRequest.streamKeys.isEmpty()) {
@@ -719,7 +686,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-        DownloadRequest   myDownloadRequest = downloadRequestt;
+        DownloadRequest myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
@@ -728,7 +695,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
             return;
         } else {
-
 
 
             saveTask();
@@ -740,14 +706,13 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     private void initializePlayer() {
 
 
         TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory();
 
         //    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, null, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
-        RenderersFactory renderersFactory =  ((Ooops) getApplication()).buildRenderersFactory(true)  ;
+        RenderersFactory renderersFactory = ((Ooops) getApplication()).buildRenderersFactory(true);
 
         trackSelector = new DefaultTrackSelector(trackSelectionFactory);
         trackSelector.setParameters(trackSelectorParameters);
@@ -765,18 +730,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         );
 
 
-
-
-
-
-
     }
 
     private boolean shouldDownload(Format track) {
         return track.height != 240 && track.sampleMimeType.equalsIgnoreCase("video/avc");
     }
-
-
 
 
     /**
@@ -785,10 +743,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     private DataSource.Factory buildDataSourceFactory() {
         return ((Ooops) getApplication()).buildDataSourceFactory();
     }
-
-
-
-
 
 
     private void setProgress() {
@@ -802,7 +756,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
             public void run() {
 
 
-
                 handler.postDelayed(this, 1000);
 
             }
@@ -810,27 +763,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
-
-
-
-
-
-
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
     }
-
-
-
-
-
-
-
-
-
 
 
     @Override
@@ -881,11 +818,10 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
-                if(download.request.uri.toString().equals(videourl)){
+                if (download.request.uri.toString().equals(videourl)) {
 
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
-
 
 
                 break;
@@ -913,7 +849,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         updateTrackSelectorParameters();
 
 
-
         trackSelector = null;
 
 
@@ -926,17 +861,11 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-
     private void clearStartPosition() {
         startAutoPlay = true;
         startWindow = C.INDEX_UNSET;
         startPosition = C.TIME_UNSET;
     }
-
-
-
-
-
 
 
     private void saveTask() {
@@ -948,20 +877,19 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
             protected Void doInBackground(Void... voids) {
 
 //                    videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
-                    VideoDownloadTable task = new VideoDownloadTable();
-                    task.setTimestamp(millisInString);
-                    task.setMovieId(episodeId);
-                    task.setMovieName(name);
-                    task.setMovieType("Web Series");
-                    task.setUrlVideo( videourl);
-                    task.setMovieDescription(storyDescription);
-                    task.setUrlImage(episodeThumnailImage);
+                VideoDownloadTable task = new VideoDownloadTable();
+                task.setTimestamp(millisInString);
+                task.setMovieId(episodeId);
+                task.setMovieName(name);
+                task.setMovieType("Web Series");
+                task.setUrlVideo(videourl);
+                task.setMovieDescription(storyDescription);
+                task.setUrlImage(episodeThumnailImage);
 
-                    //adding to database
-                    DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
-                            .videoDownloadDao()
-                            .insert(task);
-
+                //adding to database
+                DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
+                        .videoDownloadDao()
+                        .insert(task);
 
 
                 //creating a task
@@ -981,11 +909,6 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         SaveTask st = new SaveTask();
         st.execute();
     }
-
-
-
-
-
 
 
 }
