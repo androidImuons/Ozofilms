@@ -63,6 +63,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
 
     }
+
 //    private void Layout_hide() {
 //        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
 //        params.height = 0;
@@ -76,6 +77,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
     public void update(ArrayList<EpisodeData> episodeDataArrayList) {
         this.episodeDataArrayList = episodeDataArrayList;
+
         notifyDataSetChanged();
     }
 
