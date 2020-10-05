@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,8 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
     ArrayList<EpisodeData> episodeDataArrayList;
     Context context;
 
+     LinearLayout layout;
+  LinearLayout.LayoutParams params;
     public EpisodeAdapter(Activity activity, Context context,ArrayList<EpisodeData> episodeDataArrayList) {
         this.activity = activity;
         this.episodeDataArrayList = episodeDataArrayList;
@@ -44,6 +47,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
                 .inflate(R.layout.season_item, parent, false);
         return  new EpisodeHolder(itemView);
     }
+    private void Layout_hide() {
+        params.height = 0;
+        //itemView.setLayoutParams(params); //This One.
+        layout.setLayoutParams(params);   //Or This one.
+
+    }
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeHolder holder, int position) {
@@ -54,7 +63,12 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
 
     }
-
+//    private void Layout_hide() {
+//        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
+//        params.height = 0;
+//        params.width = 0;
+//        holder.itemView.setLayoutParams(params);
+//    }
     @Override
     public int getItemCount() {
         return episodeDataArrayList.size();

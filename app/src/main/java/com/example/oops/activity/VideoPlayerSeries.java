@@ -171,6 +171,7 @@ public class VideoPlayerSeries extends Activity {
     String thumbnailImage, categoryName;
     String see;
     String trailerLink;
+    int selectedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -23,6 +23,7 @@ import android.view.WindowManager;
 
 import com.example.oops.DataClass.MovieDeatilsData;
 import com.example.oops.R;
+import com.example.oops.activity.PlayerActivity;
 import com.example.oops.activity.VideoPlay;
 import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.database.Subtitle;
@@ -63,22 +64,27 @@ public class VideoPlayer {
     private ComponentListener componentListener;
     private CacheDataSourceFactory cacheDataSourceFactory;
     private VideoSource videoSource;
+    private int selectedPosition=0;
     private boolean isLock = false;
     private AppDatabase database;
     public VideoPlayer(PlayerView playerView,
                        Context context,
                        VideoSource videoSource,
-                       PlayerController mView) {
+                       PlayerController mView,
+                       int selectedPosition) {
 
         this.playerView = playerView;
         this.context = context;
         this.playerController = mView;
+        this.selectedPosition=selectedPosition;
         this.videoSource = videoSource;
         this.index = videoSource.getSelectedSourceIndex();
         initializePlayer();
 
         database = AppDatabase.Companion.getDatabase(context);
     }
+
+
 
     /******************************************************************
      initialize ExoPlayer
@@ -106,7 +112,13 @@ public class VideoPlayer {
         exoPlayer.setPlayWhenReady(true);
         exoPlayer.addListener(componentListener);
         //build mediaSource depend on video type (Regular, HLS, DASH, etc)
-        mediaSource = buildMediaSource(videoSource.getVideos().get(index), cacheDataSourceFactory);
+        if(selectedPosition==0){
+            mediaSource = buildMediaSource(videoSource.getVideos().get(index), cacheDataSourceFactory);
+
+        }else{
+            mediaSource = buildMediaSource(videoSource.getVideos().get(selectedPosition), cacheDataSourceFactory);
+
+        }
         exoPlayer.prepare(mediaSource);
         //resume video
         seekToSelectedPosition(videoSource.getVideos().get(index).getWatchedLength(), false);

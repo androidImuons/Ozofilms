@@ -156,7 +156,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
 
 
-    private String videoUrl,Abv,stringPosition,see;
+    private String videoUrl,Abv,stringPosition,see,sPosition;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
@@ -183,6 +183,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
     String sessionID;
     String JSON;
     String  stringVideo;
+    int selectedPosition;
 
     List<EpisodeData> episodeDataList;
 
@@ -232,7 +233,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
 
 
         txtVideoType.setText("Episode : " + episodeNo);
-        Abv = i.getStringExtra("Abv");
+        sPosition = i.getStringExtra("Abv");
 
         json =i.getStringExtra("json");
 //        Log.i("Ahhhhn",""+removePosition);
@@ -250,24 +251,26 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
                         stringPosition ="";
                         stringPosition = String.valueOf(position);
 
+                        selectedPosition=position;
+                        Toast.makeText(EpisodePlayActivity.this,""+selectedPosition,Toast.LENGTH_LONG).show();
+
+                        txtVideoHeading.setText(episodeDataArrayList.get(position).getEpisodeName());
+//                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+//                        Intent i = new Intent(EpisodePlayActivity.this,EpisodePlayActivity.class);
+//                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
+//                        i.putExtra("name",name);
+//                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
+//                        i.putExtra("episodeNo",episodeNo);
+//                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
+//                        i.putExtra("storyDescription",storyDescription);
+//                        i.putExtra("sessionID",sessionID);
+//                        i.putExtra("Abv",stringPosition);
+//                        i.putExtra("Json",json);
 
 
-                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                        Intent i = new Intent(EpisodePlayActivity.this,EpisodePlayActivity.class);
-                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
-                        i.putExtra("name",name);
-                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
-                        i.putExtra("episodeNo",episodeNo);
-                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
-                        i.putExtra("storyDescription",storyDescription);
-                        i.putExtra("sessionID",sessionID);
-                        i.putExtra("Abv",stringPosition);
-                        i.putExtra("Json",json);
 
-
-
-                        startActivity(i);
-                        Log.i("ACD",stringPosition);
+//                        startActivity(i);
+//                        Log.i("ACD",stringPosition);
 
 
 
@@ -386,7 +389,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         json = new Gson().toJson(episodeDataArrayList);
 
 
-        removePosition = Integer.parseInt(Abv);
+        removePosition = Integer.parseInt(sPosition);
         episodeDataArrayList.remove(removePosition);
         episodeAdapter.notifyDataSetChanged();
         episodeAdapter.update(episodeDataArrayList);
@@ -450,6 +453,7 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
+        intent.putExtra("selectedPosition",sPosition);
         startActivityForResult(intent, REQUEST_CODE);
     }
 
