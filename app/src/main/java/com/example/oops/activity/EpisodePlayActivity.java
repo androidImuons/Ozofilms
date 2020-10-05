@@ -389,10 +389,20 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         json = new Gson().toJson(episodeDataArrayList);
 
 
+
+
+
         removePosition = Integer.parseInt(sPosition);
+        episodeDataArrayList.get(removePosition);
+
+        EpisodeData obj=episodeDataArrayList.get(removePosition);
+
+
         episodeDataArrayList.remove(removePosition);
         episodeAdapter.notifyDataSetChanged();
         episodeAdapter.update(episodeDataArrayList);
+
+        episodeDataArrayList.add(obj);
 
 
 
