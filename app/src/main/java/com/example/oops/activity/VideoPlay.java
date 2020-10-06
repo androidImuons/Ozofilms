@@ -402,7 +402,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                         Log.i("Test", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null)
-                                setData(authResponse.getData());
+
                             videoUrl = authResponse.getData().getVideoLink();
                             movieName = authResponse.getData().getMovieName();
                             thumbnailImage = authResponse.getData().getImageLink();
@@ -422,7 +422,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                             addOn = authResponse.getData().getAddedOn();
                             releaseDate = authResponse.getData().getReleaseDate();
                             subTitle = authResponse.getData().getSubtitles();
-
+                            setData(authResponse.getData());
 
                         } else {
 
@@ -509,8 +509,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
     private void setData(MovieDeatilsData data) {
-        callRelativeMovies(data);
-
 
         if (data.getIsFavourite() == 0) {
             like.setSelected(false);
@@ -539,6 +537,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             txtVideoType.setText("N/A");
         if (data.getBannerLink() != null && !data.getBannerLink().equals(""))
             sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
+
+        callRelativeMovies(data);
         makeListOfUri(data);
     }
 

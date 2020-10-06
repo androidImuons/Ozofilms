@@ -140,7 +140,7 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/storyline"
                 android:textColor="@color/login_button_color"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_12sdp" />
 
             <com.example.oops.custom.OTTTextView
 
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                 android:textColor="@color/white"
-                android:textSize="14sp" />
+                android:textSize="@dimen/_12sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/cast"
                     android:textColor="@color/login_button_color"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <com.example.oops.custom.OTTTextView
                     android:id="@+id/txtCastName"
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="50dp"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 
@@ -185,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/director"
                     android:textColor="@color/login_button_color"
-                    android:textSize="@dimen/_13sdp" />
+                    android:textSize="@dimen/_12sdp" />
 
                 <com.example.oops.custom.OTTTextView
                     android:id="@+id/txtDirectorName"
@@ -194,7 +194,7 @@
                     android:layout_marginLeft="50dp"
                     android:text="Nida and Sami are poles apart. Their worlds collide at an internship, where they initially rub each other the wrong way, but soon find themselves warming up to the other person."
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/_12sdp" />
 
             </LinearLayout>
 

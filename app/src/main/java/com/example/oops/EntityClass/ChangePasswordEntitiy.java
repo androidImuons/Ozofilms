@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 public class ChangePasswordEntitiy implements Serializable {
     String userId,oldPassword,newPassword;
-    int id;
+    String id;
 
-    public ChangePasswordEntitiy(String userId, String oldPassword, String newPassword, int id) {
+    public ChangePasswordEntitiy(String userId, String oldPassword, String newPassword, String id) {
         this.userId = userId;
         this.oldPassword = oldPassword;
         this.newPassword = newPassword;

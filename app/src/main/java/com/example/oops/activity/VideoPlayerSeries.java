@@ -330,10 +330,15 @@ public class VideoPlayerSeries extends Activity {
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        // TODO Handle item click
-                        stringPosition = String.valueOf(position);
+
+                        selectedPosition = position;
+                        Toast.makeText(VideoPlayerSeries.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
+
+                        txtVideoHeading.setText(episodeDataArrayList.get(position).getEpisodeName());
+
+                          /*  stringPosition = String.valueOf(position);
                         episodeNo = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                        Intent i = new Intent(getApplicationContext(), EpisodePlayActivity.class);
+                    Intent i = new Intent(getApplicationContext(), EpisodePlayActivity.class);
                         i.putExtra("videourl", episodeDataArrayList.get(position).getVideoLink());
                         i.putExtra("name", name);
                         i.putExtra("episodeThumnailImage", episodeDataArrayList.get(position).getThumbnailLink());
@@ -347,7 +352,7 @@ public class VideoPlayerSeries extends Activity {
 
 
                         startActivity(i);
-
+*/
                     }
                 }));
 
@@ -539,12 +544,20 @@ public class VideoPlayerSeries extends Activity {
     }
 
 
-    //start player for result due to future features
+   /* //start player for result due to future features
     public void goToPlayerActivity(VideoSource videoSource) {
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
 
+        startActivityForResult(intent, REQUEST_CODE);
+    }*/
+
+    public void goToPlayerActivity(VideoSource videoSource) {
+        int REQUEST_CODE = 1000;
+        Intent intent = new Intent(VideoPlayerSeries.this, PlayerActivity.class);
+        intent.putExtra("videoSource", videoSource);
+        intent.putExtra("selectedPosition", selectedPosition);
         startActivityForResult(intent, REQUEST_CODE);
     }
 

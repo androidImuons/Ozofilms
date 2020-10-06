@@ -17,6 +17,7 @@ import com.example.oops.EntityClass.ChangePasswordEntitiy;
 import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
+import com.example.oops.ResponseClass.CommonResponseObject;
 import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
@@ -39,7 +40,7 @@ public class ChangePassword extends AppCompatActivity {
     @BindView(R.id.editTextNewPassword)
     AppCompatEditText editTextNewPassWord;
     String sNewPassword;
-        @BindView(R.id.imgBackPressed)
+    @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     @BindView(R.id.editTextConfirmPassword)
     AppCompatEditText editTextConfirmPassword;
@@ -92,20 +93,19 @@ public class ChangePassword extends AppCompatActivity {
             final Dialog dialog = ViewUtils.getProgressBar(ChangePassword.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class, AppCommon.getInstance(this).getToken());
-            Call call = apiService.ChangePasswordApi(new ChangePasswordEntitiy( AppCommon.getInstance(this).getUserId(), oldPassword, newPassword , AppCommon.getInstance(this).getId()));
+            Call<CommonResponseObject> call = apiService.ChangePasswordApi(new ChangePasswordEntitiy(
+                    AppCommon.getInstance(this).getUserId(), oldPassword, newPassword , String.valueOf(AppCommon.getInstance(this).getId())));
 
-            call.enqueue(new Callback() {
+            call.enqueue(new Callback<CommonResponseObject>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<CommonResponseObject> call, Response<CommonResponseObject> response) {
                     AppCommon.getInstance(ChangePassword.this).clearNonTouchableFlags(ChangePassword.this);
                     dialog.dismiss();
-                    CommonResponse authResponse = (CommonResponse) response.body();
+                    CommonResponseObject authResponse = response.body();
                     if (authResponse != null) {
                         Log.d("FORGOT_PASSWORD", new Gson().toJson(response));
 
                         if (authResponse.getCode() == 200) {
-
-
                             Toast.makeText(ChangePassword.this, authResponse.getMessage(), Toast.LENGTH_LONG).show();
                             onBackPressed();
 //                          Response
@@ -118,7 +118,7 @@ public class ChangePassword extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<CommonResponseObject> call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(ChangePassword.this).clearNonTouchableFlags(ChangePassword.this);
                     // loaderView.setVisibility(View.GONE);
