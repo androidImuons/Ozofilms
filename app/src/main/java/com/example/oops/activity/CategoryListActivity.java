@@ -124,4 +124,10 @@ public class CategoryListActivity extends AppCompatActivity {
     void backBtn(){
         onBackPressed();
     }
+
+    public void moviesDeatils(String movieId, String movieName) {
+        startActivity(new Intent(this , VideoPlay.class)
+                .putExtra("moviesId" , movieId).putExtra("name" , movieName)
+                .putExtra("fav",""));
+    }
 }

@@ -143,7 +143,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
 
-    String movieId,sMsg = "";
+    String movieId, sMsg = "";
 
     // Saved instance state keys.
     private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
@@ -178,8 +178,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private int startWindow;
 
     private long startPosition;
-@BindView(R.id.txtMessage)
-        AppCompatTextView txtMessage;
+    @BindView(R.id.txtMessage)
+    AppCompatTextView txtMessage;
 
     Button btnAbc;
 
@@ -273,8 +273,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 //        videoDurationInSeconds = MediaPlayer.create(VideoPlay.this, Uri.parse(videoUrl)).getDuration();
 //        videoDurationInSeconds = videoDurationInSeconds % 60 ;
         //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-       // millisInString = dateFormat.format(new Date());
-        long time= System.currentTimeMillis();
+        // millisInString = dateFormat.format(new Date());
+        long time = System.currentTimeMillis();
         millisInString = String.valueOf(time);
 
         runnableCode = new Runnable() {
@@ -321,7 +321,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     public void setImgBackPressed() {
         onBackPressed();
     }
-
 
 
     private void addAndRemoveLike(boolean selected) {
@@ -477,16 +476,15 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                                     relatedAdapter.upadate(authResponse.getData());
                                 }
                         } else {
-if(sMsg.equals("fav")){
-    txtMessage.setText("No like Related Movie Found");
-    txtMessage.setVisibility(View.VISIBLE);
-    Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
-}
-else if(!sMsg.equals("fav")){
-    txtMessage.setText("No like Related Movie Found");
-    txtMessage.setVisibility(View.VISIBLE);
-    Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
-}
+                            if (sMsg.equals("fav")) {
+                                txtMessage.setText("No like Related Movie Found");
+                                txtMessage.setVisibility(View.VISIBLE);
+                                Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
+                            } else if (!sMsg.equals("fav")) {
+                                txtMessage.setText("No like Related Movie Found");
+                                txtMessage.setVisibility(View.VISIBLE);
+                                Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
                         }
                     } else {
@@ -514,10 +512,10 @@ else if(!sMsg.equals("fav")){
         callRelativeMovies(data);
 
 
-        if(data.getIsFavourite()==0){
+        if (data.getIsFavourite() == 0) {
             like.setSelected(false);
 
-        }else {
+        } else {
             like.setSelected(true);
         }
         if (data.getMovieLongDescription() != null)
@@ -539,8 +537,8 @@ else if(!sMsg.equals("fav")){
             txtVideoType.setText(data.getCategoryName());
         else
             txtVideoType.setText("N/A");
-        if(data.getBannerLink() != null && !data.getBannerLink().equals(""))
-        sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
+        if (data.getBannerLink() != null && !data.getBannerLink().equals(""))
+            sdvImage.setController(AppCommon.getInstance(this).getDraweeController(sdvImage, data.getBannerLink(), 1024));
         makeListOfUri(data);
     }
 
@@ -590,7 +588,7 @@ else if(!sMsg.equals("fav")){
         int REQUEST_CODE = 1000;
         Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
-        intent.putExtra("selectedPosition","0");
+        intent.putExtra("selectedPosition", "0");
         startActivityForResult(intent, REQUEST_CODE);
     }
 
@@ -741,9 +739,9 @@ else if(!sMsg.equals("fav")){
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this,R.style.MyDialogTheme1);
-      //  builder.setTitle("Select Download Format");
-        builder.setTitle( Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
+        AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this, R.style.MyDialogTheme1);
+        //  builder.setTitle("Select Download Format");
+        builder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
 
         int checkedItem = 1;
 

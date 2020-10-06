@@ -144,8 +144,6 @@ public class FavouriteFragment extends Fragment {
                     Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
-
-
         } else {
             // no internet
             Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
@@ -159,12 +157,7 @@ public class FavouriteFragment extends Fragment {
                 commonFavModule.add(new CommonFavModule(movieData.getMovieName()
                         ,movieData.getMovieShortDescription(),movieData.getImageLink()
                         ,movieData.getMovieId(),"mov",movieData.getId()));
-
-
-
-
             }
-
         }
 
         if(favouriteDataArrayList.get(0).getSeries().size() != 0){

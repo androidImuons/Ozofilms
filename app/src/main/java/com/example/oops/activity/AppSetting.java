@@ -35,8 +35,9 @@ public class AppSetting extends AppCompatActivity {
     AppCompatImageView imgBackPressed;
     @BindView(R.id.changepassword)
     RelativeLayout changepassword;
-@BindView(R.id.changepin)
-RelativeLayout changepin;
+    @BindView(R.id.changepin)
+    RelativeLayout changepin;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +50,12 @@ RelativeLayout changepin;
     private void initView() {
         txtHeading.setText(getString(R.string.app_setting));
     }
-@OnClick(R.id.imgBackPressed)
-public  void setImgBackPressed(){
-       onBackPressed();
-}
+
+    @OnClick(R.id.imgBackPressed)
+    public void setImgBackPressed() {
+        onBackPressed();
+    }
+
     @OnClick(R.id.imgArrowProfile)
     public void setImgArrowProfile(View view) {
         startActivity(new Intent(AppSetting.this, Profile.class));
@@ -79,11 +82,12 @@ public  void setImgBackPressed(){
     }
 
     @OnClick(R.id.changepassword)
-    void setChangepassword(){
-        startActivity(new Intent(this , ChangePassword.class));
+    void setChangepassword() {
+        startActivity(new Intent(this, ChangePassword.class));
     }
+
     @OnClick(R.id.changepin)
-    public  void setChangepin(){
-        startActivity(new Intent(AppSetting.this,ChangePin.class));
+    public void setChangepin() {
+        startActivity(new Intent(AppSetting.this, ChangePin.class));
     }
 }

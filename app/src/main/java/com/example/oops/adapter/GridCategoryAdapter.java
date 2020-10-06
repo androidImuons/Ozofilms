@@ -61,6 +61,7 @@ public class GridCategoryAdapter extends RecyclerView.Adapter<GridCategoryAdapte
     }
 
     public class CategoryHolder extends RecyclerView.ViewHolder {
+
         @BindView(R.id.moviesImage)
         SimpleDraweeView moviesImage;
         @BindView(R.id.moviesNmae)
@@ -71,5 +72,9 @@ public class GridCategoryAdapter extends RecyclerView.Adapter<GridCategoryAdapte
             ButterKnife.bind(this,itemView);
         }
 
+        @OnClick(R.id.moviesImage)
+        void setImgMostViewed(){
+            ((CategoryListActivity)activity).moviesDeatils(categoryList.get(getAdapterPosition()).getMovieId() ,categoryList.get(getAdapterPosition()).getMovieName() );
+        }
     }
 }
