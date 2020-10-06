@@ -63,8 +63,6 @@ public class SubscriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subscription);
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.subscription));
-
-
         init();
         loadPlansApi();
         imgBackPressed.setVisibility(View.VISIBLE);

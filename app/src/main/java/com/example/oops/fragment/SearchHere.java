@@ -184,6 +184,7 @@ public class SearchHere extends Fragment {
                             if (authResponse.getCode() == 200) {
                                 setDataMovies(authResponse.getData());
                             } else {
+                                gridCategoryAdapter.update(searchDataArrayList , offset);
                                 Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -196,9 +197,11 @@ public class SearchHere extends Fragment {
                             if (authResponse.getCode() == 200) {
                                 setDataWeb(authResponse.getData());
                             } else {
+                                gridCategoryAdapter.update(searchDataArrayList , offset);
                                 Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
+
                             AppCommon.getInstance(getContext()).showDialog(getActivity(), authResponse.getMessage());
                         }
                     }
