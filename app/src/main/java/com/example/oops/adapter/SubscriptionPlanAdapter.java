@@ -42,6 +42,7 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         this.plansDataArrayList = plansDataArrayList;
         this.context = context;
         this.mItemClickListener = mItemClickListener;
+
     }
 
     @NonNull
