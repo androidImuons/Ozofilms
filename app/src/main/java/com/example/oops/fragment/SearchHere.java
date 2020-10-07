@@ -219,7 +219,6 @@ public class SearchHere extends Fragment {
                 }
             });
 
-
         } else {
             // no internet
             Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
