@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.oops.DataClass.EpisodeData;
+import com.example.oops.DataClass.PlansData;
 import com.example.oops.R;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.activity.VideoPlay;
@@ -28,16 +29,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeHolder> {
-    Activity activity;
+
     ArrayList<EpisodeData> episodeDataArrayList;
     Context context;
+    onItemClickListener mItemClickListener;
 
-     LinearLayout layout;
-  LinearLayout.LayoutParams params;
-    public EpisodeAdapter(Activity activity, Context context,ArrayList<EpisodeData> episodeDataArrayList) {
-        this.activity = activity;
+    LinearLayout layout;
+    LinearLayout.LayoutParams params;
+
+    public EpisodeAdapter(Context context, ArrayList<EpisodeData> episodeDataArrayList,onItemClickListener mItemClickListener) {
         this.episodeDataArrayList = episodeDataArrayList;
         this.context = context;
+        this.mItemClickListener=mItemClickListener;
     }
 
     @NonNull
@@ -45,8 +48,9 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
     public EpisodeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.season_item, parent, false);
-        return  new EpisodeHolder(itemView);
+        return new EpisodeHolder(itemView);
     }
+
     private void Layout_hide() {
         params.height = 0;
         //itemView.setLayoutParams(params); //This One.
@@ -56,15 +60,15 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
     @Override
     public void onBindViewHolder(@NonNull EpisodeHolder holder, int position) {
-        holder.epiNo.setText("Episode "+episodeDataArrayList.get(position).getEpisodeNo());
+        holder.epiNo.setText("Episode " + episodeDataArrayList.get(position).getEpisodeNo());
         holder.epiName.setText(episodeDataArrayList.get(position).getEpisodeName());
-        if(episodeDataArrayList.get(position).getThumbnailLink() != null && !episodeDataArrayList.get(position).getThumbnailLink().isEmpty() )
-            holder.sdvImage.setController(AppCommon.getInstance(activity).getDraweeController(holder.sdvImage ,episodeDataArrayList.get(position).getThumbnailLink() , 300));
+        if (episodeDataArrayList.get(position).getThumbnailLink() != null && !episodeDataArrayList.get(position).getThumbnailLink().isEmpty())
+            holder.sdvImage.setController(AppCommon.getInstance(context).getDraweeController(holder.sdvImage, episodeDataArrayList.get(position).getThumbnailLink(), 300));
 
 
     }
 
-//    private void Layout_hide() {
+    //    private void Layout_hide() {
 //        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
 //        params.height = 0;
 //        params.width = 0;
@@ -81,7 +85,7 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
         notifyDataSetChanged();
     }
 
-    public class EpisodeHolder extends RecyclerView.ViewHolder {
+    public class EpisodeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.epiNo)
         TextView epiNo;
@@ -97,8 +101,19 @@ public class EpisodeAdapter extends RecyclerView.Adapter<EpisodeAdapter.EpisodeH
 
         public EpisodeHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this ,itemView);
+            ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClickListener(view, getAdapterPosition(), episodeDataArrayList.get(getAdapterPosition()));
+            }
         }
     }
 
+    public interface onItemClickListener {
+        void onItemClickListener(View view, int position,EpisodeData episodeData );
+    }
 }

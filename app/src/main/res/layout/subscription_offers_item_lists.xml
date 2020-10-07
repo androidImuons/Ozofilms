@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:id="@+id/relativeLayout"
     android:layout_height="@dimen/_100sdp"
     android:layout_marginBottom="10dp"
+    android:id="@+id/rl_subscription"
     android:background="@drawable/coupon_bg">
 
     <LinearLayout

@@ -11,4 +11,6 @@ public interface PlayerController {
     void setVideoWatchedLength();
     void videoEnded();
     void disableNextButtonOnLastVideo(boolean disable);
+    void disablePreviousButtonOnFirstVideo(boolean disable);
+
 }

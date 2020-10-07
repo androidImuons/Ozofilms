@@ -109,23 +109,15 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
 
     private void getDataFromIntent() {
         videoSource = getIntent().getParcelableExtra("videoSource");
-        Intent i = this.getIntent();
-
-        selectedPosition = Integer.parseInt(i.getStringExtra("selectedPosition"));
-//       selectedPosition=Integer.valueOf(getIntent().getParcelableExtra("selectedPosition"));
-        Log.d("AHDHHD",""+videoSource);
+        selectedPosition = getIntent().getIntExtra("selectedPosition",0);
     }
 
     private void setupLayout() {
         playerView = findViewById(R.id.demo_player_view);
         progressBar = findViewById(R.id.progress_bar);
-
         playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FILL);
-
-
         subtitle = findViewById(R.id.btn_subtitle);
         setting = findViewById(R.id.btn_settings);
-
         retry = findViewById(R.id.retry_btn);
         back = findViewById(R.id.btn_back);
         preBtn = findViewById(R.id.btn_prev);
@@ -153,7 +145,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
-        player = new VideoPlayer(playerView, getApplicationContext(), videoSource, this,selectedPosition);
+        player = new VideoPlayer(playerView, PlayerActivity.this, videoSource, this,selectedPosition);
 
         checkIfVideoHasSubtitle();
 
@@ -303,7 +295,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.btn_subtitle:
                 prepareSubtitles();
                 break;
-
             case R.id.exo_rew:
                 player.seekToSelectedPosition(0, true);
                 break;
@@ -316,8 +307,6 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
                 showRetryBtn(false);
                 break;
             case R.id.btn_next:
-
-
                 player.seekToNext();
                 checkIfVideoHasSubtitle();
                 break;
@@ -488,10 +477,22 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             nextBtn.setImageResource(R.drawable.exo_disable_next_btn);
             nextBtn.setEnabled(false);
             return;
+        }else{
+            nextBtn.setImageResource(R.drawable.exo_next_btn);
+            nextBtn.setEnabled(true);
         }
+    }
 
-        nextBtn.setImageResource(R.drawable.exo_next_btn);
-        nextBtn.setEnabled(true);
+    @Override
+    public void disablePreviousButtonOnFirstVideo(boolean disable) {
+        if(disable){
+            preBtn.setImageResource(R.drawable.exo_disable_controls_previous);
+            preBtn.setEnabled(false);
+            return;
+        }else{
+            preBtn.setImageResource(R.drawable.exo_controls_previous);
+            preBtn.setEnabled(true);
+        }
     }
 
 

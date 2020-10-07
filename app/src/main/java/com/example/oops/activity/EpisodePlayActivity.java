@@ -236,7 +236,12 @@ public class EpisodePlayActivity extends AppCompatActivity implements View.OnCli
         json = i.getStringExtra("json");
 //        Log.i("Ahhhhn",""+removePosition);
         episodeDataArrayList = new ArrayList<>();
-        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(), episodeDataArrayList);
+        episodeAdapter = new EpisodeAdapter(EpisodePlayActivity.this, episodeDataArrayList, new EpisodeAdapter.onItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position, EpisodeData episodeData) {
+
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
