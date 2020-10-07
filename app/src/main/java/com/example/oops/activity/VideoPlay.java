@@ -479,11 +479,11 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                             if (sMsg.equals("fav")) {
                                 txtMessage.setText("No like Related Movie Found");
                                 txtMessage.setVisibility(View.VISIBLE);
-                                Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
                             } else if (!sMsg.equals("fav")) {
                                 txtMessage.setText("No like Related Movie Found");
                                 txtMessage.setVisibility(View.VISIBLE);
-                                Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                         }
