@@ -122,12 +122,14 @@ public class VideoPlayerSeries extends Activity {
 
     @BindView(R.id.seasonbtn)
     TextView seasonbtn;
+
     @BindView(R.id.like)
     ImageView like;
+
     @BindView(R.id.imgPlayVideo)
     ImageView imgPlayVideo;
 
-    private List<Video> videoUriList = new ArrayList<>();
+    private List<Video> videoUriList;
 
 
     /*@BindView(R.id.seasonSpinner)
@@ -137,8 +139,10 @@ public class VideoPlayerSeries extends Activity {
     ArrayList<SeasonData> data;
     ArrayAdapter<SeasonData> adapter;
     ArrayList<EpisodeData> episodeDataArrayList;
+
     EpisodeAdapter episodeAdapter;
     SeasonAdapter seasonAdapter;
+
     private AppDatabase database;
     String videoUrl, episodeNo, episodeThumnailImage, episodeId, stringPosition;
     @BindView(R.id.imgBackPressed)
@@ -225,13 +229,10 @@ public class VideoPlayerSeries extends Activity {
     }
 
     private void setLayout() {
-
-        episodeDataArrayList = new ArrayList<>();
-        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(), episodeDataArrayList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
-        recylerview.setAdapter(episodeAdapter);
+
 
         data = new ArrayList<>();
         seasonAdapter = new SeasonAdapter(this, data);
@@ -239,7 +240,16 @@ public class VideoPlayerSeries extends Activity {
         seasonRecycleView.setLayoutManager(mLayoutManager1);
         seasonRecycleView.setItemAnimator(new DefaultItemAnimator());
         seasonRecycleView.setAdapter(seasonAdapter);
-        imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
+        imgPlayVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(videoUriList!=null){
+                    goToPlayerActivity(makeVideoSource(videoUriList, 0));
+                }
+            }
+        });
+
+     //   imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
 
     }
 
@@ -276,10 +286,10 @@ public class VideoPlayerSeries extends Activity {
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
-                                see = data.get(position).getSeasonId();
+                               /* see = data.get(position).getSeasonId();
                                 trailerLink = data.get(position).getTrailerLink();
                                 Log.d("trailerLink", trailerLink);
-                                makeListOfUri();
+                                makeListOfUri();*/
 //                                List<Epis>
 
                             }
@@ -313,13 +323,31 @@ public class VideoPlayerSeries extends Activity {
     }
 
     private void setDataEpisode(ArrayList<EpisodeData> data) {
-
+        episodeDataArrayList = new ArrayList<>();
         episodeDataArrayList = data;
-        episodeAdapter.update(episodeDataArrayList);
+        videoUriList=new ArrayList<>();
+        for(int i=0;i<episodeDataArrayList.size();i++){
+            String urlLink=episodeDataArrayList.get(i).getVideoLink();
+            videoUriList.add(new Video(urlLink, Long.getLong("zero", 1)));
+        }
+        if (database.videoDao().getAllUrls().size() == 0) {
+            database.videoDao().insertAllVideoUrl(videoUriList);
+          //  database.videoDao().insertAllSubtitleUrl(subtitleList);
+        }
 
-        json = new Gson().toJson(episodeDataArrayList);
+        episodeAdapter=new EpisodeAdapter(VideoPlayerSeries.this, episodeDataArrayList, new EpisodeAdapter.onItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position, EpisodeData episodeData) {
+                selectedPosition = position;
+                //Toast.makeText(VideoPlayerSeries.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
+                txtVideoHeading.setText(episodeData.getEpisodeName());
+            }
+        });
 
+        //episodeAdapter.update(episodeDataArrayList);
+        recylerview.setAdapter(episodeAdapter);
 
+        //json = new Gson().toJson(episodeDataArrayList);
     }
 
 
@@ -554,11 +582,11 @@ public class VideoPlayerSeries extends Activity {
     }*/
 
     public void goToPlayerActivity(VideoSource videoSource) {
-        int REQUEST_CODE = 1000;
+
         Intent intent = new Intent(VideoPlayerSeries.this, PlayerActivity.class);
         intent.putExtra("videoSource", videoSource);
         intent.putExtra("selectedPosition", selectedPosition);
-        startActivityForResult(intent, REQUEST_CODE);
+        startActivity(intent);
     }
 
 

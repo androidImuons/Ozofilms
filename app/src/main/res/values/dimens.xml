@@ -6,7 +6,8 @@
     <dimen name="margin_more_screen">25dp</dimen>
 <!--   login button size -->
     <dimen name="login_button_size">18sp</dimen>
-
+    <dimen name="dp40">40dp</dimen>
+    <dimen name="dp12">12dp</dimen>
 
 
 </resources>

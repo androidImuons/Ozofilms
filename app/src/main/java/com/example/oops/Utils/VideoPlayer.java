@@ -64,9 +64,10 @@ public class VideoPlayer {
     private ComponentListener componentListener;
     private CacheDataSourceFactory cacheDataSourceFactory;
     private VideoSource videoSource;
-    private int selectedPosition=0;
+    private int selectedPosition = 0;
     private boolean isLock = false;
     private AppDatabase database;
+
     public VideoPlayer(PlayerView playerView,
                        Context context,
                        VideoSource videoSource,
@@ -76,14 +77,13 @@ public class VideoPlayer {
         this.playerView = playerView;
         this.context = context;
         this.playerController = mView;
-        this.selectedPosition=selectedPosition;
+        this.selectedPosition = selectedPosition;
         this.videoSource = videoSource;
         this.index = videoSource.getSelectedSourceIndex();
         initializePlayer();
 
         database = AppDatabase.Companion.getDatabase(context);
     }
-
 
 
     /******************************************************************
@@ -112,28 +112,35 @@ public class VideoPlayer {
         exoPlayer.setPlayWhenReady(true);
         exoPlayer.addListener(componentListener);
         //build mediaSource depend on video type (Regular, HLS, DASH, etc)
-        if(selectedPosition==0){
+        if (selectedPosition == 0) {
             mediaSource = buildMediaSource(videoSource.getVideos().get(index), cacheDataSourceFactory);
-
-        }else{
-            mediaSource = buildMediaSource(videoSource.getVideos().get(selectedPosition), cacheDataSourceFactory);
+        } else {
+            index = selectedPosition;
+            mediaSource = buildMediaSource(videoSource.getVideos().get(index), cacheDataSourceFactory);
 
         }
         exoPlayer.prepare(mediaSource);
         //resume video
         seekToSelectedPosition(videoSource.getVideos().get(index).getWatchedLength(), false);
 
-      //  if (videoSource.getVideos().size() == 1 || isLastVideo())
-            if(MyPreference.videoPlayList.size()!=0){
-                playerController.disableNextButtonOnLastVideo(false);
-            }else{
-                playerController.disableNextButtonOnLastVideo(true);
-            }
+        //if (videoSource.getVideos().size() == 1 || isLastVideo()){
+        //  if(MyPreference.videoPlayList.size()!=0){
+        if (videoSource.getVideos().size() > 0) {
+            playerController.disableNextButtonOnLastVideo(false);
+        } else {
+            playerController.disableNextButtonOnLastVideo(true);
+        }
+
+        if (index == 0) {
+            playerController.disablePreviousButtonOnFirstVideo(true);
+        } else {
+            playerController.disablePreviousButtonOnFirstVideo(false);
+        }
 
     }
 
-    public void prepareNextVideo(MovieDeatilsData data){
-         List<Video> videoUriList = new ArrayList<>();
+    public void prepareNextVideo(MovieDeatilsData data) {
+        List<Video> videoUriList = new ArrayList<>();
         videoUriList.add(new Video(data.getVideoLink(), Long.getLong("zero", 1)));
         List<Subtitle> subtitleList = new ArrayList<>();
         if (database.videoDao().getAllUrls().size() == 0) {
@@ -151,8 +158,7 @@ public class VideoPlayer {
             );
 
         }
-        videoSource= new VideoSource(singleVideos, 0);
-
+        videoSource = new VideoSource(singleVideos, 0);
 
 
         mediaSource = buildMediaSource(videoSource.getVideos().get(0), cacheDataSourceFactory);
@@ -259,7 +265,7 @@ public class VideoPlayer {
                         MyTrackSelectionView.getDialog(activity, trackSelector,
                                 rendererIndex,
                                 exoPlayer.getVideoFormat().bitrate);
-                dialogPair.first.setTitle( Html.fromHtml("<font color='#FFFFFF'>Quality </font>"));
+                dialogPair.first.setTitle(Html.fromHtml("<font color='#FFFFFF'>Quality </font>"));
                 dialogPair.second.setShowDisableOption(false);
                 dialogPair.second.setAllowAdaptiveSelections(allowAdaptiveSelections);
                 dialogPair.second.animate();
@@ -318,6 +324,8 @@ public class VideoPlayer {
     }
 
     public void seekToNext() {
+        playerController.disablePreviousButtonOnFirstVideo(false);
+
         if (index < videoSource.getVideos().size() - 1) {
             setCurrentVideoPosition();
             index++;
@@ -337,6 +345,10 @@ public class VideoPlayer {
 
     public void seekToPrevious() {
         playerController.disableNextButtonOnLastVideo(false);
+
+        if (index == 1 || index == 0) {
+            playerController.disablePreviousButtonOnFirstVideo(true);
+        }
 
         if (index == 0) {
             seekToSelectedPosition(0, false);
@@ -446,6 +458,7 @@ public class VideoPlayer {
             playerController.showRetryBtn(true);
         }
     }
+
     public static int getScreenWidth(Context context, boolean isIncludeNav) {
         if (isIncludeNav) {
             return context.getResources().getDisplayMetrics().widthPixels + getNavigationBarHeight(context);
@@ -464,6 +477,7 @@ public class VideoPlayer {
             return context.getResources().getDisplayMetrics().heightPixels;
         }
     }
+
     public static WindowManager getWindowManager(Context context) {
         return (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     }
@@ -478,6 +492,7 @@ public class VideoPlayer {
         //获取NavigationBar的高度
         return resources.getDimensionPixelSize(resourceId);
     }
+
     public static Activity scanForActivity(Context context) {
         return context == null ? null : (context instanceof Activity ? (Activity) context : (context instanceof ContextWrapper ? scanForActivity(((ContextWrapper) context).getBaseContext()) : null));
     }

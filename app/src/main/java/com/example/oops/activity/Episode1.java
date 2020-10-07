@@ -226,7 +226,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
 //        Log.i("Ahhhhn",""+removePosition);
         episodeDataArrayList = new ArrayList<>();
 
-        episodeAdapter = new EpisodeAdapter(this, getApplicationContext(),episodeDataArrayList);
+        episodeAdapter = new EpisodeAdapter(Episode1.this, episodeDataArrayList, new EpisodeAdapter.onItemClickListener() {
+            @Override
+            public void onItemClickListener(View view, int position, EpisodeData episodeData) {
+
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());

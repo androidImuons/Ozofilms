@@ -32,15 +32,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPlanAdapter.SubscriptionViewHolder>{
+public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPlanAdapter.SubscriptionViewHolder> {
 
     ArrayList<PlansData> plansDataArrayList;
     Context context;
+    onItemClickListener mItemClickListener;
 
-
-    public SubscriptionPlanAdapter(ArrayList<PlansData> plansDataArrayList, Context context) {
+    public SubscriptionPlanAdapter(ArrayList<PlansData> plansDataArrayList, Context context, onItemClickListener mItemClickListener) {
         this.plansDataArrayList = plansDataArrayList;
         this.context = context;
+        this.mItemClickListener = mItemClickListener;
     }
 
     @NonNull
@@ -54,33 +55,27 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
     @Override
     public void onBindViewHolder(@NonNull SubscriptionViewHolder holder, int position) {
 
-
-
         holder.durationType.setText(plansDataArrayList.get(position).getDurationType());
-        holder.duration.setText(""+plansDataArrayList.get(position).getDuration());
-        holder.planCost.setText(""+plansDataArrayList.get(position).getPlanCost());
+        holder.duration.setText("" + plansDataArrayList.get(position).getDuration());
+        holder.planCost.setText("" + plansDataArrayList.get(position).getPlanCost());
         holder.description1.setText(plansDataArrayList.get(position).getDescription());
-      //  holder.discountAmount.setPaintFlags(holder.discountAmount.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
+        //  holder.discountAmount.setPaintFlags(holder.discountAmount.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         holder.planName.setText(plansDataArrayList.get(position).getPlanName());
-        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
+       /* holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
+          *//*  @Override
             public void onClick(View view) {
 
+            }*//*
 
-                Toast.makeText(context,"Under Construction",Toast.LENGTH_LONG).show();
+              //  Toast.makeText(context,"Under Construction",Toast.LENGTH_LONG).show()
 
-
-
-            }
-        });
-
+        }*/
     }
 
-    @Override
-    public int getItemCount()
-    {
 
-        Log.d("SDVOVDOVDOVSD", "getItemCount: "+plansDataArrayList.size());
+    @Override
+    public int getItemCount() {
+        Log.d("SDVOVDOVDOVSD", "getItemCount: " + plansDataArrayList.size());
         return plansDataArrayList.size();
     }
 
@@ -89,7 +84,7 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         notifyDataSetChanged();
     }
 
-    class SubscriptionViewHolder extends RecyclerView.ViewHolder{
+    class SubscriptionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.relativeLayout)
         RelativeLayout relativeLayout;
@@ -107,16 +102,24 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         @BindView(R.id.tVdescription1)
         OTTTextView description1;
 
-
-
         @BindView(R.id.tVplanName)
         OTTTextView planName;
-
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) {
+            if (mItemClickListener != null) {
+                mItemClickListener.onItemClickListener(view, getAdapterPosition(), plansDataArrayList.get(getAdapterPosition()));
+            }
+        }
+    }
+
+    public interface onItemClickListener {
+        void onItemClickListener(View view, int position, PlansData plansDataArrayList);
     }
 }
