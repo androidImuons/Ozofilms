@@ -86,7 +86,7 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
 
     class SubscriptionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        @BindView(R.id.relativeLayout)
+        @BindView(R.id.rl_subscription)
         RelativeLayout relativeLayout;
 
         @BindView(R.id.tVduration)

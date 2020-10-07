@@ -144,25 +144,15 @@ public class VideoPlayerSeries extends Activity {
     SeasonAdapter seasonAdapter;
 
     private AppDatabase database;
-    String videoUrl, episodeNo, episodeThumnailImage, episodeId, stringPosition;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     ImageView imgDownload;
-
     List<String> optionsToDownload = new ArrayList<String>();
-
     DefaultTrackSelector.Parameters qualityParams;
-
     ProgressDialog pDialog;
-
-
     private boolean startAutoPlay;
     private int startWindow;
-
     private long startPosition;
-
-
-    Button btnAbc;
     private Runnable runnableCode;
     private DownloadTracker downloadTracker;
     private DownloadManager downloadManager;
@@ -207,20 +197,14 @@ public class VideoPlayerSeries extends Activity {
 
 
         imgDownload = (ImageView) findViewById(R.id.imgDownload);
-//        prepareView();
 
         runnableCode = new Runnable() {
             @Override
             public void run() {
-//               observerVideoStatus();
                 handler.postDelayed(this, 1000);
             }
         };
-
         handler.post(runnableCode);
-
-
-        //getInit();
     }
 
     @OnClick(R.id.imgBackPressed)
@@ -243,13 +227,11 @@ public class VideoPlayerSeries extends Activity {
         imgPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(videoUriList!=null){
+                if (videoUriList != null) {
                     goToPlayerActivity(makeVideoSource(videoUriList, 0));
                 }
             }
         });
-
-     //   imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
 
     }
 
@@ -286,17 +268,7 @@ public class VideoPlayerSeries extends Activity {
                         if (authResponse.getCode() == 200) {
                             if (authResponse.getData() != null) {
                                 setDataEpisode(authResponse.getData());
-                               /* see = data.get(position).getSeasonId();
-                                trailerLink = data.get(position).getTrailerLink();
-                                Log.d("trailerLink", trailerLink);
-                                makeListOfUri();*/
-//                                List<Epis>
-
                             }
-                               /* setData(authResponse.getData());
-                            videoUrl= authResponse.getData().getVideoLink();*/
-
-
                         } else {
 
                             Toast.makeText(VideoPlayerSeries.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -325,21 +297,20 @@ public class VideoPlayerSeries extends Activity {
     private void setDataEpisode(ArrayList<EpisodeData> data) {
         episodeDataArrayList = new ArrayList<>();
         episodeDataArrayList = data;
-        videoUriList=new ArrayList<>();
-        for(int i=0;i<episodeDataArrayList.size();i++){
-            String urlLink=episodeDataArrayList.get(i).getVideoLink();
+        videoUriList = new ArrayList<>();
+        for (int i = 0; i < episodeDataArrayList.size(); i++) {
+            String urlLink = episodeDataArrayList.get(i).getVideoLink();
             videoUriList.add(new Video(urlLink, Long.getLong("zero", 1)));
         }
         if (database.videoDao().getAllUrls().size() == 0) {
             database.videoDao().insertAllVideoUrl(videoUriList);
-          //  database.videoDao().insertAllSubtitleUrl(subtitleList);
+            //  database.videoDao().insertAllSubtitleUrl(subtitleList);
         }
 
-        episodeAdapter=new EpisodeAdapter(VideoPlayerSeries.this, episodeDataArrayList, new EpisodeAdapter.onItemClickListener() {
+        episodeAdapter = new EpisodeAdapter(VideoPlayerSeries.this, episodeDataArrayList, new EpisodeAdapter.onItemClickListener() {
             @Override
             public void onItemClickListener(View view, int position, EpisodeData episodeData) {
                 selectedPosition = position;
-                //Toast.makeText(VideoPlayerSeries.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
                 txtVideoHeading.setText(episodeData.getEpisodeName());
             }
         });
