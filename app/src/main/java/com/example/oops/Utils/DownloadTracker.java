@@ -55,7 +55,6 @@ public class DownloadTracker {
   }
 
   private static final String TAG = "DownloadTracker";
-
   private final Context context;
   private final DataSource.Factory dataSourceFactory;
   private final CopyOnWriteArraySet<Listener> listeners;

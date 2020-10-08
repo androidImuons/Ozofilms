@@ -1,210 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_profile"
     android:background="@drawable/background"
     android:orientation="vertical">
 
     <include layout="@layout/header_layout"></include>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
 
-
-
-
-        <FrameLayout
-
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_from_left"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="@dimen/margin_from_right"
-            >
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                app:srcCompat="@drawable/ic_camera_icon"></androidx.appcompat.widget.AppCompatImageView>
+            android:orientation="vertical">
 
 
-
-            <LinearLayout
+            <FrameLayout
 
                 android:layout_width="match_parent"
-                android:background="@drawable/white_background_rectangular"
-                android:layout_height="340dp"
-                android:layout_marginTop="40dp"
-                android:orientation="vertical">
-                <!--Name-->
-                <LinearLayout
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margin_from_left"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="@dimen/margin_from_right">
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
-                    android:background="@drawable/text_bg_ttrip"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="50dp"
-                    android:orientation="vertical">
-
-
-
-                    <com.example.oops.custom.OTTEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_from_left"
-                        android:drawableLeft="@drawable/ic_man"
-                        android:drawablePadding="15dp"
-                        android:singleLine="true"
-                        android:id="@+id/editTextName"
-                        android:gravity="center_vertical"
-                        android:inputType="textPersonName"
-                        android:textColorHint="@color/white"
-                        android:hint="@string/profile_name"
-                        android:textColor="@color/white"
-
-                        />
-
-                </LinearLayout>
-
-<!--            Mobile Number    -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/text_bg_ttrip"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-
-
-                    <com.example.oops.custom.OTTEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_from_left"
-                        android:drawableLeft="@drawable/ic_mobile"
-                        android:drawablePadding="15dp"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:inputType="number"
-                        android:id="@+id/editTextMobielNumber"
-                        android:textColorHint="@color/white"
-                        android:hint="@string/profile_mobile_no"
-                        android:textColor="@color/white"
-
-                        />
-
-                </LinearLayout>
-
-                <!--Email Not Mandatory-->
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/text_bg_ttrip"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-
-
-                    <com.example.oops.custom.OTTEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_from_left"
-                        android:drawableLeft="@drawable/ic_mail"
-                        android:drawablePadding="15dp"
-                        android:gravity="center_vertical"
-                        android:textColorHint="@color/white"
-                        android:singleLine="true"
-                        android:id="@+id/editTextEmail"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/profile_email_no_manadatory"
-                        android:textColor="@color/white"
-
-                        />
-
-                </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    app:srcCompat="@drawable/ic_camera_icon"></androidx.appcompat.widget.AppCompatImageView>
 
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/text_bg_ttrip"
-                    android:layout_height="40dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="340dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/white_background_rectangular"
                     android:orientation="vertical">
+                    <!--Name-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="50dp"
+                        android:background="@drawable/text_bg_ttrip"
+                        android:orientation="vertical">
 
 
+                        <com.example.oops.custom.OTTEditText
+                            android:id="@+id/editTextName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_from_left"
+                            android:drawableLeft="@drawable/ic_man"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:hint="@string/profile_name"
+                            android:inputType="textPersonName"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
 
-                    <com.example.oops.custom.OTTEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_from_left"
-                        android:drawableLeft="@drawable/ic_lock"
-                        android:drawablePadding="15dp"
-                        android:gravity="center_vertical"
-                        android:id="@+id/editTextPassWord"
-                        android:singleLine="true"
-                        android:inputType="textPassword"
-                        android:textColorHint="@color/white"
-                        android:hint="@string/profile_password"
-                        android:textColor="@color/white"
+                            />
 
-                        />
+                    </LinearLayout>
 
+                    <!--            Mobile Number    -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_bg_ttrip"
+                        android:orientation="vertical">
+
+
+                        <com.example.oops.custom.OTTEditText
+                            android:id="@+id/editTextMobielNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_from_left"
+                            android:drawableLeft="@drawable/ic_mobile"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:hint="@string/profile_mobile_no"
+                            android:inputType="number"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+
+                            />
+
+                    </LinearLayout>
+
+                    <!--Email Not Mandatory-->
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_bg_ttrip"
+                        android:orientation="vertical">
+
+
+                        <com.example.oops.custom.OTTEditText
+                            android:id="@+id/editTextEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_from_left"
+                            android:drawableLeft="@drawable/ic_mail"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:hint="@string/profile_email_no_manadatory"
+                            android:inputType="textEmailAddress"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+
+                            />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_bg_ttrip"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <com.example.oops.custom.OTTEditText
+                            android:id="@+id/editTextPassWord"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_from_left"
+                            android:drawableLeft="@drawable/ic_lock"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:hint="@string/profile_password"
+                            android:inputType="textPassword"
+                            android:singleLine="true"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/text_bg_ttrip"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+
+                        <com.example.oops.custom.OTTEditText
+                            android:id="@+id/editTextConfirmPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/margin_from_left"
+                            android:drawableLeft="@drawable/ic_smart_key"
+                            android:drawablePadding="15dp"
+                            android:gravity="center_vertical"
+                            android:hint="@string/profile_confirm_password"
+                            android:inputType="textPassword"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white"
+
+                            />
+
+                    </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/text_bg_ttrip"
-                    android:layout_height="40dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
+                <com.example.oops.custom.OTTButton
+                    android:id="@+id/submitIssue"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="350dp"
+                    android:background="@drawable/button_background"
+                    android:onClick="update"
+                    android:text="@string/update"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"></com.example.oops.custom.OTTButton>
 
 
-
-                    <com.example.oops.custom.OTTEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/margin_from_left"
-                        android:drawableLeft="@drawable/ic_smart_key"
-                        android:drawablePadding="15dp"
-                        android:inputType="textPassword"
-                        android:id="@+id/editTextConfirmPassword"
-                        android:gravity="center_vertical"
-                        android:textColorHint="@color/white"
-                        android:hint="@string/profile_confirm_password"
-                        android:textColor="@color/white"
-
-                        />
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <com.example.oops.custom.OTTButton
-                android:layout_marginTop="350dp"
-                android:layout_width="150dp"
-                android:background="@drawable/button_background"
-                android:id="@+id/submitIssue"
-                android:textColor="@color/white"
-                android:layout_marginLeft="30dp"
-android:textAllCaps="false"
-android:onClick="update"
-                android:layout_height="50dp"
-                android:text="@string/update"></com.example.oops.custom.OTTButton>
+            </FrameLayout>
 
 
-        </FrameLayout>
-
-
-
-</LinearLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -12,7 +12,6 @@ import java.util.Date;
 public class VideoDownloadTable  implements Serializable {
     @PrimaryKey(autoGenerate = true)
 private  int id;
-
 private  String movieId;
 private  String movieName;
 private String movieType;

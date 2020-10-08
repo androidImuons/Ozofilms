@@ -8,6 +8,9 @@
     <dimen name="login_button_size">18sp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp12">12dp</dimen>
+    <dimen name="dp2">2dp</dimen>
+    <dimen name="dp5">5dp</dimen>
+    <dimen name="dp10">10dp</dimen>
 
 
 </resources>

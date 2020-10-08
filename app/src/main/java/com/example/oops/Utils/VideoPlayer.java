@@ -125,7 +125,9 @@ public class VideoPlayer {
 
         //if (videoSource.getVideos().size() == 1 || isLastVideo()){
         //  if(MyPreference.videoPlayList.size()!=0){
-        if (videoSource.getVideos().size() > 0) {
+        if (index == videoSource.getVideos().size() - 1) {
+            playerController.disableNextButtonOnLastVideo(true);
+        } else if (videoSource.getVideos().size() > 0) {
             playerController.disableNextButtonOnLastVideo(false);
         } else {
             playerController.disableNextButtonOnLastVideo(true);

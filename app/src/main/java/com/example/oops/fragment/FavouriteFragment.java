@@ -2,12 +2,13 @@ package com.example.oops.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.RelativeLayout;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -30,6 +31,7 @@ import com.example.oops.activity.VideoPlayerSeries;
 import com.example.oops.adapter.FavouriteAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -49,6 +51,9 @@ import retrofit2.Response;
 public class FavouriteFragment extends Fragment {
 
     String seditTextSearchHere;
+
+    @BindView(R.id.rl_favourite)
+    RelativeLayout rl_favourite;
 
     @BindView(R.id.fab_list_recylerview)
     RecyclerView recyclerView;
@@ -125,7 +130,7 @@ public class FavouriteFragment extends Fragment {
                                 favouriteDataArrayList= authResponse.getData();
                                 setData(favouriteDataArrayList);
                             } else {
-                                Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                showSnackbar(rl_favourite,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             }
                         } else {
                             AppCommon.getInstance(getContext()).showDialog(getActivity(), authResponse.getMessage());
@@ -141,12 +146,11 @@ public class FavouriteFragment extends Fragment {
                         swiperefresh.setRefreshing(false);
                     AppCommon.getInstance(getContext()).clearNonTouchableFlags(getActivity());
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_favourite,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
         } else {
-            // no internet
-            Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_favourite,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -174,5 +178,13 @@ public class FavouriteFragment extends Fragment {
             }
         }
         favouriteAdapter.update(commonFavModule);
+    }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }

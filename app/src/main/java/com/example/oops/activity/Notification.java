@@ -1,34 +1,32 @@
 package com.example.oops.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import com.example.oops.R;
 import com.example.oops.Utils.AppCommon;
-
+import com.google.android.material.snackbar.Snackbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class Notification extends AppCompatActivity {
+    @BindView(R.id.ll_notification)
+    LinearLayout ll_notification;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     @BindView(R.id.switchButton)
     Switch switchButton;
-String str1;
+    String str1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ String str1;
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.notification));
         imgBackPressed.setVisibility(View.VISIBLE);
-       switchButton.setChecked(Boolean.parseBoolean(AppCommon.getInstance(Notification.this).getNotificationObj()));
+        switchButton.setChecked(Boolean.parseBoolean(AppCommon.getInstance(Notification.this).getNotificationObj()));
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -45,32 +43,17 @@ String str1;
 
                 if (switchButton.isChecked()) {
                     str1 = switchButton.getTextOn().toString();
-                    Toast.makeText(Notification.this,""+str1,Toast.LENGTH_LONG).show();
+                    showSnackbar(ll_notification,str1,Snackbar.LENGTH_SHORT);
                     AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
-                }
-                else {
+                } else {
                     str1 = switchButton.getTextOff().toString();
-                    Toast.makeText(Notification.this,""+str1,Toast.LENGTH_LONG).show();
+                    showSnackbar(ll_notification,str1,Snackbar.LENGTH_SHORT);
                     AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
 
 
                 }
             }
         });
-//        switchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////
-//            }
-//        });
-
-//          sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
-//        editor = sharedPreferences.edit();
-//        editor.putString("k1", sedittext_email);
-//        editor.putString("k2", sedittext_password);
-//
-//        editor.commit();
-
     }
 
     @OnClick(R.id.imgBackPressed)
@@ -78,5 +61,11 @@ String str1;
         onBackPressed();
     }
 
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
 
 }

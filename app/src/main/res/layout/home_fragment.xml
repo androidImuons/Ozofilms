@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:attrs="http://schemas.android.com/tools"
+    android:id="@+id/ll_home"
     android:orientation="vertical">
     <RelativeLayout
         android:orientation="horizontal"

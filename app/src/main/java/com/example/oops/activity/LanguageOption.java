@@ -1,23 +1,24 @@
 package com.example.oops.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import com.example.oops.R;
-
+import com.google.android.material.snackbar.Snackbar;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class LanguageOption extends AppCompatActivity {
+    @BindView(R.id.ll_Language)
+    LinearLayout ll_Language;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
     @BindView(R.id.radioButtonHindi)
@@ -71,6 +72,15 @@ public class LanguageOption extends AppCompatActivity {
                 break;
 
         }
-        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+
+        showSnackbar(ll_Language,str,Snackbar.LENGTH_SHORT);
     }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }

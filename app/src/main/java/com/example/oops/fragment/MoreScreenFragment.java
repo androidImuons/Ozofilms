@@ -7,25 +7,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.fragment.app.Fragment;
-
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ScrollView;
 
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
 import com.example.oops.EntityClass.LogoutEntity;
-import com.example.oops.EntityClass.SupportHelpEntity;
-import com.example.oops.MainActivity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.LogoutResponse;
-import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.activity.AppSetting;
@@ -35,25 +31,24 @@ import com.example.oops.activity.SubscriptionActivity;
 import com.example.oops.activity.Support_Help;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
-
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.Unbinder;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static java.security.AccessController.getContext;
-
 
 public class MoreScreenFragment extends Fragment {
 
+    @BindView(R.id.sv_MoreOptions)
+    ScrollView sv_MoreOptions;
     @BindView(R.id.txtLogout)
     AppCompatTextView txtLogout;
     @BindView(R.id.txtAppSetting)
@@ -171,10 +166,9 @@ public class MoreScreenFragment extends Fragment {
                             AppCommon.getInstance(getActivity()).clearPreference();
                             startActivity(new Intent(getActivity(), Login.class));
                             getActivity().finishAffinity();
-                            Toast.makeText(getActivity(), "Logout Successfully", Toast.LENGTH_SHORT).show();
-
+                            showSnackbar(sv_MoreOptions,getResources().getString(R.string.Logout),Snackbar.LENGTH_SHORT);
                         } else {
-                            Toast.makeText(getActivity(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(sv_MoreOptions,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(MoreScreenFragment.this.getContext()).showDialog(MoreScreenFragment.this.getActivity(), "Server Error");
@@ -185,16 +179,22 @@ public class MoreScreenFragment extends Fragment {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(MoreScreenFragment.this.getContext()).clearNonTouchableFlags(MoreScreenFragment.this.getActivity());
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(sv_MoreOptions,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(getActivity(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(sv_MoreOptions,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
+    }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
 

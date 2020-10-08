@@ -135,7 +135,7 @@
     <string name="r_u_sure_logout_message">Are you sure you want to Logout?</string>
     <string name="ok">OK</string>
     <string name="yes">YES</string>
-    <string name="no_cancel">No,Cancel</string>
+    <string name="no_cancel">NO</string>
 
 
     <string name="Cancel">Cancel</string>
@@ -164,6 +164,23 @@
      -->
     <!-- [START fcm_default_icon_string] -->
     <string name="default_notification_channel_name" translatable="true">Ott_App</string>
+    <string name="ServerError">Server not responding, please try later.</string>
+    <string name="NoInternet">Please check your internet connection.</string>
+    <string name="AvaliableDownloads">Available in Downloads</string>
+    <string name="TryAgain">Try Again !</string>
+    <string name="STATE_STOPPED">"The download is stopped for a specified "</string>
+    <string name="STATE_DOWNLOADING">The download is currently started.</string>
+    <string name="STATE_COMPLETED">The download completed. Available in Downloads.</string>
+    <string name="STATE_FAILED">The download failed.</string>
+    <string name="STATE_REMOVING">The download is being removed.</string>
+    <string name="STATE_RESTARTING">The download will restart after all downloaded data is removed.</string>
+    <string name="Logout">Logout successfully</string>
+    <string name="enter_old_password">Please enter old password</string>
+    <string name="enter_new_password">Please enter new password</string>
+    <string name="enter_confirm_password">Please enter confirm password</string>
+    <string name="enter_valid_password">Please enter valid password</string>
+    <string name="ChangePinSuccess">Change Pin Successfully</string>
+    <string name="NoVideo">No Video available</string>
 
 
 </resources>

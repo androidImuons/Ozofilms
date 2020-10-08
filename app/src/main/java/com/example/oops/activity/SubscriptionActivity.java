@@ -6,16 +6,16 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.example.oops.DataClass.PlansData;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.SubscriptionPlansResponse;
@@ -25,13 +25,12 @@ import com.example.oops.adapter.SubscriptionPlanAdapter;
 import com.example.oops.model.PaymentModel;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -40,6 +39,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SubscriptionActivity extends AppCompatActivity {
+
+    @BindView(R.id.ll_subscription)
+    LinearLayout ll_subscription;
 
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
@@ -79,14 +81,14 @@ public class SubscriptionActivity extends AppCompatActivity {
             Map<String, String> entityMap = new HashMap<>();
             entityMap.put("id", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getId()));
             entityMap.put("userId", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getUserId()));
-            Call call = apiService.allSubscribtionPlansAPi(entityMap);
+            Call<SubscriptionPlansResponse> call = apiService.allSubscribtionPlansAPi(entityMap);
 
-            call.enqueue(new Callback() {
+            call.enqueue(new Callback<SubscriptionPlansResponse>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<SubscriptionPlansResponse> call, Response<SubscriptionPlansResponse> response) {
                     AppCommon.getInstance(getApplicationContext()).clearNonTouchableFlags(SubscriptionActivity.this);
                     dialog.dismiss();
-                    SubscriptionPlansResponse authResponse = (SubscriptionPlansResponse) response.body();
+                    SubscriptionPlansResponse authResponse = response.body();
                     if (authResponse != null) {
                         Log.e("SUBSCRIPTION_PLANS", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
@@ -102,7 +104,7 @@ public class SubscriptionActivity extends AppCompatActivity {
                                     paymentModel.orderAmount = String.valueOf(amount);
                                     paymentModel.customerName = "Mayuri";
                                     paymentModel.customerPhone = "9922803527";
-                                    paymentModel.customerEmail = "bawane1992mayuri@gmail,com";
+                                    paymentModel.customerEmail = "bawane1992mayuri@gmail.com";
                                     paymentModel.plan_details_id = String.valueOf(plansData.getId());
                                     openPaymentDialog(paymentModel);
                                 }
@@ -113,7 +115,7 @@ public class SubscriptionActivity extends AppCompatActivity {
 
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(SubscriptionActivity.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_subscription,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(SubscriptionActivity.this).showDialog(SubscriptionActivity.this, authResponse.getMessage());
@@ -121,35 +123,42 @@ public class SubscriptionActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<SubscriptionPlansResponse> call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(SubscriptionActivity.this).clearNonTouchableFlags(SubscriptionActivity.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(SubscriptionActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_subscription,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                 }
             });
         } else {
-            // no internet
-            Toast.makeText(SubscriptionActivity.this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_subscription,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
     private void openPaymentDialog(PaymentModel paymentModel) {
         Toast.makeText(SubscriptionActivity.this, "Clicked on" + paymentModel.getOrderAmount(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(SubscriptionActivity.this, WebViewActivity.class);
+       /* Intent intent = new Intent(SubscriptionActivity.this, WebViewActivity.class);
         intent.putExtra("userId", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getUserId()));
         intent.putExtra("orderId", paymentModel.getOrderId());
         intent.putExtra("orderAmount", paymentModel.getOrderAmount());
         intent.putExtra("customerName", paymentModel.getCustomerName());
         intent.putExtra("customerPhone", paymentModel.getCustomerPhone());
-        intent.putExtra("customerEmail", paymentModel.customerEmail);
+        intent.putExtra("customerEmail", paymentModel.getCustomerEmail());
         intent.putExtra("plan_details_id", paymentModel.getPlan_details_id());
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     @OnClick(R.id.imgBackPressed)
     public void setImgBackPressed() {
         onBackPressed();
     }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 
 }

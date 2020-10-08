@@ -42,7 +42,6 @@ import butterknife.BindView;
 public class DownloadedVideoAdapter extends  RecyclerView.Adapter<DownloadedVideoAdapter.MyViewHolder> { //implements Filterable
 
         List<Download> videosList;
-
         List<CategoryListData> categoryListData;
         Context context;
         DownloadVideo downloadActivity;

@@ -2,6 +2,7 @@ package com.example.oops.activity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +34,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
@@ -53,6 +55,8 @@ import static com.google.android.exoplayer2.ExoPlayerLibraryInfo.TAG;
 
 public class UserRegistration extends AppCompatActivity {
 
+    @BindView(R.id.ll_user_registration)
+    LinearLayout ll_user_registration;
     @BindView(R.id.editTextName)
     EditText editTextName;
     @BindView(R.id.editTextEmailId)
@@ -94,11 +98,7 @@ public class UserRegistration extends AppCompatActivity {
 
                         // Get new Instance ID token
                         fireBase = task.getResult().getToken();
-
-                        // Log and toast
-                        // String msg = getString(R.string.msg_token_fmt, token);
                         Log.i("token::", fireBase);
-                        //   Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -187,7 +187,7 @@ public class UserRegistration extends AppCompatActivity {
                             //  callInsertPin();
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(UserRegistration.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_user_registration,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         //AppCommon.getInstance(UserRegistration.this).showDialog(UserRegistration.this, authResponse.getMsg());
@@ -198,16 +198,13 @@ public class UserRegistration extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(UserRegistration.this).clearNonTouchableFlags(UserRegistration.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(UserRegistration.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_user_registration,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_user_registration,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -255,7 +252,7 @@ public class UserRegistration extends AppCompatActivity {
                             startActivity(new Intent(UserRegistration.this, Dashboard.class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(UserRegistration.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_user_registration,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(UserRegistration.this).showDialog(UserRegistration.this, "Server Error");
@@ -266,15 +263,13 @@ public class UserRegistration extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(UserRegistration.this).clearNonTouchableFlags(UserRegistration.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(UserRegistration.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_user_registration,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_user_registration,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -305,4 +300,11 @@ public class UserRegistration extends AppCompatActivity {
             updateUI(null);
         }
     }
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }

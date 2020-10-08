@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,8 +19,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -27,7 +26,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.oops.DataClass.EpisodeData;
 import com.example.oops.Ooops;
@@ -70,9 +68,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -84,13 +82,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
 import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
 import static com.google.android.exoplayer2.offline.Download.STATE_FAILED;
@@ -99,8 +95,10 @@ import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
 import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
-public class Episode1  extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
+public class Episode1 extends AppCompatActivity implements View.OnClickListener, DownloadTracker.Listener {
 
+    @BindView(R.id.llEpisodePlayActivity)
+    LinearLayout llEpisodePlayActivity;
 
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
@@ -111,12 +109,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
     ImageView img;
+
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
-
-
 
 
     LinearLayout llParentContainer;
@@ -151,13 +148,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private DownloadHelper myDownloadHelper;
 
 
-
-    private String videoUrl,Abv,stringPosition,see;
+    private String videoUrl, Abv, stringPosition, see;
     private long videoDurationInSeconds;
     private Runnable runnableCode;
     private Handler handler;
     int removePosition;
-
 
 
     @BindView(R.id.sdvImage)
@@ -169,7 +164,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     AppCompatTextView txtSoryLine;
     @BindView(R.id.txtVideoType)
     AppCompatTextView txtVideoType;
-    String videourl,name,storyDescription,episodeNo,episodeThumnailImage,episodeId,json;
+    String videourl, name, storyDescription, episodeNo, episodeThumnailImage, episodeId, json;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
     private AppDatabase database;
@@ -177,11 +172,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private List<Subtitle> subtitleList = new ArrayList<>();
     ImageButton nextBtn;
     EpisodeAdapter episodeAdapter;
-    String  stringVideo;
+    String stringVideo;
     String sessionID;
     String JSON;
-    List<EpisodeData> videoListOfUri =new ArrayList<>();
+    List<EpisodeData> videoListOfUri = new ArrayList<>();
     ImageView imgDownload;
+
     private static boolean isBehindLiveWindow(ExoPlaybackException e) {
         if (e.type != ExoPlaybackException.TYPE_SOURCE) {
             return false;
@@ -220,7 +216,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         txtVideoType.setText("Episode : " + episodeNo);
         Abv = i.getStringExtra("Abv");
 
-        JSON =i.getStringExtra("json");
+        JSON = i.getStringExtra("json");
         videoListOfUri = Arrays.asList(new GsonBuilder().create().fromJson(JSON, EpisodeData[].class));
 
 //        Log.i("Ahhhhn",""+removePosition);
@@ -241,27 +237,25 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                     @Override
                     public void onItemClick(View view, int position) {
                         // TODO Handle item click
-                        stringPosition ="";
+                        stringPosition = "";
                         stringPosition = String.valueOf(position);
 
 
-
-                        episodeNo   = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                        Intent i = new Intent(Episode1.this,Episode1.class);
-                        i.putExtra("videourl",episodeDataArrayList.get(position).getVideoLink());
-                        i.putExtra("name",name);
-                        i.putExtra("episodeThumnailImage",episodeDataArrayList.get(position).getThumbnailLink());
-                        i.putExtra("episodeNo",episodeNo);
-                        i.putExtra("episodeId",episodeDataArrayList.get(position).getEpisodeId());
-                        i.putExtra("storyDescription",storyDescription);
-                        i.putExtra("sessionID",sessionID);
-                        i.putExtra("Abv",stringPosition);
-                        i.putExtra("Json",json);
-
+                        episodeNo = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
+                        Intent i = new Intent(Episode1.this, Episode1.class);
+                        i.putExtra("videourl", episodeDataArrayList.get(position).getVideoLink());
+                        i.putExtra("name", name);
+                        i.putExtra("episodeThumnailImage", episodeDataArrayList.get(position).getThumbnailLink());
+                        i.putExtra("episodeNo", episodeNo);
+                        i.putExtra("episodeId", episodeDataArrayList.get(position).getEpisodeId());
+                        i.putExtra("storyDescription", storyDescription);
+                        i.putExtra("sessionID", sessionID);
+                        i.putExtra("Abv", stringPosition);
+                        i.putExtra("Json", json);
 
 
                         startActivity(i);
-                        Log.i("ACD",stringPosition);
+                        Log.i("ACD", stringPosition);
                     }
                 }));
         if (savedInstanceState != null) {
@@ -286,7 +280,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         }
         handler = new Handler();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        millisInString  = dateFormat.format(new Date());
+        millisInString = dateFormat.format(new Date());
         imgDownload = findViewById(R.id.imgDownload);
 
         imgDownload.setOnClickListener(this);
@@ -308,6 +302,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private void initializeDb() {
         database = AppDatabase.Companion.getDatabase(getApplicationContext());
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -315,6 +310,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         database = null;
 
     }
+
     private void callGetEpisodeList() {
         episodeDataArrayList.clear();
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -367,8 +363,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
 //                                    }));
 
                         } else {
-
-                            Toast.makeText(Episode1.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(llEpisodePlayActivity,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(Episode1.this).showDialog(Episode1.this, "Server Error");
@@ -380,14 +375,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                     dialog.dismiss();
                     AppCommon.getInstance(Episode1.this).clearNonTouchableFlags(Episode1.this);
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Episode1.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(llEpisodePlayActivity,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(llEpisodePlayActivity,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -400,13 +392,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         episodeAdapter.update(episodeDataArrayList);
 
 
-
-
     }
+
     private void makeListOfUri() {
-        for(int l = 0; l< videoListOfUri.size(); l++){
-            stringVideo= videoListOfUri.get(l).getVideoLink();
-            videoUriList.add(new Video(stringVideo , Long.getLong("zero" , 1)));
+        for (int l = 0; l < videoListOfUri.size(); l++) {
+            stringVideo = videoListOfUri.get(l).getVideoLink();
+            videoUriList.add(new Video(stringVideo, Long.getLong("zero", 1)));
 
         }
 //        videoUriList.add(new Video(videourl , Long.getLong("zero" , 1)));
@@ -458,15 +449,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         releasePlayer();
         clearStartPosition();
         setIntent(intent);
-
-
 
 
     }
@@ -514,13 +502,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
-
-
-
-
-
-
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onClick(View view) {
@@ -528,34 +509,15 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         switch (view.getId()) {
 
 
-
             case R.id.imgDownload:
 //                if (DatabaseClient.getInstance(this).getAppDatabase().videoDownloadDao().isDataExist(movieid. )) {
                 fetchDownloadOptions();
-
-                // data not exist.
-//                    Toast.makeText(VideoPlay.this," Not Data Exist"+movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
-
-//                } else {
-//                    // data already exist.
-//                    Toast.makeText(VideoPlay.this," Exist" +movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
-//                }
-
-
-//
-
-
                 break;
 
         }
 
 
     }
-
-
-
-
-
 
 
     private void fetchDownloadOptions() {
@@ -592,7 +554,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                 }
 
 
-
                 if (pDialog != null && pDialog.isShowing()) {
                     pDialog.dismiss();
                 }
@@ -623,9 +584,9 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         for (int i = 0; i < trackKeyss.size(); i++) {
             TrackKey trackKey = trackKeyss.get(i);
             long bitrate = trackKey.getTrackFormat().bitrate;
-            long getInBytes =  (bitrate * 128)/8;
+            long getInBytes = (bitrate * 128) / 8;
             String getInMb = AppUtil.formatFileSize(getInBytes);
-            String videoResoultionDashSize =  " "+trackKey.getTrackFormat().height +"      ("+getInMb+")";
+            String videoResoultionDashSize = " " + trackKey.getTrackFormat().height + "      (" + getInMb + ")";
             optionsToDownload.add(i, videoResoultionDashSize);
         }
 
@@ -653,7 +614,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                         .build();
 
 
-
             }
         });
         // Set the a;ert dialog positive button
@@ -673,7 +633,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                     }
 
                 }
-
 
 
                 DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
@@ -698,26 +657,18 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
 
     private void startDownload(DownloadRequest downloadRequestt) {
 
-        DownloadRequest   myDownloadRequest = downloadRequestt;
+        DownloadRequest myDownloadRequest = downloadRequestt;
 
         //       downloadManager.addDownload(downloadRequestt);
 
         if (myDownloadRequest.uri.toString().isEmpty()) {
-            Toast.makeText(this, "Try Again!!", Toast.LENGTH_SHORT).show();
-
+            showSnackbar(llEpisodePlayActivity,getResources().getString(R.string.TryAgain),Snackbar.LENGTH_SHORT);
             return;
         } else {
-
-
-
             saveTask();
             downloadManager.addDownload(myDownloadRequest);
-
         }
-
-
     }
-
 
 
     private void initializePlayer() {
@@ -726,7 +677,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         TrackSelection.Factory trackSelectionFactory = new AdaptiveTrackSelection.Factory();
 
         //    DefaultRenderersFactory renderersFactory = new DefaultRenderersFactory(this, null, DefaultRenderersFactory.EXTENSION_RENDERER_MODE_PREFER);
-        RenderersFactory renderersFactory =  ((Ooops) getApplication()).buildRenderersFactory(true)  ;
+        RenderersFactory renderersFactory = ((Ooops) getApplication()).buildRenderersFactory(true);
 
         trackSelector = new DefaultTrackSelector(trackSelectionFactory);
         trackSelector.setParameters(trackSelectorParameters);
@@ -744,18 +695,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         );
 
 
-
-
-
-
-
     }
 
     private boolean shouldDownload(Format track) {
         return track.height != 240 && track.sampleMimeType.equalsIgnoreCase("video/avc");
     }
-
-
 
 
     /**
@@ -764,10 +708,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     private DataSource.Factory buildDataSourceFactory() {
         return ((Ooops) getApplication()).buildDataSourceFactory();
     }
-
-
-
-
 
 
     private void setProgress() {
@@ -781,19 +721,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
             public void run() {
 
 
-
                 handler.postDelayed(this, 1000);
 
             }
         });
     }
-
-
-
-
-
-
-
 
 
     @Override
@@ -803,26 +735,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
-
-
-
-
-
-
-
-
     @Override
     public void onDownloadsChanged(Download download) {
         switch (download.state) {
             case STATE_QUEUED:
-//                imgDownload.setImageResource(R.drawable.app_setting);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"queue",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
                 break;
 
             case STATE_STOPPED:
@@ -831,14 +748,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                 break;
             case STATE_DOWNLOADING:
 
-//                imgDownload.setImageResource(R.drawable.ic_logout);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"Video is added in downloading",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
                 Log.d("EXO DOWNLOADING ", +download.getBytesDownloaded() + " " + download.contentLength);
                 Log.d("EXO  DOWNLOADING ", "" + download.getPercentDownloaded());
 
@@ -846,25 +755,14 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                 break;
             case STATE_COMPLETED:
 
-//imgDownload.setImageResource(R.drawable.country_icon);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"download Completed",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                progressBarPercentage.setVisibility(View.GONE);
-
-
                 Log.d("EXO COMPLETED ", +download.getBytesDownloaded() + " " + download.contentLength);
                 Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
 
 
-                if(download.request.uri.toString().equals(videoUrl)){
+                if (download.request.uri.toString().equals(videoUrl)) {
 
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
-
 
 
                 break;
@@ -892,7 +790,6 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
         updateTrackSelectorParameters();
 
 
-
         trackSelector = null;
 
 
@@ -905,17 +802,11 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
     private void clearStartPosition() {
         startAutoPlay = true;
         startWindow = C.INDEX_UNSET;
         startPosition = C.TIME_UNSET;
     }
-
-
-
-
-
 
 
     private void saveTask() {
@@ -948,7 +839,7 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
                 super.onPostExecute(aVoid);
 //                finish();
 //                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+                showSnackbar(llEpisodePlayActivity,getResources().getString(R.string.STATE_COMPLETED),Snackbar.LENGTH_SHORT);
             }
         }
 
@@ -957,9 +848,12 @@ public class Episode1  extends AppCompatActivity implements View.OnClickListener
     }
 
 
-
-
-
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
 
 
 }

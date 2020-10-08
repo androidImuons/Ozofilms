@@ -1,30 +1,25 @@
 package com.example.oops.activity;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
+import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import com.example.oops.EntityClass.ChangePasswordEntitiy;
-import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.R;
-import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.CommonResponseObject;
-import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -47,6 +42,8 @@ public class ChangePassword extends AppCompatActivity {
     String sConfirmPassword;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
+    @BindView(R.id.ll_changepassword)
+    LinearLayout ll_changepassword;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,18 +69,15 @@ public class ChangePassword extends AppCompatActivity {
         sNewPassword = editTextNewPassWord.getText().toString().trim();
 
         if (sOldPassword.isEmpty())
-//            editTextOldPassword.setText("Please enter old password");
-            Toast.makeText(ChangePassword.this, "Please enter old password", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_changepassword,getResources().getString(R.string.enter_old_password),Snackbar.LENGTH_SHORT);
         else if (sNewPassword.isEmpty())
-
-            Toast.makeText(ChangePassword.this, "Please enter new password", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_changepassword,getResources().getString(R.string.enter_new_password),Snackbar.LENGTH_SHORT);
         else if (sConfirmPassword.isEmpty())
-            Toast.makeText(ChangePassword.this, "Please enter confirm password", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_changepassword,getResources().getString(R.string.enter_confirm_password),Snackbar.LENGTH_SHORT);
         else if (!sConfirmPassword.equals(sNewPassword)) {
-            Toast.makeText(ChangePassword.this, "Please enter valid password", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_changepassword,getResources().getString(R.string.enter_valid_password),Snackbar.LENGTH_SHORT);
         } else
             callApi(sOldPassword, sNewPassword);
-
     }
 
     private void callApi(String oldPassword, String newPassword) {
@@ -106,11 +100,10 @@ public class ChangePassword extends AppCompatActivity {
                         Log.d("FORGOT_PASSWORD", new Gson().toJson(response));
 
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(ChangePassword.this, authResponse.getMessage(), Toast.LENGTH_LONG).show();
+                            showSnackbar(ll_changepassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             onBackPressed();
-//                          Response
                         } else {
-                            Toast.makeText(ChangePassword.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_changepassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                        // AppCommon.getInstance(ChangePassword.this).showDialog(ChangePassword.this, "Server Error");
@@ -123,15 +116,20 @@ public class ChangePassword extends AppCompatActivity {
                     AppCommon.getInstance(ChangePassword.this).clearNonTouchableFlags(ChangePassword.this);
                     // loaderView.setVisibility(View.GONE);
                     Log.d("ERROR_PASS", "onFailure: "+call.toString());
-                    Toast.makeText(ChangePassword.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_changepassword,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_changepassword,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
+    }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
 }

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,6 +39,7 @@ import com.example.oops.adapter.SliderAdapter;
 import com.example.oops.adapter.ViewPagerAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.rd.PageIndicatorView;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;
@@ -57,35 +57,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
+    @BindView(R.id.ll_home)
+    LinearLayout ll_home;
     @BindView(R.id.viewPager)
     SliderView viewPager;
     @BindView(R.id.SliderDots)
     LinearLayout SliderDots;
     @BindView(R.id.pageIndicatorView)
     PageIndicatorView pageIndicatorView;
+    @BindView(R.id.recycleView)
+    RecyclerView recyclerView;
 
-    private int dotscount;
     ArrayList<SliderData> sliderDataArrayList;
-    private ImageView[] dots;
 
     HomeMoviesAdapter homeMoviesAdapter;
     ArrayList<MoviesData> moviesDataArrayList;
-    @BindView(R.id.recycleView)
-    RecyclerView recyclerView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         ButterKnife.bind(this, view);
         init();
         sliderApi();
         allMoviesApi();
-
-
         return view;
-
     }
 
     private void init() {
@@ -105,44 +101,35 @@ public class HomeFragment extends Fragment {
             Map<String , String> entityMap = new HashMap<>();
             entityMap.put("id" , String.valueOf(AppCommon.getInstance(getContext()).getId()));
             entityMap.put("userId" , String.valueOf(AppCommon.getInstance(getContext()).getUserId()));
-            Call call = apiService.allMoviesApi(entityMap);
-            call.enqueue(new Callback() {
+            Call<AllMoviesResponse> call = apiService.allMoviesApi(entityMap);
+            call.enqueue(new Callback<AllMoviesResponse>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<AllMoviesResponse> call, Response<AllMoviesResponse> response) {
                     AppCommon.getInstance(getActivity()).clearNonTouchableFlags(getActivity());
                     dialog.dismiss();
-                    AllMoviesResponse authResponse = (AllMoviesResponse) response.body();
+                    AllMoviesResponse authResponse = response.body();
                     if (authResponse != null) {
                         Log.e("Slider Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             setData(authResponse.getData());
-
-
-
-
-
-                            // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(getActivity(),authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_home,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(getActivity()).showDialog(getActivity(), authResponse.getMessage());
                     }
                 }
-
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<AllMoviesResponse> call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(getActivity()).clearNonTouchableFlags(getActivity());
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_home,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_home,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -160,13 +147,13 @@ public class HomeFragment extends Fragment {
             Map<String , String> entityMap = new HashMap<>();
             entityMap.put("id" , String.valueOf(AppCommon.getInstance(getContext()).getId()));
             entityMap.put("userId" , String.valueOf(AppCommon.getInstance(getContext()).getUserId()));
-            Call call = apiService.sliderApi(entityMap);
-            call.enqueue(new Callback() {
+            Call<SliderResponse> call = apiService.sliderApi(entityMap);
+            call.enqueue(new Callback<SliderResponse>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<SliderResponse> call, Response<SliderResponse> response) {
                     AppCommon.getInstance(getActivity()).clearNonTouchableFlags(getActivity());
                     dialog.dismiss();
-                    SliderResponse authResponse = (SliderResponse) response.body();
+                    SliderResponse authResponse = response.body();
                     if (authResponse != null) {
                         Log.e("Slider Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
@@ -174,26 +161,21 @@ public class HomeFragment extends Fragment {
                             viewPagerSlider();
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(getActivity(),authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_home,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(getActivity()).showDialog(getActivity(), authResponse.getMessage());
                     }
                 }
-
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<SliderResponse> call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(getActivity()).clearNonTouchableFlags(getActivity());
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(getActivity(), "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_home,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_home,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
 
 
@@ -201,9 +183,7 @@ public class HomeFragment extends Fragment {
 
     private void viewPagerSlider() {
         SliderAdapter adapter = new SliderAdapter(getContext() , sliderDataArrayList);
-
         viewPager.setSliderAdapter(adapter);
-
         viewPager.setIndicatorAnimation(IndicatorAnimationType.WORM); //set indicator animation by using IndicatorAnimationType. :WORM or THIN_WORM or COLOR or DROP or FILL or NONE or SCALE or SCALE_DOWN or SLIDE and SWAP!!
         viewPager.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION);
         viewPager.setAutoCycleDirection(SliderView.AUTO_CYCLE_DIRECTION_BACK_AND_FORTH);
@@ -211,39 +191,6 @@ public class HomeFragment extends Fragment {
         viewPager.setIndicatorUnselectedColor(Color.GRAY);
         viewPager.setScrollTimeInSec(3); //set scroll delay in seconds :
         viewPager.startAutoCycle();
-       /* ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getActivity() , sliderDataArrayList);
-
-        viewPager.setAdapter(viewPagerAdapter);
-
-        dotscount = viewPagerAdapter.getCount();
-        pageIndicatorView.setCount(dotscount);
-        pageIndicatorView.setSelection(0);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {*//*empty*//*}
-
-            @Override
-            public void onPageSelected(int position) {
-                pageIndicatorView.setSelection(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {*//*empty*//*}
-        });
-        viewPager.setCurrentItem(10000);
-        dots = new ImageView[dotscount];
-
-        for (int i = 0; i < dotscount; i++) {
-
-            dots[i] = new ImageView(getActivity());
-            dots[i].setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.nonactive_dot));
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-            params.setMargins(8, 0, 8, 0);
-
-            SliderDots.addView(dots[i], params);
-        }*/
     }
 
     public void catList(int adapterPosition) {
@@ -255,5 +202,13 @@ public class HomeFragment extends Fragment {
         startActivity(new Intent(getContext() , VideoPlay.class)
                 .putExtra("moviesId" , movieId).putExtra("name" , name)
                 .putExtra("fav",""));
+    }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }

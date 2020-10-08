@@ -1,30 +1,27 @@
 package com.example.oops.activity;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
+import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import com.example.oops.DataClass.EditData;
 import com.example.oops.DataClass.ResponseData;
-import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.EntityClass.ProfileEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.EditProfileResponse;
-import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +30,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Profile extends AppCompatActivity {
+    @BindView(R.id.ll_profile)
+    LinearLayout ll_profile;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
     @BindView(R.id.editTextName)
@@ -117,11 +116,11 @@ public class Profile extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(Profile.this,authResponse.getMessage(),Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_profile,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             updateData(authResponse.getData());
 //                           Response
                         } else {
-                            Toast.makeText(Profile.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_profile,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(Profile.this).showDialog(Profile.this, "Server Error");
@@ -132,8 +131,8 @@ public class Profile extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(Profile.this).clearNonTouchableFlags(Profile.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Profile.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_profile,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                 }
             });
         }
@@ -147,4 +146,12 @@ public class Profile extends AppCompatActivity {
         userData.setPhone(data.getPhone());
         AppCommon.getInstance(this).setUserObject(new Gson().toJson(userData));
     }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }
