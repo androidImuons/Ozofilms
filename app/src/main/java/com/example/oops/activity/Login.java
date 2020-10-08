@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.Gson;
@@ -65,6 +68,9 @@ import static android.provider.ContactsContract.Intents.Insert.EMAIL;
 import static com.google.android.exoplayer2.ExoPlayerLibraryInfo.TAG;
 
 public class Login extends Activity {
+
+    @BindView(R.id.ll_login)
+    LinearLayout ll_login;
 
     @BindView(R.id.editTextUserName)
     EditText editTextUserName;
@@ -196,7 +202,7 @@ public class Login extends Activity {
                             //  callInsertPin();
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(Login.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_login,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         //AppCommon.getInstance(Login.this).showDialog(Login.this, authResponse.getMsg());
@@ -207,16 +213,11 @@ public class Login extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_login,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_login,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -229,13 +230,13 @@ public class Login extends Activity {
             final Dialog dialog = ViewUtils.getProgressBar(Login.this);
             AppCommon.getInstance(this).setNonTouchableFlags(this);
             AppService apiService = ServiceGenerator.createService(AppService.class);
-            Call call = apiService.LoginApi(new LoginEntity(email, password,fireBase));
-            call.enqueue(new Callback() {
+            Call<RegistrationResponse> call = apiService.LoginApi(new LoginEntity(email, password,fireBase));
+            call.enqueue(new Callback<RegistrationResponse>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
                     dialog.dismiss();
-                    RegistrationResponse authResponse = (RegistrationResponse) response.body();
+                    RegistrationResponse authResponse = response.body();
 
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
@@ -248,7 +249,7 @@ public class Login extends Activity {
                             finishAffinity();
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(Login.this, authResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_login,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(Login.this).showDialog(Login.this, authResponse.getMsg());
@@ -256,19 +257,17 @@ public class Login extends Activity {
                 }
 
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<RegistrationResponse> call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_login,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_login,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
+
         }
     }
 
@@ -328,12 +327,12 @@ public class Login extends Activity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(Login.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_login,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             startActivity(new Intent(Login.this, ForgotPassword.class)
                                     .putExtra("isPassword", true)
                                     .putExtra("data", new Gson().toJson(authResponse.getData())));
                         } else {
-                            Toast.makeText(Login.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_login,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(Login.this).showDialog(Login.this, authResponse.getMessage());
@@ -345,15 +344,14 @@ public class Login extends Activity {
                     dialog.dismiss();
                     AppCommon.getInstance(Login.this).clearNonTouchableFlags(Login.this);
 
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Login.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_login,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_login,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
+
         }
     }
 
@@ -373,5 +371,12 @@ public class Login extends Activity {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
             updateUI(null);
         }
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }

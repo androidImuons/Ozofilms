@@ -2,6 +2,7 @@ package com.example.oops.fragment;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -9,47 +10,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.example.oops.DataClass.MoviesSearchModule;
 import com.example.oops.DataClass.SearchData;
 import com.example.oops.DataClass.WebSearchModule;
 import com.example.oops.DataClass.WebSearchResponse;
 import com.example.oops.R;
-import com.example.oops.ResponseClass.CategoryResponse;
-import com.example.oops.ResponseClass.MovieDeatilsResponse;
 import com.example.oops.ResponseClass.MoviesSearchResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
-import com.example.oops.activity.CategoryListActivity;
 import com.example.oops.activity.VideoPlay;
 import com.example.oops.activity.VideoPlayerSeries;
-import com.example.oops.adapter.GridCategoryAdapter;
 import com.example.oops.adapter.GridSearchAdapter;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,7 +47,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SearchHere extends Fragment {
-
+    @BindView(R.id.rl_SearchHere)
+    RelativeLayout rl_SearchHere;
     @BindView(R.id.editTextSearchHere)
     AppCompatEditText editTextSearchHere;
     String seditTextSearchHere;
@@ -66,18 +56,14 @@ public class SearchHere extends Fragment {
     AppCompatImageView searchHere;
     @BindView(R.id.recylerview)
     RecyclerView recylerview;
-
     @BindView(R.id.radioButton)
     RadioButton radioButton;
-
     @BindView(R.id.radioButton2)
     RadioButton radioButton2;
-
     @BindView(R.id.radioGroup)
     RadioGroup radioGroup;
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swiperefresh;
-
     Dialog dialog;
     int offset;
     GridSearchAdapter gridCategoryAdapter;
@@ -185,7 +171,7 @@ public class SearchHere extends Fragment {
                                 setDataMovies(authResponse.getData());
                             } else {
                                 gridCategoryAdapter.update(searchDataArrayList , offset);
-                                Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                showSnackbar(rl_SearchHere,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             }
                         } else {
                             AppCommon.getInstance(getContext()).showDialog(getActivity(), authResponse.getMessage());
@@ -198,7 +184,7 @@ public class SearchHere extends Fragment {
                                 setDataWeb(authResponse.getData());
                             } else {
                                 gridCategoryAdapter.update(searchDataArrayList , offset);
-                                Toast.makeText(getContext(), authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                showSnackbar(rl_SearchHere,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             }
                         } else {
 
@@ -206,7 +192,6 @@ public class SearchHere extends Fragment {
                         }
                     }
                 }
-
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     if(!swiperefresh.isRefreshing())
@@ -214,14 +199,12 @@ public class SearchHere extends Fragment {
                     else
                         swiperefresh.setRefreshing(false);
                     AppCommon.getInstance(getContext()).clearNonTouchableFlags(getActivity());
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(getContext(), "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_SearchHere,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
         } else {
-            // no internet
-            Toast.makeText(getContext(), "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_SearchHere,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
+
         }
     }
 
@@ -271,7 +254,15 @@ public class SearchHere extends Fragment {
             startActivity(new Intent(getContext(), VideoPlayerSeries.class)
                     .putExtra("seriesId", searchDataArrayList.get(adapterPosition).getMovieId())
                     .putExtra("name", searchDataArrayList.get(adapterPosition).getMovieName()));
-            //   Toast.makeText(getContext(), ""+searchDataArrayList.get(adapterPosition).getMovieId(), Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }

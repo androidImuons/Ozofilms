@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.example.oops.DataClass.SliderData;
 import com.example.oops.R;
 import com.example.oops.activity.VideoPlay;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.smarteist.autoimageslider.SliderViewAdapter;
-
 import java.util.ArrayList;
 
 public class SliderAdapter  extends

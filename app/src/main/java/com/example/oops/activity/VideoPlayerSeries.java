@@ -1,90 +1,57 @@
 package com.example.oops.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.oops.DataClass.EpisodeData;
 import com.example.oops.DataClass.SeasonData;
-import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.EpisodeResponse;
 import com.example.oops.ResponseClass.SeasonResponse;
 import com.example.oops.Utils.AppCommon;
-import com.example.oops.Utils.AppUtil;
 import com.example.oops.Utils.DemoDownloadService;
 import com.example.oops.Utils.DownloadTracker;
-import com.example.oops.Utils.MyPreference;
 import com.example.oops.Utils.RecyclerItemClickListener;
-import com.example.oops.Utils.TrackKey;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.EpisodeAdapter;
 import com.example.oops.adapter.SeasonAdapter;
 import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.database.Subtitle;
 import com.example.oops.data.database.Video;
-import com.example.oops.data.databasevideodownload.DatabaseClient;
-import com.example.oops.data.databasevideodownload.VideoDownloadTable;
 import com.example.oops.data.model.VideoSource;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
-import com.google.android.exoplayer2.Format;
-import com.google.android.exoplayer2.RenderersFactory;
-import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.offline.DownloadHelper;
 import com.google.android.exoplayer2.offline.DownloadManager;
-import com.google.android.exoplayer2.offline.DownloadRequest;
 import com.google.android.exoplayer2.offline.DownloadService;
-import com.google.android.exoplayer2.source.TrackGroup;
-import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelection;
-import com.google.android.exoplayer2.upstream.DataSource;
-import com.google.android.exoplayer2.upstream.DefaultAllocator;
-import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
-import java.io.IOException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -92,15 +59,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.google.android.exoplayer2.offline.Download.STATE_COMPLETED;
-import static com.google.android.exoplayer2.offline.Download.STATE_DOWNLOADING;
-import static com.google.android.exoplayer2.offline.Download.STATE_FAILED;
-import static com.google.android.exoplayer2.offline.Download.STATE_QUEUED;
-import static com.google.android.exoplayer2.offline.Download.STATE_REMOVING;
-import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
-import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
-
 public class VideoPlayerSeries extends Activity {
+
+    @BindView(R.id.rl_video_player_series)
+    RelativeLayout rl_video_player_series;
 
     @BindView(R.id.txtVideoHeading)
     AppCompatTextView txtVideoHeading;
@@ -270,8 +232,7 @@ public class VideoPlayerSeries extends Activity {
                                 setDataEpisode(authResponse.getData());
                             }
                         } else {
-
-                            Toast.makeText(VideoPlayerSeries.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(rl_video_player_series,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(VideoPlayerSeries.this).showDialog(VideoPlayerSeries.this, "Server Error");
@@ -282,15 +243,13 @@ public class VideoPlayerSeries extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlayerSeries.this).clearNonTouchableFlags(VideoPlayerSeries.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlayerSeries.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_video_player_series,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_video_player_series,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -331,27 +290,8 @@ public class VideoPlayerSeries extends Activity {
                     public void onItemClick(View view, int position) {
 
                         selectedPosition = position;
-                        Toast.makeText(VideoPlayerSeries.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
-
+                        //Toast.makeText(VideoPlayerSeries.this, "" + selectedPosition, Toast.LENGTH_LONG).show();
                         txtVideoHeading.setText(episodeDataArrayList.get(position).getEpisodeName());
-
-                          /*  stringPosition = String.valueOf(position);
-                        episodeNo = String.valueOf(episodeDataArrayList.get(position).getEpisodeNo());
-                    Intent i = new Intent(getApplicationContext(), EpisodePlayActivity.class);
-                        i.putExtra("videourl", episodeDataArrayList.get(position).getVideoLink());
-                        i.putExtra("name", name);
-                        i.putExtra("episodeThumnailImage", episodeDataArrayList.get(position).getThumbnailLink());
-                        i.putExtra("episodeNo", episodeNo);
-                        i.putExtra("episodeId", episodeDataArrayList.get(position).getEpisodeId());
-                        i.putExtra("storyDescription", storyDescription);
-                        i.putExtra("sessionID", see);
-                        i.putExtra("Abv", stringPosition);
-                        i.putExtra("Json", json);
-                        Log.d("JSON!", "" + json);
-
-
-                        startActivity(i);
-*/
                     }
                 }));
 
@@ -397,8 +337,7 @@ public class VideoPlayerSeries extends Activity {
 
 
                         } else {
-
-                            Toast.makeText(VideoPlayerSeries.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(rl_video_player_series,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(VideoPlayerSeries.this).showDialog(VideoPlayerSeries.this, "Server Error");
@@ -409,15 +348,14 @@ public class VideoPlayerSeries extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlayerSeries.this).clearNonTouchableFlags(VideoPlayerSeries.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlayerSeries.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_video_player_series,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_video_player_series,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -493,8 +431,7 @@ public class VideoPlayerSeries extends Activity {
 
 
                         } else {
-
-                            Toast.makeText(VideoPlayerSeries.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(rl_video_player_series,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(VideoPlayerSeries.this).showDialog(VideoPlayerSeries.this, "Server Error");
@@ -505,15 +442,13 @@ public class VideoPlayerSeries extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlayerSeries.this).clearNonTouchableFlags(VideoPlayerSeries.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlayerSeries.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_video_player_series,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_video_player_series,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -560,5 +495,12 @@ public class VideoPlayerSeries extends Activity {
         startActivity(intent);
     }
 
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
 
 }

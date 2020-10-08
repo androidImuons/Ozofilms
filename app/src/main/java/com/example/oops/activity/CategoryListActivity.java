@@ -1,37 +1,32 @@
 package com.example.oops.activity;
 
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.DataClass.MoviesData;
-import com.example.oops.EntityClass.LoginEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CategoryResponse;
-import com.example.oops.ResponseClass.RegistrationResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.adapter.GridCategoryAdapter;
-import com.example.oops.adapter.HomeMoviesAdapter;
-import com.example.oops.fragment.HomeFragment;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -43,12 +38,14 @@ public class CategoryListActivity extends AppCompatActivity {
 
     MoviesData moviesData = new MoviesData();
     GridCategoryAdapter gridCategoryAdapter;
+    ArrayList<CategoryListData> categoryList;
 
+    @BindView(R.id.rl_category)
+    RelativeLayout rl_category;
     @BindView(R.id.recycleView)
     RecyclerView recycleView;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
-    ArrayList<CategoryListData> categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,26 +81,21 @@ public class CategoryListActivity extends AppCompatActivity {
                         if (authResponse.getCode() == 200) {
                             setData(authResponse.getData());
                         } else {
-                            Toast.makeText(CategoryListActivity.this,authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(rl_category,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(CategoryListActivity.this).showDialog(CategoryListActivity.this, authResponse.getMessage());
                     }
                 }
-
                 @Override
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(CategoryListActivity.this).clearNonTouchableFlags(CategoryListActivity.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(CategoryListActivity.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(rl_category,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(rl_category,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -112,6 +104,7 @@ public class CategoryListActivity extends AppCompatActivity {
     }
 
     private void init() {
+
         categoryList = new ArrayList<>();
         gridCategoryAdapter = new GridCategoryAdapter(this , categoryList );
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this , 3);
@@ -129,5 +122,13 @@ public class CategoryListActivity extends AppCompatActivity {
         startActivity(new Intent(this , VideoPlay.class)
                 .putExtra("moviesId" , movieId).putExtra("name" , movieName)
                 .putExtra("fav",""));
+    }
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }

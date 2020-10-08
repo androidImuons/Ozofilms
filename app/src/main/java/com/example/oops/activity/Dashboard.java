@@ -3,20 +3,19 @@ package com.example.oops.activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
-
+import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import com.example.oops.R;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.fragment.DownloadVideo;
@@ -25,6 +24,8 @@ import com.example.oops.fragment.HomeFragment;
 import com.example.oops.fragment.MoreScreenFragment;
 import com.example.oops.fragment.SearchHere;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import butterknife.BindView;
 
 public class Dashboard extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
     ViewPager viewPager;
@@ -32,13 +33,14 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
     private int dotscount;
     private ImageView[] dots;
     BottomNavigationView bottomNavigationView;
+    @BindView(R.id.rl_dashboard)
+    RelativeLayout rl_dashboard;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dashboard);
         Log.d("dhdhjj",""+AppCommon.getInstance(this).getNotificationObj());
-//Toast.makeText(Dashboard.this,""+,Toast.LENGTH_SHORT).show();
         loadFragment(new HomeFragment());
 //        viewPager = (ViewPager) findViewById(R.id.viewPager);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
@@ -88,18 +90,11 @@ public class Dashboard extends AppCompatActivity implements BottomNavigationView
         return loadFragment(fragment);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert).setTitle("Exit")
-//                .setMessage("Are you sure you want to exit?")
-//                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        finish();
-//                    }
-//                }).setNegativeButton("No", null).show();    }
-//}
-
-
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
 }
 

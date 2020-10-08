@@ -1,9 +1,7 @@
 package com.example.oops.adapter;
 
 
-import android.app.Activity;
 import android.content.Context;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,35 +12,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
-import com.example.oops.DataClass.CategoryListData;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.Utils.AppUtil;
-import com.example.oops.activity.Dashboard;
 import com.example.oops.activity.OfflinePlayerActivity;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
-import com.example.oops.data.databasevideodownload.VideoDownloadDao;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
-import com.example.oops.fragment.DownloadVideo;
-import com.example.oops.model.SearchModel;
-import com.example.oops.model.VideoModel;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.offline.DownloadRequest;
-import com.google.android.exoplayer2.util.Log;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

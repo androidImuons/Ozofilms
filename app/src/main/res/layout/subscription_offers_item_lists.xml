@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_100sdp"
+    android:layout_height="@dimen/_120sdp"
     android:layout_marginBottom="10dp"
     android:id="@+id/rl_subscription"
     android:background="@drawable/coupon_bg">
@@ -31,13 +31,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"
+            android:textSize="@dimen/_12sdp"
             android:textStyle="bold"
-
             android:id="@+id/tVplanName"
             android:layout_weight=".5"
             android:layout_marginRight="@dimen/_10sdp"
-            android:text="900"/>
+            android:text="sixMonthPlan"/>
 
 
 
@@ -102,11 +101,10 @@
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_from_left"
-        android:padding="@dimen/_5sdp"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="90dp"
-        android:layout_toRightOf="@+id/linearLayout2"
+        android:paddingRight="@dimen/dp10"
+        android:layout_marginRight="@dimen/dp10"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="@dimen/dp5"
         android:layout_below="@id/linearLayout1"
 
         >
@@ -120,10 +118,12 @@
 
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:layout_marginLeft="@dimen/_5sdp"
+                android:padding="@dimen/dp5"
                 android:id="@+id/tVdescription1"
-                android:textSize="@dimen/_9sdp"
+                android:textSize="@dimen/_8sdp"
+                android:textStyle="bold"
                 android:text="Unlimited Streaming &amp; Downaloads"
                 android:textColor="@color/white">
 
@@ -140,8 +140,9 @@
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"
                 android:layout_column="2"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:textSize="@dimen/_9sdp"
+                android:padding="@dimen/dp5"
+                android:textSize="@dimen/_8sdp"
+                android:textStyle="bold"
                 android:id="@+id/tVdescription2"
                 android:text="Get upto Rs.99cashback on 1st Paytm Wallet Txn of Oops"
                 android:textColor="@color/white"></com.example.oops.custom.OTTTextView>

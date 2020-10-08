@@ -1,9 +1,11 @@
 package com.example.oops.activity;
 
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -21,6 +23,7 @@ import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import butterknife.BindView;
@@ -31,10 +34,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Support_Help extends AppCompatActivity {
+    @BindView(R.id.ll_support_help)
+    LinearLayout ll_support_help;
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
-
-
     @BindView(R.id.editTextFullName)
     AppCompatEditText editTextFullName;
     String sFullName;
@@ -97,12 +100,12 @@ public class Support_Help extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(Support_Help.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_support_help,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             onBackPressed();
                             // startActivity(new Intent(Login.this, .class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
-                            Toast.makeText(Support_Help.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_support_help,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(Support_Help.this).showDialog(Support_Help.this, "Server Error");
@@ -113,16 +116,21 @@ public class Support_Help extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(Support_Help.this).clearNonTouchableFlags(Support_Help.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(Support_Help.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_support_help,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_support_help,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 
 }

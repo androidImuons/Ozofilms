@@ -1,30 +1,19 @@
 package com.example.oops.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.oops.DataClass.EpisodeData;
-import com.example.oops.DataClass.PlansData;
 import com.example.oops.R;
 import com.example.oops.Utils.AppCommon;
-import com.example.oops.activity.VideoPlay;
 import com.facebook.drawee.view.SimpleDraweeView;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

@@ -3,9 +3,12 @@ package com.example.oops.activity;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -34,9 +38,10 @@ import retrofit2.Response;
 
 public class ForgotPassword extends Activity {
 
+    @BindView(R.id.ll_ForgotPassword)
+    LinearLayout ll_ForgotPassword;
     @BindView(R.id.enterOtp)
     EditText enterOtp;
-
     @BindView(R.id.editTextNewPin)
     EditText editTextNewPin;
     @BindView(R.id.editTextConfirmPin)
@@ -120,10 +125,10 @@ public class ForgotPassword extends Activity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(ForgotPassword.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_ForgotPassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             onBackPressed();
                         } else {
-                            Toast.makeText(ForgotPassword.this,authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_ForgotPassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(ForgotPassword.this).showDialog(ForgotPassword.this, authResponse.getMessage());
@@ -134,16 +139,13 @@ public class ForgotPassword extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(ForgotPassword.this).clearNonTouchableFlags(ForgotPassword.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(ForgotPassword.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_ForgotPassword,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_ForgotPassword,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -168,10 +170,10 @@ public class ForgotPassword extends Activity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(ForgotPassword.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_ForgotPassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             onBackPressed();
                         } else {
-                            Toast.makeText(ForgotPassword.this,authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_ForgotPassword,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(ForgotPassword.this).showDialog(ForgotPassword.this, authResponse.getMessage());
@@ -182,16 +184,21 @@ public class ForgotPassword extends Activity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(ForgotPassword.this).clearNonTouchableFlags(ForgotPassword.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(ForgotPassword.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_ForgotPassword,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_ForgotPassword,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }

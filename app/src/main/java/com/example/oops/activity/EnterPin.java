@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,15 +14,13 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
-
 import com.example.oops.DataClass.ResponseData;
 import com.example.oops.DataClass.SocialData;
 import com.example.oops.EntityClass.LogoutEntity;
@@ -32,14 +31,12 @@ import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
-import com.example.oops.fragment.MoreScreenFragment;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -48,6 +45,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EnterPin extends AppCompatActivity {
+    @BindView(R.id.ll_enter_pin)
+    LinearLayout ll_enter_pin;
     @BindView(R.id.et1)
     EditText et1;
     @BindView(R.id.et2)
@@ -60,10 +59,8 @@ public class EnterPin extends AppCompatActivity {
     AppCompatImageView imgLogout;
     @BindView(R.id.forgotPin)
     TextView forgotPin;
-
     @BindView(R.id.tVuser)
     AppCompatTextView userName;
-
     SocialData socialData;
 
 
@@ -232,7 +229,7 @@ public class EnterPin extends AppCompatActivity {
                             et3.setText("");
                             et4.setText("");
                             et1.requestFocus();
-                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_enter_pin,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, "Server Error");
@@ -243,15 +240,13 @@ public class EnterPin extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_enter_pin,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_enter_pin,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -283,7 +278,7 @@ public class EnterPin extends AppCompatActivity {
                             et3.setText("");
                             et4.setText("");
                             et1.requestFocus();
-                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_enter_pin,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, "Server Error");
@@ -295,14 +290,13 @@ public class EnterPin extends AppCompatActivity {
                     dialog.dismiss();
                     AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_enter_pin,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_enter_pin,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
 
 
@@ -356,10 +350,9 @@ public class EnterPin extends AppCompatActivity {
                             AppCommon.getInstance(EnterPin.this).clearPreference();
                             startActivity(new Intent(EnterPin.this, Login.class));
                             finishAffinity();
-                            Toast.makeText(EnterPin.this, "Logout Successfully", Toast.LENGTH_SHORT).show();
-
+                            showSnackbar(ll_enter_pin,getResources().getString(R.string.Logout),Snackbar.LENGTH_SHORT);
                         } else {
-                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_enter_pin,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, "Server Error");
@@ -370,15 +363,11 @@ public class EnterPin extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_enter_pin,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(EnterPin.this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_enter_pin,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -405,12 +394,12 @@ public class EnterPin extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
-                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_enter_pin,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                             startActivity(new Intent(EnterPin.this, ForgotPassword.class)
                                     .putExtra("data", new Gson().toJson(authResponse.getData()))
                                     .putExtra("isPassword", false));
                         } else {
-                            Toast.makeText(EnterPin.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_enter_pin,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(EnterPin.this).showDialog(EnterPin.this, authResponse.getMessage());
@@ -421,16 +410,18 @@ public class EnterPin extends AppCompatActivity {
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(EnterPin.this).clearNonTouchableFlags(EnterPin.this);
-
-                    // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(EnterPin.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_enter_pin,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
                 }
             });
-
-
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_enter_pin,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
+    }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }

@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:orientation="vertical"
+    android:id="@+id/ll_change_pin"
     tools:context=".activity.UserRegistration">
-    <include
-        layout="@layout/header_layout"></include>
+
+    <include layout="@layout/header_layout"></include>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,7 +30,7 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/oops_logo"/>
+                android:src="@drawable/oops_logo" />
 
             <LinearLayout
 
@@ -41,7 +43,7 @@
                 <com.example.oops.custom.OTTTextView
                     style="@style/TextInCenter"
                     android:layout_marginTop="60dp"
-                    android:text="@string/change_pin"/>
+                    android:text="@string/change_pin" />
                 <!--Name-->
                 <LinearLayout
                     android:id="@+id/userName"
@@ -63,7 +65,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            app:srcCompat="@drawable/ic_lock"/>
+                            app:srcCompat="@drawable/ic_lock" />
                     </LinearLayout>
 
                     <com.example.oops.custom.OTTEditText
@@ -78,8 +80,6 @@
                         android:maxLength="4" />
                 </LinearLayout>
                 <!--    Email Id:        -->
-
-
 
 
                 <!-- Old Pin-->
@@ -102,7 +102,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            app:srcCompat="@drawable/ic_lock"/>
+                            app:srcCompat="@drawable/ic_lock" />
                     </LinearLayout>
 
                     <com.example.oops.custom.OTTEditText
@@ -111,11 +111,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="15dp"
-                        android:maxLength="4"
                         android:background="@null"
+                        android:hint="@string/new_pin"
                         android:inputType="numberPassword"
-                        android:hint="@string/new_pin" />
+                        android:maxLength="4" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -135,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            app:srcCompat="@drawable/ic_lock"/>
+                            app:srcCompat="@drawable/ic_lock" />
                     </LinearLayout>
 
                     <com.example.oops.custom.OTTEditText
@@ -146,13 +147,10 @@
                         android:layout_marginLeft="15dp"
                         android:background="@null"
                         android:digits="0987654321"
-                        android:maxLength="4"
+                        android:hint="@string/confirm_pin"
                         android:inputType="numberPassword"
-                        android:hint="@string/confirm_pin" />
+                        android:maxLength="4" />
                 </LinearLayout>
-
-
-
 
 
             </LinearLayout>
@@ -168,7 +166,7 @@
                 android:background="@drawable/button_background"
                 android:text="@string/submit"
                 android:textAllCaps="false"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white" />
 
         </FrameLayout>
 

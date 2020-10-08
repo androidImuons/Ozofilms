@@ -1,36 +1,19 @@
 package com.example.oops.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.oops.DataClass.PlansData;
 import com.example.oops.R;
-import com.example.oops.ResponseClass.FavouriteResponse;
-import com.example.oops.Utils.AppCommon;
-import com.example.oops.Utils.ViewUtils;
 import com.example.oops.custom.OTTTextView;
-import com.example.oops.retrofit.AppService;
-import com.example.oops.retrofit.ServiceGenerator;
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPlanAdapter.SubscriptionViewHolder> {
 
@@ -62,15 +45,7 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         holder.description1.setText(plansDataArrayList.get(position).getDescription());
         //  holder.discountAmount.setPaintFlags(holder.discountAmount.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         holder.planName.setText(plansDataArrayList.get(position).getPlanName());
-       /* holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
-          *//*  @Override
-            public void onClick(View view) {
 
-            }*//*
-
-              //  Toast.makeText(context,"Under Construction",Toast.LENGTH_LONG).show()
-
-        }*/
     }
 
 

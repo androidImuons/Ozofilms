@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/background"
+    android:id="@+id/ll_subscription"
     android:orientation="vertical">
     <include layout="@layout/header_layout"></include>
 

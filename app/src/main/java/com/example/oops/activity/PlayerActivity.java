@@ -2,7 +2,6 @@ package com.example.oops.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -17,31 +16,31 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.cj.videoprogressview.LightProgressView;
 import com.cj.videoprogressview.VolumeProgressView;
-import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.Utils.PlayerController;
 import com.example.oops.Utils.PlayerUtils;
 import com.example.oops.Utils.VideoPlayer;
-
 import com.example.oops.adapter.SubtitleAdapter;
 import com.example.oops.data.database.AppDatabase;
 import com.example.oops.data.model.VideoSource;
 import com.google.android.exoplayer2.text.CaptionStyleCompat;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.material.snackbar.Snackbar;
+import butterknife.BindView;
 
 public class PlayerActivity extends AppCompatActivity implements View.OnClickListener, PlayerController {
 
+    @BindView(R.id.ll_player_activity)
+    LinearLayout ll_player_activity;
     private static final String TAG = "PlayerActivity";
     private PlayerView playerView;
     private VideoPlayer player;
@@ -141,7 +140,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
     private void initSource() {
 
         if (videoSource.getVideos() == null) {
-            Toast.makeText(this, "can not play video", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_player_activity,getResources().getString(R.string.NoVideo),Snackbar.LENGTH_SHORT);
             return;
         }
 
@@ -370,7 +369,7 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
             return;
 
         if (checkIfVideoHasSubtitle()) {
-            Toast.makeText(this, getString(R.string.no_subtitle), Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_player_activity,getResources().getString(R.string.no_subtitle),Snackbar.LENGTH_SHORT);
             return;
         }
 
@@ -664,4 +663,12 @@ public class PlayerActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
+
+    public void showSnackbar(View view, String message, int duration) {
+        Snackbar snackbar = Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
+    }
+
 }

@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,10 +21,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -76,15 +75,14 @@ import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultAllocator;
 import com.google.android.exoplayer2.util.Util;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,10 +103,10 @@ import static com.google.android.exoplayer2.offline.Download.STATE_RESTARTING;
 import static com.google.android.exoplayer2.offline.Download.STATE_STOPPED;
 
 public class VideoPlay extends Activity implements View.OnClickListener, DownloadTracker.Listener {
+    @BindView(R.id.ll_video_play)
+    LinearLayout ll_video_play;
     @BindView(R.id.txtVideoHeading)
     AppCompatTextView txtVideoHeading;
-    String stxtVideoHeading;
-
     @BindView(R.id.txtContentType)
     AppCompatTextView txtContentType;
     @BindView(R.id.txtRate)
@@ -129,7 +127,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     AppCompatTextView txtHeading;
     @BindView(R.id.imgPlayVideo)
     AppCompatImageView imgPlayVideo;
-
     @BindView(R.id.like)
     ImageView like;
 
@@ -142,7 +139,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private List<Video> videoUriList = new ArrayList<>();
     ProgressDialog pDialog;
     protected static final CookieManager DEFAULT_COOKIE_MANAGER;
-
     String movieId, sMsg = "";
 
     // Saved instance state keys.
@@ -150,27 +146,17 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     private static final String KEY_WINDOW = "window";
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
-    ImageView img;
 
     static {
         DEFAULT_COOKIE_MANAGER = new CookieManager();
         DEFAULT_COOKIE_MANAGER.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
     }
 
-
-    LinearLayout llParentContainer;
-
     List<TrackKey> trackKeys = new ArrayList<>();
     List<String> optionsToDownload = new ArrayList<String>();
-
     DefaultTrackSelector.Parameters qualityParams;
-
-
     private DataSource.Factory dataSourceFactory;
-
-
     private DefaultTrackSelector trackSelector;
-
     private DefaultTrackSelector.Parameters trackSelectorParameters;
     private TrackGroupArray lastSeenTrackGroupArray;
 
@@ -236,10 +222,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             movieId = getIntent().getStringExtra("moviesId");
             String name = getIntent().getStringExtra("name");
             sMsg = getIntent().getStringExtra("fav");
-
             txtVideoHeading.setText(name);
             txtHeading.setVisibility(View.GONE);
-
             callGetMoviesDetails(movieId);
         }
 //        movieid = Integer.parseInt(movieId);
@@ -265,8 +249,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             DownloadService.startForeground(this, DemoDownloadService.class);
         }
         handler = new Handler();
-
-
         imgDownload = (ImageView) findViewById(R.id.imgDownload);
 //        prepareView();
         imgDownload.setOnClickListener(VideoPlay.this);
@@ -301,15 +283,12 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     }
 
     private void setLayout() {
-
         categoryList = new ArrayList<>();
         relatedAdapter = new RelatedAdapter(VideoPlay.this, categoryList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recylerview.setLayoutManager(mLayoutManager);
         recylerview.setItemAnimator(new DefaultItemAnimator());
         recylerview.setAdapter(relatedAdapter);
-
-
         imgPlayVideo.setOnClickListener(view -> goToPlayerActivity(makeVideoSource(videoUriList, 0)));
     }
 
@@ -351,13 +330,8 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                                     like.setSelected(false);
                                 }
                             }
-                               /* setData(authResponse.getData());
-                            videoUrl= authResponse.getData().getVideoLink();*/
-
-
                         } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_video_play,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
@@ -368,15 +342,15 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    showSnackbar(ll_video_play,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_video_play,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -425,8 +399,7 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                             setData(authResponse.getData());
 
                         } else {
-
-                            Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            showSnackbar(ll_video_play,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
                         }
                     } else {
                         AppCommon.getInstance(VideoPlay.this).showDialog(VideoPlay.this, "Server Error");
@@ -437,15 +410,16 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                 public void onFailure(Call call, Throwable t) {
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
+                    showSnackbar(ll_video_play,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_video_play,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
+
         }
     }
 
@@ -479,11 +453,9 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                             if (sMsg.equals("fav")) {
                                 txtMessage.setText("No like Related Movie Found");
                                 txtMessage.setVisibility(View.VISIBLE);
-                               // Toast.makeText(VideoPlay.this, "No like Related Movie Found", Toast.LENGTH_SHORT).show();
                             } else if (!sMsg.equals("fav")) {
                                 txtMessage.setText("No like Related Movie Found");
                                 txtMessage.setVisibility(View.VISIBLE);
-                                //Toast.makeText(VideoPlay.this, authResponse.getMessage(), Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -497,14 +469,14 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                     dialog.dismiss();
                     AppCommon.getInstance(VideoPlay.this).clearNonTouchableFlags(VideoPlay.this);
                     // loaderView.setVisibility(View.GONE);
-                    Toast.makeText(VideoPlay.this, "Server Error", Toast.LENGTH_SHORT).show();
+                    showSnackbar(ll_video_play,getResources().getString(R.string.ServerError),Snackbar.LENGTH_SHORT);
+
                 }
             });
 
 
         } else {
-            // no internet
-            Toast.makeText(this, "Please check your internet", Toast.LENGTH_SHORT).show();
+            showSnackbar(ll_video_play,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
     }
 
@@ -545,17 +517,10 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
     private void makeListOfUri(MovieDeatilsData data) {
         videoUriList.add(new Video(data.getVideoLink(), Long.getLong("zero", 1)));
-
-        /*videoUriList.add(new Video("https://5b44cf20b0388.streamlock.net:8443/vod/smil:bbb.smil/playlist.m3u8", Long.getLong("zero", 1)));
-
-        subtitleList.add(new Subtitle(2, "German", "https://durian.blender.org/wp-content/content/subtitles/sintel_en.srt"));
-        subtitleList.add(new Subtitle(2, "French", "https://durian.blender.org/wp-content/content/subtitles/sintel_fr.srt"));
-*/
         if (database.videoDao().getAllUrls().size() == 0) {
             database.videoDao().insertAllVideoUrl(videoUriList);
             database.videoDao().insertAllSubtitleUrl(subtitleList);
         }
-
     }
 
     private VideoSource makeVideoSource(List<Video> videos, int index) {
@@ -568,7 +533,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                     database.videoDao().getAllSubtitles(i + 1),
                     videos.get(i).getWatchedLength())
             );
-
         }
         return new VideoSource(singleVideos, index);
     }
@@ -655,37 +619,57 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
-
-
             case R.id.imgDownload:
-//                if (DatabaseClient.getInstance(this).getAppDatabase().videoDownloadDao().isDataExist(movieid. )) {
-                fetchDownloadOptions();
-
-                // data not exist.
-//                    Toast.makeText(VideoPlay.this," Not Data Exist"+movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
-
-//                } else {
-//                    // data already exist.
-//                    Toast.makeText(VideoPlay.this," Exist" +movieid +"  " +sMovie,Toast.LENGTH_SHORT).show();
-//                }
-
-
-//
-
-
+                getTasks();
                 break;
+        }
+    }
 
+    private void getTasks() {
+        class GetTasks extends AsyncTask<Void, Void, List<VideoDownloadTable>> {
+
+            @Override
+            protected List<VideoDownloadTable> doInBackground(Void... voids) {
+                List<VideoDownloadTable> taskList = DatabaseClient
+                        .getInstance(VideoPlay.this)
+                        .getAppDatabase()
+                        .videoDownloadDao()
+                        .getAll();
+                return taskList;
+            }
+
+            @Override
+            protected void onPostExecute(List<VideoDownloadTable> taskList) {
+                super.onPostExecute(taskList);
+                boolean downloaded = false;
+                if(taskList!=null && taskList.size()!=0){
+                    for(int i=0;i<taskList.size();i++){
+                        String movieName=taskList.get(i).getMovieName();
+                        if(txtVideoHeading.getText().toString().equals(movieName)){
+                            downloaded=true;
+                        }
+                    }
+
+                    if(downloaded){
+                        imgDownload.setImageResource(R.drawable.ic_lock);
+                        showSnackbar(ll_video_play,getResources().getString(R.string.AvaliableDownloads),Snackbar.LENGTH_SHORT);
+                    }else{
+                        fetchDownloadOptions();
+                    }
+                }else{
+                    fetchDownloadOptions();
+                }
+            }
         }
 
-
+        GetTasks gt = new GetTasks();
+        gt.execute();
     }
 
 
     private void fetchDownloadOptions() {
         trackKeys.clear();
-
         if (pDialog == null || !pDialog.isShowing()) {
             pDialog = new ProgressDialog(VideoPlay.this);
             pDialog.setTitle(null);
@@ -694,8 +678,10 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             pDialog.show();
         }
 
-
-        DownloadHelper downloadHelper = DownloadHelper.forHls(VideoPlay.this, Uri.parse(videoUrl), dataSourceFactory, new DefaultRenderersFactory(VideoPlay.this));
+        DownloadHelper downloadHelper = DownloadHelper.forHls(VideoPlay.this,
+                Uri.parse(videoUrl),
+                dataSourceFactory,
+                new DefaultRenderersFactory(VideoPlay.this));
 
 
         downloadHelper.prepare(new DownloadHelper.Callback() {
@@ -716,11 +702,9 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                     }
                 }
 
-
                 if (pDialog != null && pDialog.isShowing()) {
                     pDialog.dismiss();
                 }
-
 
                 optionsToDownload.clear();
                 showDownloadOptionsDialog(myDownloadHelper, trackKeys);
@@ -740,7 +724,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(VideoPlay.this, R.style.MyDialogTheme1);
-        //  builder.setTitle("Select Download Format");
         builder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Select Download Format</font>"));
 
         int checkedItem = 1;
@@ -786,7 +769,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             @Override
             public void onClick(DialogInterface dialogInterface, int which) {
 
-
                 for (int periodIndex = 0; periodIndex < helper.getPeriodCount(); periodIndex++) {
                     MappingTrackSelector.MappedTrackInfo mappedTrackInfo = helper.getMappedTrackInfo(/* periodIndex= */ periodIndex);
                     helper.clearTrackSelections(periodIndex);
@@ -798,17 +780,12 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                     }
 
                 }
-
                 DownloadRequest downloadRequest = helper.getDownloadRequest(Util.getUtf8Bytes(videoUrl));
                 if (downloadRequest.streamKeys.isEmpty()) {
                     // All tracks were deselected in the dialog. Don't start the download.
                     return;
                 }
-
-
                 startDownload(downloadRequest);
-
-
                 dialogInterface.dismiss();
 
             }
@@ -827,12 +804,9 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         //       downloadManager.addDownload(downloadRequestt);
 
         if (myDownloadRequest.uri.toString().isEmpty()) {
-            Toast.makeText(this, "Try Again!!", Toast.LENGTH_SHORT).show();
-
+            showSnackbar(ll_video_play,getResources().getString(R.string.TryAgain),Snackbar.LENGTH_SHORT);
             return;
         } else {
-
-
             saveTask();
             downloadManager.addDownload(myDownloadRequest);
 
@@ -910,84 +884,48 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
     public void onDownloadsChanged(Download download) {
         switch (download.state) {
             case STATE_QUEUED:
-//                imgDownload.setImageResource(R.drawable.app_setting);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"queue",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
+
+                // Important: These constants are persisted into DownloadIndex. Do not change them.
+                /**
+                 * The download is waiting to be started. A download may be queued because the {@link
+                 * DownloadManager}
+                 *
+                 * <ul>
+                 *   <li>Is {@link DownloadManager#getDownloadsPaused() paused}
+                 *   <li>Has {@link DownloadManager#getRequirements() Requirements} that are not met
+                 *   <li>Has already started {@link DownloadManager#getMaxParallelDownloads()
+                 *       maxParallelDownloads}
+                 * </ul>
+                 */
                 break;
-
             case STATE_STOPPED:
-
-
+                showSnackbar(ll_video_play,"The download is stopped for a specified "+download.stopReason+".",Snackbar.LENGTH_SHORT);
                 break;
             case STATE_DOWNLOADING:
-
-//                imgDownload.setImageResource(R.drawable.ic_logout);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"Video is added in downloading",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-                Log.d("EXO DOWNLOADING ", +download.getBytesDownloaded() + " " + download.contentLength);
-                Log.d("EXO  DOWNLOADING ", "" + download.getPercentDownloaded());
-
-
+                showSnackbar(ll_video_play,getResources().getString(R.string.STATE_DOWNLOADING),Snackbar.LENGTH_SHORT);
                 break;
             case STATE_COMPLETED:
-
-//imgDownload.setImageResource(R.drawable.country_icon);
-//                imgDownload.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(VideoPlay.this,"download Completed",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//                progressBarPercentage.setVisibility(View.GONE);
-
-
-                Log.d("EXO COMPLETED ", +download.getBytesDownloaded() + " " + download.contentLength);
-                Log.d("EXO  COMPLETED ", "" + download.getPercentDownloaded());
-
-
+                showSnackbar(ll_video_play,getResources().getString(R.string.STATE_COMPLETED),Snackbar.LENGTH_SHORT);
                 if (download.request.uri.toString().equals(videoUrl)) {
-
                     imgDownload.setImageResource(R.drawable.ic_lock);
                 }
-
-
                 break;
-
             case STATE_FAILED:
-
-
+                showSnackbar(ll_video_play,getResources().getString(R.string.STATE_FAILED),Snackbar.LENGTH_SHORT);
                 break;
-
             case STATE_REMOVING:
-
-
+                showSnackbar(ll_video_play,getResources().getString(R.string.STATE_REMOVING),Snackbar.LENGTH_SHORT);
                 break;
-
             case STATE_RESTARTING:
-
+                showSnackbar(ll_video_play,getResources().getString(R.string.STATE_RESTARTING),Snackbar.LENGTH_SHORT);
                 break;
-
         }
 
     }
 
     private void releasePlayer() {
-
         updateTrackSelectorParameters();
-
-
         trackSelector = null;
-
-
     }
 
     private void updateTrackSelectorParameters() {
@@ -995,7 +933,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             trackSelectorParameters = trackSelector.getParameters();
         }
     }
-
 
     private void clearStartPosition() {
         startAutoPlay = true;
@@ -1005,14 +942,9 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
 
 
     private void saveTask() {
-
-
         class SaveTask extends AsyncTask<Void, Void, Void> {
-
             @Override
             protected Void doInBackground(Void... voids) {
-
-                //creating a task
                 VideoDownloadTable task = new VideoDownloadTable();
                 task.setTimestamp(millisInString);
                 task.setMovieId(movieId);
@@ -1022,7 +954,6 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
                 task.setMovieDescription(shortDescription);
                 task.setUrlImage(thumbnailImage);
                 Log.i("SUNIL!", videoUrl);
-                //adding to database
                 DatabaseClient.getInstance(getApplicationContext()).getAppDatabase()
                         .videoDownloadDao()
                         .insert(task);
@@ -1032,16 +963,13 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
             @Override
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
-//                finish();
-//                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+               // showSnackbar(ll_video_play,"Saved in Downloads",Snackbar.LENGTH_SHORT);
             }
         }
 
         SaveTask st = new SaveTask();
         st.execute();
     }
-
 
     @OnClick(R.id.like)
     public void setLike() {
@@ -1050,5 +978,14 @@ public class VideoPlay extends Activity implements View.OnClickListener, Downloa
         } else
             like.setSelected(true);
         addAndRemoveLike(like.isSelected());
+    }
+
+
+    public void showSnackbar(View view, String message, int duration)
+    {
+        Snackbar snackbar= Snackbar.make(view, message, duration);
+        snackbar.setActionTextColor(Color.WHITE);
+        snackbar.setBackgroundTint(getResources().getColor(R.color.colorPrimaryDark));
+        snackbar.show();
     }
 }
