@@ -65,7 +65,7 @@ public class SubscriptionActivity extends AppCompatActivity {
         loadPlansApi();
         imgBackPressed.setVisibility(View.VISIBLE);
     }
-
+    
     private void init() {
         plansDataArrayList = new ArrayList<>();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(SubscriptionActivity.this);

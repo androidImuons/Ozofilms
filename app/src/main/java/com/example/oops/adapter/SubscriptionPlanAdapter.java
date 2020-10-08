@@ -43,6 +43,7 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
         holder.duration.setText("" + plansDataArrayList.get(position).getDuration());
         holder.planCost.setText("" + plansDataArrayList.get(position).getPlanCost());
         holder.description1.setText(plansDataArrayList.get(position).getDescription());
+        holder.discriptionText.setText(plansDataArrayList.get(position).getDescription());
         //  holder.discountAmount.setPaintFlags(holder.discountAmount.getPaintFlags()| Paint.STRIKE_THRU_TEXT_FLAG);
         holder.planName.setText(plansDataArrayList.get(position).getPlanName());
 
@@ -80,6 +81,8 @@ public class SubscriptionPlanAdapter extends RecyclerView.Adapter<SubscriptionPl
 
         @BindView(R.id.tVplanName)
         OTTTextView planName;
+        @BindView(R.id.discriptionText)
+        OTTTextView discriptionText;
 
         public SubscriptionViewHolder(@NonNull View itemView) {
             super(itemView);
