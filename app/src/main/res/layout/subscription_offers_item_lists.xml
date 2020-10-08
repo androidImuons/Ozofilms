@@ -18,15 +18,6 @@
         android:weightSum="2"
         android:orientation="horizontal">
 
-<!--        <com.example.oops.custom.OTTTextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:textSize="@dimen/_10sdp"-->
-<!--            android:layout_weight=".5"-->
-<!--            android:layout_marginRight="@dimen/_2sdp"-->
-<!--            android:text="@string/rs"/>-->
-
         <com.example.oops.custom.OTTTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -114,7 +105,7 @@
             <com.example.oops.custom.OTTTextView
                 android:layout_column="1"
                 android:text="•"
-                android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                android:textColor="@color/white"/>
 
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"
@@ -135,7 +126,7 @@
             <com.example.oops.custom.OTTTextView
                 android:layout_column="1"
                 android:text="•"
-                android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                android:textColor="@color/white"/>
 
             <com.example.oops.custom.OTTTextView
                 android:layout_width="wrap_content"
@@ -145,7 +136,7 @@
                 android:textStyle="bold"
                 android:id="@+id/tVdescription2"
                 android:text="Get upto Rs.99cashback on 1st Paytm Wallet Txn of Oops"
-                android:textColor="@color/white"></com.example.oops.custom.OTTTextView>
+                android:textColor="@color/white"/>
         </TableRow>
 
 
