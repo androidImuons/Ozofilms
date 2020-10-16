@@ -19,6 +19,8 @@ public interface VideoDownloadDao {
 
     @Delete
     void delete(VideoDownloadTable videoDownloadTable);
+    @Query("DELETE FROM VIDEODOWNLOAD_TABLE")
+    public void nukeTable();
 
     @Update
     void update(VideoDownloadTable videoDownloadTable);

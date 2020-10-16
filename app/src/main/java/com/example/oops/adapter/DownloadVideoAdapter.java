@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.oops.Ooops;
@@ -23,23 +24,30 @@ import com.example.oops.Utils.AppUtil;
 import com.example.oops.activity.OfflinePlayerActivity;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
+import com.example.oops.fragment.DownloadVideo;
 import com.google.android.exoplayer2.offline.Download;
 import com.google.android.exoplayer2.offline.DownloadRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdapter.MyViewHolder> {
     private Context mCtx;
     private List<VideoDownloadTable> taskList;
+    List<Download> videosList;
     VideoDownloadTable task;
     AlertDialog.Builder builder;
+    Fragment fragment;
 
-    public DownloadVideoAdapter(Context mCtx, List<VideoDownloadTable> taskList) {
+    public DownloadVideoAdapter(Context mCtx, List<VideoDownloadTable> taskList , Fragment fragment) {
         this.mCtx = mCtx;
         this.taskList = taskList;
-
+        this.videosList = new ArrayList<>();
+        this.fragment = fragment;
     }
 
     @Override
@@ -74,16 +82,23 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
 //                    String downloadInMb = AppUtil.getProgressDisplayLine(download.getBytesDownloaded(), downloadRequest.data.length);
 
 
-                    if (download.state == Download.STATE_DOWNLOADING || download.state == Download.STATE_COMPLETED) {
-                        holder.tvDownloadVideoPercentage.setVisibility(View.VISIBLE);
-                        holder.tvDownloadVideoPercentage.setText("Size: " + AppUtil.formatFileSize(download.getBytesDownloaded()) + " | Progress: " + percentage);
-
+                    if (download.state == Download.STATE_DOWNLOADING) {
+                        holder.tvDownloadVideoStatus.setText("Downloading..."+ percentage);
+                        holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#228B22"));
+                       // holder.tvDownloadVideoPercentage.setText("Size: " + AppUtil.formatFileSize(download.getBytesDownloaded()) + " | Progress: " + percentage);
+                    }  else if (download.state == Download.STATE_QUEUED) {
+                        holder.tvDownloadVideoStatus.setText("Waiting Downloading..." );
+                        holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#228B22"));
+                       // holder.tvDownloadVideoPercentage.setText("Size: " + AppUtil.formatFileSize(download.getBytesDownloaded()) + " | Progress: " + percentage);
+                    }  else if (download.state == Download.STATE_FAILED) {
+                        holder.tvDownloadVideoStatus.setText("Downloading Failed." );
+                        holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#800000"));
+                       // holder.tvDownloadVideoPercentage.setText("Size: " + AppUtil.formatFileSize(download.getBytesDownloaded()) + " | Progress: " + percentage);
                     } else {
-                        holder.tvDownloadVideoPercentage.setVisibility(View.INVISIBLE);
-
+                        holder.tvDownloadVideoStatus.setText(AppUtil.downloadStatusFromId(download));
+                        holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#800000"));
+                       // holder.tvDownloadVideoPercentage.setVisibility(View.INVISIBLE);
                     }
-                    holder.tvDownloadVideoStatus.setText(AppUtil.downloadStatusFromId(download));
-
 
                 }
             }
@@ -92,15 +107,51 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
 
     @Override
     public void onBindViewHolder(DownloadVideoAdapter.MyViewHolder holder, int position) {
+        Download download = videosList.get(position);
         VideoDownloadTable t = taskList.get(position);
         holder.txtMovieName.setText(t.getMovieName());
         holder.txtMovieType.setText(t.getMovieType());
         Glide.with(mCtx).load(t.getUrlImage()).into(holder.imgDownload);
         holder.txtDescription.setText(t.getMovieDescription());
         holder.txtTimeStamp.setText(t.getTimestamp());
-        holder.tvDownloadVideoStatus.setText(String.valueOf(t.getTimestamp()));
-        daysFind(t , holder , position);
+        if(download.getPercentDownloaded() == 100.0) {
+            daysFind(t, holder, position);
+        }else {
+            String percentage = AppUtil.floatToPercentage(download.getPercentDownloaded());
+            if (download.state == Download.STATE_DOWNLOADING) {
+                holder.tvDownloadVideoStatus.setText("Downloading...");
+                holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#228B22"));
+                // holder.tvDownloadVideoPercentage.setText("Size: " + AppUtil.formatFileSize(download.getBytesDownloaded()) + " | Progress: " + percentage);
+            } else {
+                holder.tvDownloadVideoStatus.setText(AppUtil.downloadStatusFromId(download));
+                holder.tvDownloadVideoStatus.setTextColor(Color.parseColor("#800000"));
+                // holder.tvDownloadVideoPercentage.setVisibility(View.INVISIBLE);
+            }
+        }
+        checkStatus(download , holder);
 
+    }
+
+    private void checkStatus(Download download, MyViewHolder holder) {
+        if(download.state == Download.STATE_DOWNLOADING){
+            holder.llDownloadPause.setVisibility(View.VISIBLE);
+            holder.llDownloadResume.setVisibility(View.GONE);
+
+        }else if(download.state == Download.STATE_STOPPED){
+            holder.llDownloadPause.setVisibility(View.GONE);
+            holder.llDownloadResume.setVisibility(View.VISIBLE);
+
+        } else if(download.state == Download.STATE_QUEUED){
+            holder.llDownloadStart.setVisibility(View.VISIBLE);
+            holder.llDownloadPause.setVisibility(View.GONE);
+            holder.llDownloadResume.setVisibility(View.GONE);
+        }else {
+            holder.llDownloadStart.setVisibility(View.GONE);
+            holder.llDownloadPause.setVisibility(View.GONE);
+            holder.llDownloadResume.setVisibility(View.GONE);
+        }
+
+        holder.llDownloadStart.setVisibility(View.GONE);
     }
 
     private void daysFind(VideoDownloadTable t, MyViewHolder holder, int position) {
@@ -136,8 +187,16 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
     public int getItemCount() {
         return taskList.size();
     }
+    public void addItems(List<Download> lst) {
+        this.videosList = lst;
+    }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void update(List<VideoDownloadTable> tasks) {
+        taskList = tasks;
+        notifyDataSetChanged();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder  {
         @BindView(R.id.imgDownload)
         AppCompatImageView imgDownload;
         @BindView(R.id.txtMovieName)
@@ -150,17 +209,25 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
         TextView tvDownloadVideoPercentage;
         @BindView(R.id.tv_downloaded_status)
         TextView tvDownloadVideoStatus;
+
         @BindView(R.id.img_overflow)
-        AppCompatImageView img_overflow;
+        AppCompatImageView llDownloadDelete;
+        @BindView(R.id.llDownloadPause)
+        AppCompatImageView llDownloadPause;
+        @BindView(R.id.llDownloadStart)
+        AppCompatImageView llDownloadStart;
+        @BindView(R.id.llDownloadResume)
+        AppCompatImageView llDownloadResume;
+
         @BindView(R.id.txtTimeStamp)
         AppCompatTextView txtTimeStamp;
 
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            imgDownload.setOnClickListener(this);
+            //imgDownload.setOnClickListener(this);
 
-            img_overflow.setOnClickListener(new View.OnClickListener() {
+            /*llDownloadDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 //                    VideoDownloadTable task = taskList.get(getAdapterPosition());
@@ -182,11 +249,12 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
                                 public void onClick(DialogInterface arg0, int arg1) {
                                     VideoDownloadTable task = taskList.get(getAdapterPosition());
                                     taskList.remove(getAdapterPosition());
+                                    Ooops.getInstance().getDownloadManager().removeDownload(videosList.get(getAdapterPosition()).request.id);
                                     deleteTask(task);
                                 }
                             });
 
-                    alertDialogBuilder.setNegativeButton("No,Cancel", new DialogInterface.OnClickListener() {
+                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
@@ -199,11 +267,79 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
                 }
 
             });
+            llDownloadStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ooops.getInstance().getDownloadManager().addDownload(videosList.get(getAdapterPosition()).request);
+                    notifyDataSetChanged();
+                   // ((DownloadVideo)fragment).updateData(getAdapterPosition());
+                }
+            });
+            llDownloadResume.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ooops.getInstance().getDownloadManager().addDownload(videosList.get(getAdapterPosition()).request, Download.STOP_REASON_NONE);
+                    notifyDataSetChanged();
+                    //((DownloadVideo)fragment).updateData(getAdapterPosition());
+                }
+            });
+            llDownloadPause.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ooops.getInstance().getDownloadManager().addDownload(videosList.get(getAdapterPosition()).request ,  Download.STATE_STOPPED);
+                    notifyDataSetChanged();
+                   // ((DownloadVideo)fragment).updateData(getAdapterPosition());
+                }
+            });*/
+
 
         }
 
-        @Override
-        public void onClick(View view) {
+        @OnClick(R.id.img_overflow)
+        void setDelete(){
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx, R.style.MyDialogTheme1);
+            alertDialogBuilder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Remove movie </font>"));
+            alertDialogBuilder.setIcon(R.drawable.ic_delete);
+
+//                    alertDialogBuilder.setMessage("Are you sure, You want to remove this movie ?");
+            alertDialogBuilder.setMessage(Html.fromHtml("<font color='#FFFFFF'>Are you sure, You want to remove this movie ?</font>"));
+
+            alertDialogBuilder.setPositiveButton("yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            VideoDownloadTable task = taskList.get(getAdapterPosition());
+                            taskList.remove(getAdapterPosition());
+                            Ooops.getInstance().getDownloadManager().removeDownload(videosList.get(getAdapterPosition()).request.id);
+                            deleteTask(task);
+                        }
+                    });
+
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            });
+
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+
+        @OnClick(R.id.llDownloadResume)
+        void setResume(){
+            Ooops.getInstance().getDownloadManager().addDownload(videosList.get(getAdapterPosition()).request, Download.STOP_REASON_NONE);
+            ((DownloadVideo)fragment).updateData(getAdapterPosition());
+        }
+        @OnClick(R.id.llDownloadPause)
+        void setLlDownloadPause(){
+            Ooops.getInstance().getDownloadManager().addDownload(videosList.get(getAdapterPosition()).request ,  Download.STATE_STOPPED);
+            ((DownloadVideo)fragment).updateData(getAdapterPosition());
+        }
+
+        @OnClick(R.id.imgDownload)
+        void setClick( ){
             VideoDownloadTable task = taskList.get(getAdapterPosition());
             Bundle bundle = new Bundle();
             bundle.putString("video_url", task.getUrlVideo());
@@ -213,9 +349,12 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
             android.util.Log.i("SUNIL2", "" + task.getUrlVideo());
 
         }
-
-
     }
+
+
+
+
+
 
     private void deleteTask(VideoDownloadTable task) {
         class DeleteTask extends AsyncTask<Void, Void, Void> {
@@ -240,6 +379,7 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
         dt.execute();
 
     }
+
 
 
     private void getTasks() {
@@ -269,6 +409,8 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
         GetTasks gt = new GetTasks();
         gt.execute();
     }
+
+
 }
 
 

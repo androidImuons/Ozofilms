@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
 import com.example.oops.EntityClass.LogoutEntity;
+import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.Utils.AppCommon;
@@ -29,6 +30,7 @@ import com.example.oops.activity.LegalActivity;
 import com.example.oops.activity.Login;
 import com.example.oops.activity.SubscriptionActivity;
 import com.example.oops.activity.Support_Help;
+import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -164,6 +166,8 @@ public class MoreScreenFragment extends Fragment {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             AppCommon.getInstance(getActivity()).clearPreference();
+                            Ooops.getInstance().getDownloadManager().removeAllDownloads();
+                            DatabaseClient.getInstance(getContext()).getAppDatabase().videoDownloadDao().nukeTable();
                             startActivity(new Intent(getActivity(), Login.class));
                             getActivity().finishAffinity();
                             showSnackbar(sv_MoreOptions,getResources().getString(R.string.Logout),Snackbar.LENGTH_SHORT);

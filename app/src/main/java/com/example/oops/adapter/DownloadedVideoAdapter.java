@@ -57,6 +57,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     ImageView imgMenuOverFlow;
     ProgressBar progressBarPercentage;
 
+
+
     public MyViewHolder(View view) {
         super(view);
         rlContainer = view.findViewById(R.id.rl_container);
@@ -69,6 +71,8 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
 
 //            imgDownloadDelete = view.findViewById(R.id.img_delete_download);
 //            imgDownloadPlayPause = view.findViewById(R.id.img_download_play_pause);
+
+
 
     }
 }

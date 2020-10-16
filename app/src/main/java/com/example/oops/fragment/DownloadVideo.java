@@ -45,9 +45,11 @@ public class DownloadVideo extends Fragment {
     RecyclerView recylerview;
     private List<Download> downloadedVideoList;
     private DownloadedVideoAdapter downloadedVideoAdapter;
+    List<VideoDownloadTable> taskList = new ArrayList<>();
     private Runnable runnableCode;
     private Handler handler;
     DownloadVideoAdapter adapter;
+    public  static boolean active = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,40 +57,42 @@ public class DownloadVideo extends Fragment {
         View view = inflater.inflate(R.layout.downloadvideofragment, container, false);
         ButterKnife.bind(this, view);
         txtHeading.setText(getString(R.string.downloads));
+        downloadedVideoList = new ArrayList<>();
         recylerview = view.findViewById(R.id.recylerview);
         recylerview.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-        getTasks();
+        adapter = new DownloadVideoAdapter(getActivity(),  taskList , DownloadVideo.this);
+        recylerview.setAdapter(adapter);
+        loadVideos();
+        //getTasks();
         return view;
 
     }
 
     private void getTasks() {
-        class GetTasks extends AsyncTask<Void, Void, List<VideoDownloadTable>> {
+        List<VideoDownloadTable> taskList = DatabaseClient
+                .getInstance(getActivity())
+                .getAppDatabase()
+                .videoDownloadDao()
+                .getAll();
+        adapter.update(taskList);
+
+        /*class GetTasks extends AsyncTask<Void, Void, List<VideoDownloadTable>> {
 
             @Override
             protected List<VideoDownloadTable> doInBackground(Void... voids) {
-                List<VideoDownloadTable> taskList = DatabaseClient
-                        .getInstance(getActivity())
-                        .getAppDatabase()
-                        .videoDownloadDao()
-                        .getAll();
+
                 return taskList;
             }
 
             @Override
             protected void onPostExecute(List<VideoDownloadTable> tasks) {
                 super.onPostExecute(tasks);
-//                adapter.notifyDataSetChanged();
 
-                 adapter = new DownloadVideoAdapter(getActivity(), tasks);
-                recylerview.setAdapter(adapter);
-//                adapter.notifyDataSetChanged();f
             }
         }
 
         GetTasks gt = new GetTasks();
-        gt.execute();
+        gt.execute();*/
     }
 
 
@@ -100,7 +104,7 @@ public class DownloadVideo extends Fragment {
 
 
     private void loadVideos() {
-        downloadedVideoList = new ArrayList<>();
+
 
         for (Map.Entry<Uri, Download> entry : Ooops.getInstance().getDownloadTracker().downloads.entrySet()) {
             Uri keyUri = entry.getKey();
@@ -109,10 +113,11 @@ public class DownloadVideo extends Fragment {
         }
 
 
-        downloadedVideoAdapter = new DownloadedVideoAdapter(getContext(), DownloadVideo.this);
+     /*   downloadedVideoAdapter = new DownloadedVideoAdapter(getContext(), DownloadVideo.this);
         recylerview.setAdapter(downloadedVideoAdapter);
-        downloadedVideoAdapter.addItems(downloadedVideoList);
-
+        downloadedVideoAdapter.addItems(downloadedVideoList);*/
+     adapter.addItems(downloadedVideoList);
+        getTasks();
 
     }
 
@@ -196,4 +201,23 @@ public class DownloadVideo extends Fragment {
     }
 
 
+    public void updateData(int adapterPosition) {
+        downloadedVideoList.clear();
+        taskList.clear();
+        loadVideos();
+
+
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        active = true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        active = false;
+    }
 }
