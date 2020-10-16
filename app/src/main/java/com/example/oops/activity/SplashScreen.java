@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oops.R;
 import com.example.oops.Utils.AppCommon;
+import com.example.oops.fragment.HomeFragment;
 
 public class SplashScreen extends AppCompatActivity {
     @Override
@@ -27,7 +28,7 @@ public class SplashScreen extends AppCompatActivity {
                 try {
                     sleep(2000);
                     if (AppCommon.getInstance(SplashScreen.this).isUserLogIn()) {
-                        startActivity(new Intent(SplashScreen.this, EnterPin.class));
+                        startActivity(new Intent(SplashScreen.this, HomeFragment.class));
                     } else {
                         startActivity(new Intent(SplashScreen.this, Login.class));
                     }
