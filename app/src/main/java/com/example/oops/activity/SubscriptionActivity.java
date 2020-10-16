@@ -138,7 +138,7 @@ public class SubscriptionActivity extends AppCompatActivity {
     private void openPaymentDialog(PaymentModel paymentModel) {
 
         Toast.makeText(SubscriptionActivity.this, "Clicked on" + paymentModel.getOrderAmount(), Toast.LENGTH_SHORT).show();
-        
+
        /* Intent intent = new Intent(SubscriptionActivity.this, WebViewActivity.class);
         intent.putExtra("userId", String.valueOf(AppCommon.getInstance(SubscriptionActivity.this).getUserId()));
         intent.putExtra("orderId", paymentModel.getOrderId());

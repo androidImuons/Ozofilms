@@ -39,6 +39,7 @@ import butterknife.BindView;
 /**
  * Created by Mayur Solanki (mayursolanki120@gmail.com) on 25/02/19, 5:48 PM.
  */
+
 public class DownloadedVideoAdapter extends  RecyclerView.Adapter<DownloadedVideoAdapter.MyViewHolder> { //implements Filterable
 
         List<Download> videosList;
@@ -56,8 +57,6 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
     ImageView imgMenuOverFlow;
     ProgressBar progressBarPercentage;
 
-
-
     public MyViewHolder(View view) {
         super(view);
         rlContainer = view.findViewById(R.id.rl_container);
@@ -66,12 +65,10 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         tvDownloadVideoPercentage = view.findViewById(R.id.tv_downloaded_percentage);
         tvDownloadVideoStatus = view.findViewById(R.id.tv_downloaded_status);
         imgMenuOverFlow = view.findViewById(R.id.img_overflow);
-    progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
+        progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
 
 //            imgDownloadDelete = view.findViewById(R.id.img_delete_download);
 //            imgDownloadPlayPause = view.findViewById(R.id.img_download_play_pause);
-
-
 
     }
 }
@@ -81,9 +78,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.videosList = new ArrayList<>();
         this.downloadActivity = downloadActivity;
-this.categoryListData = new ArrayList<>();
-
-
+        this.categoryListData = new ArrayList<>();
     }
 
     @Override
