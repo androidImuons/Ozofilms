@@ -61,7 +61,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:lines="3"
+                android:lines="2"
+                android:ellipsize="end"
                 android:textSize="12sp"/>
 
             <TextView
@@ -82,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Download Status Paused"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="@dimen/_10sdp"
                 />
         </LinearLayout>
@@ -103,6 +104,28 @@
                 android:tint="@color/white"
                 android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_baseline_delete_24"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/llDownloadPause"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="@color/white"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/exo_icon_pause"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/llDownloadResume"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="@color/white"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/exo_controls_play"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/llDownloadStart"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:tint="@color/white"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/ic_download"/>
+
 
             mageView>
         </LinearLayout>

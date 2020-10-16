@@ -24,6 +24,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.example.oops.DataClass.ResponseData;
 import com.example.oops.DataClass.SocialData;
 import com.example.oops.EntityClass.LogoutEntity;
+import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.CommonResponse;
 import com.example.oops.ResponseClass.CommonResponseObject;
@@ -31,6 +32,7 @@ import com.example.oops.ResponseClass.ForgotPassResponse;
 import com.example.oops.ResponseClass.LogoutResponse;
 import com.example.oops.Utils.AppCommon;
 import com.example.oops.Utils.ViewUtils;
+import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.retrofit.AppService;
 import com.example.oops.retrofit.ServiceGenerator;
 import com.google.android.material.snackbar.Snackbar;
@@ -348,6 +350,8 @@ public class EnterPin extends AppCompatActivity {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
                             AppCommon.getInstance(EnterPin.this).clearPreference();
+                            Ooops.getInstance().getDownloadManager().removeAllDownloads();
+                            DatabaseClient.getInstance(EnterPin.this).getAppDatabase().videoDownloadDao().nukeTable();
                             startActivity(new Intent(EnterPin.this, Login.class));
                             finishAffinity();
                             showSnackbar(ll_enter_pin,getResources().getString(R.string.Logout),Snackbar.LENGTH_SHORT);

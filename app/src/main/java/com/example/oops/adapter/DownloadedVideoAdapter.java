@@ -66,7 +66,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         tvDownloadVideoPercentage = view.findViewById(R.id.tv_downloaded_percentage);
         tvDownloadVideoStatus = view.findViewById(R.id.tv_downloaded_status);
         imgMenuOverFlow = view.findViewById(R.id.img_overflow);
-    progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
+        progressBarPercentage = view.findViewById(R.id.progress_horizontal_percentage);
 
 //            imgDownloadDelete = view.findViewById(R.id.img_delete_download);
 //            imgDownloadPlayPause = view.findViewById(R.id.img_download_play_pause);
@@ -81,7 +81,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         this.context = context;
         this.videosList = new ArrayList<>();
         this.downloadActivity = downloadActivity;
-this.categoryListData = new ArrayList<>();
+        this.categoryListData = new ArrayList<>();
 
 
     }

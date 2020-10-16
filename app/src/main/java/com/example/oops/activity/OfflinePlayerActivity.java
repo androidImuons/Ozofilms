@@ -173,13 +173,7 @@ public class OfflinePlayerActivity extends AppCompatActivity implements View.OnC
         initView();
         prepareView();
         setOnClickListner();
-
-
-
-
     }
-
-
 
     private void initView() {
         playerView = findViewById(R.id.player_view);

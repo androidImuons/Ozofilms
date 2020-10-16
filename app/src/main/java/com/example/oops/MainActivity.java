@@ -64,7 +64,7 @@ public class MainActivity extends Fragment {
             @Override
             protected void onPostExecute(List<VideoDownloadTable> tasks) {
                 super.onPostExecute(tasks);
-                DownloadVideoAdapter adapter = new DownloadVideoAdapter(getActivity(), tasks);
+                DownloadVideoAdapter adapter = new DownloadVideoAdapter(getActivity(), tasks , MainActivity.this);
                 recyclerView.setAdapter(adapter);
             }
         }
