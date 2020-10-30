@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.Fragment;
@@ -115,7 +116,7 @@ public class MoreScreenFragment extends Fragment {
     private void logoutUser() {
 
 
-        AlertDialog.Builder adb = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme1);
+      /*  AlertDialog.Builder adb = new AlertDialog.Builder(getContext(),R.style.MyDialogTheme1);
         adb.setTitle(getResources().getString(R.string.app_name));
         adb.setIcon(R.mipmap.ic_launcher_round);
         adb.setTitle( Html.fromHtml("<font color='#FFFFFF'>Logout </font>"));
@@ -140,6 +141,27 @@ public class MoreScreenFragment extends Fragment {
             }
         });
         adb.show();
+*/
+      final Dialog dialog = ViewUtils.popUp(getActivity() , true);
+        TextView okBtn = dialog.findViewById(R.id.ok_button);
+        TextView cancel = dialog.findViewById(R.id.cancel_button);
+        TextView textMsg = dialog.findViewById(R.id.textMsg);
+        textMsg.setText("Are you sure you want to logout?");
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("click" , "logout");
+                dialog.dismiss();
+                callApi();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
 
     }
 

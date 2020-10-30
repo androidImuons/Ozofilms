@@ -28,7 +28,7 @@ public class OTTCheckBox extends AppCompatCheckBox {
         applyCustomFont(context);
     }
     private void applyCustomFont(Context context) {
-        Typeface customFont= FontCache.getTypeface(context,"futura_n.ttf");
+        Typeface customFont= FontCache.getTypeface(context,"futura_n.otf");
         setTypeface(customFont);
     }
 }

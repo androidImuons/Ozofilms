@@ -78,6 +78,10 @@ public interface AppService {
     @POST("user/verifyPin")
     Call<CommonResponse> pinApi(@FieldMap Map<String, String> entityMap);
 
+ @FormUrlEncoded
+    @POST("user/verifyNewDeviceOtp") //http://15.207.175.218/api/user/verifyNewDeviceOtp
+    Call<RegistrationResponse> otpApi(@FieldMap Map<String, String> entityMap);
+
     @FormUrlEncoded
     @POST("user/insertPin")
     Call<CommonResponseObject> insertPin(@FieldMap Map<String, String> entityMap);
@@ -146,5 +150,6 @@ public interface AppService {
     @POST("user/support")
     Call<LogoutResponse> supportUser(@Body SupportHelpEntity supportHelpEntity);
 
-
+    @POST("user/checkDeviceLogin")
+    Call<CommonResponse> checkToken(@Body Map<String, String> entityMap);
 }

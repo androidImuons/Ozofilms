@@ -137,6 +137,15 @@ public class AppCommon {
         editor.putString(MyPreference.userObject, json);
         editor.apply();
     }
+    public void setDeviceId(String json) {
+        SharedPreferences.Editor editor = mContext.getSharedPreferences(MyPreference.mDeviceId, MODE_PRIVATE).edit();
+        editor.putString(MyPreference.userObject, json);
+        editor.apply();
+    }
+    public String getDeviceId() {
+        SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mDeviceId, MODE_PRIVATE);
+        return prefs.getString(MyPreference.userObject, null);
+    }
 
     public String getUserObject() {
         SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
@@ -270,14 +279,14 @@ public class AppCommon {
         SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
         return prefs.getString(MyPreference.CurentTime, "000");
     }
-    public void storeNotificationObject(String flag) {
+    public void storeNotificationObject(boolean flag) {
         SharedPreferences.Editor editor = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE).edit();
-        editor.putString(MyPreference.notificationObj, flag);
+        editor.putBoolean(MyPreference.notificationObj, flag);
         editor.apply();
     }
-    public String  getNotificationObj(){
+    public boolean  getNotificationObj(){
         SharedPreferences prefs = mContext.getSharedPreferences(MyPreference.mUserLogin, MODE_PRIVATE);
-        return prefs.getString(MyPreference.notificationObj, null);
+        return prefs.getBoolean(MyPreference.notificationObj, true);
     }
 
 

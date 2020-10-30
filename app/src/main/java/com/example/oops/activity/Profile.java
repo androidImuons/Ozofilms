@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -35,22 +37,20 @@ public class Profile extends AppCompatActivity {
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
     @BindView(R.id.editTextName)
-    AppCompatEditText editTextName;
+    TextView editTextName;
     String seditTextName;
     @BindView(R.id.editTextMobielNumber)
-    AppCompatEditText editTextMobielNumber;
+    TextView editTextMobielNumber;
     String seditTextMobielNumber;
     @BindView(R.id.editTextEmail)
-    AppCompatEditText editTextEmail;
+    TextView editTextEmail;
     String seditTextEmail;
     @BindView(R.id.imgBackPressed)
     AppCompatImageView imgBackPressed;
     @BindView(R.id.editTextPassWord)
     AppCompatEditText editTextPassWord;
-    String seditTextPassWord;
     @BindView(R.id.editTextConfirmPassword)
     AppCompatEditText editTextConfirmPassword;
-    String seditTextConfirmPassword;
     String userNameValidation = "^[A-Za-z ,.'-]+$";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

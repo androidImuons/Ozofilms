@@ -8,7 +8,7 @@
     <color name="dark_graw">#212121</color>
     <color name="colorPrimary20">#e4e1f2</color>
     <color name="colorPrimary10">#108B161C</color>
-    <color name="login_button_color">#F05744</color>
+    <color name="login_button_color">#e81f65</color>
     <color name="gray_50">#7f7f7f</color>
     <color name="gray_300">#e5e5e5</color>
 </resources>

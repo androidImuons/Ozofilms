@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -100,8 +101,9 @@ public class Support_Help extends AppCompatActivity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getCode() == 200) {
+                            showDailog(authResponse.getMessage());
                             showSnackbar(ll_support_help,authResponse.getMessage(),Snackbar.LENGTH_SHORT);
-                            onBackPressed();
+
                             // startActivity(new Intent(Login.this, .class));
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
@@ -124,6 +126,28 @@ public class Support_Help extends AppCompatActivity {
         } else {
             showSnackbar(ll_support_help,getResources().getString(R.string.NoInternet),Snackbar.LENGTH_SHORT);
         }
+    }
+
+    private void showDailog(String message) {
+        final Dialog dialog = ViewUtils.popUp(this , true);
+        TextView okBtn = dialog.findViewById(R.id.ok_button);
+        TextView cancel = dialog.findViewById(R.id.cancel_button);
+        TextView textMsg = dialog.findViewById(R.id.textMsg);
+        cancel.setVisibility(View.GONE);
+        textMsg.setText(message);
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onBackPressed();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void showSnackbar(View view, String message, int duration) {

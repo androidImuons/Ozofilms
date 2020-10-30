@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:id="@+id/ll_enter_pin"
+    android:orientation="vertical">
+
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_from_left"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="@dimen/margin_from_left">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/oops_logo"/>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/pink_border"
+            android:orientation="vertical">
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/TextInCenter"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginRight="20dp"
+                android:text="@string/enter_otp"
+                android:textColor="@color/login_button_color"/>
+
+            <com.example.oops.custom.OTTTextView
+                style="@style/TextInCenter"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:id="@+id/tVuser"
+                android:layout_marginRight="20dp"
+                android:text="user"
+                android:visibility="gone"
+                android:textSize="13sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="center"
+
+                android:layout_marginTop="40dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et1"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="40dp"
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et2"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="40dp"
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et3"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="40dp"
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
+
+                <com.example.oops.custom.OTTEditText
+                    android:id="@+id/et4"
+                    android:layout_width="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="40dp"
+                    android:inputType="numberPassword"
+                    android:digits="0987654321"
+                    android:maxLength="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:background="@drawable/pin_entry_square"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <com.example.oops.custom.OTTButton
+            android:id="@+id/submitIssue"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="280dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/button_background"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@color/white"/>
+
+    </FrameLayout>
+
+
+</LinearLayout>

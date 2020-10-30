@@ -13,6 +13,7 @@ public class MyPreference {
 
     static final String ID = "id";
     public static String mUserLogin = "UserLogin";
+    public static String mDeviceId = "deviceId";
     public static String login = "Login";
     public static String userId = "UserId";
     public static String userObject = "UserObject";

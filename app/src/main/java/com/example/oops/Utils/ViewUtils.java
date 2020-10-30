@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.Window;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,6 +28,16 @@ public class ViewUtils extends AppCompatActivity {
         ProgressBar progressBar = dialog.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
         progressBar.getIndeterminateDrawable().setColorFilter(activity.getResources().getColor(R.color.dark_graw), PorterDuff.Mode.MULTIPLY);
+        dialog.setCancelable(false);
+        dialog.show();
+        return dialog;
+    }
+    public static Dialog popUp(Activity activity , boolean isCancel) {
+        Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setBackgroundDrawable(
+                new ColorDrawable(0));
+        dialog.setContentView(R.layout.pop_up);
         dialog.setCancelable(false);
         dialog.show();
         return dialog;

@@ -1,6 +1,7 @@
 package com.example.oops.adapter;
 
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.oops.Ooops;
 import com.example.oops.R;
 import com.example.oops.Utils.AppUtil;
+import com.example.oops.Utils.ViewUtils;
 import com.example.oops.activity.OfflinePlayerActivity;
 import com.example.oops.data.databasevideodownload.DatabaseClient;
 import com.example.oops.data.databasevideodownload.VideoDownloadTable;
@@ -297,7 +300,7 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
 
         @OnClick(R.id.img_overflow)
         void setDelete(){
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx, R.style.MyDialogTheme1);
+            /*AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mCtx, R.style.MyDialogTheme1);
             alertDialogBuilder.setTitle(Html.fromHtml("<font color='#FFFFFF'>Remove movie </font>"));
             alertDialogBuilder.setIcon(R.drawable.ic_delete);
 
@@ -324,7 +327,29 @@ public class DownloadVideoAdapter extends RecyclerView.Adapter<DownloadVideoAdap
 
 
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            alertDialog.show(); */
+            final Dialog dialog = ViewUtils.popUp(fragment.getActivity() , true);
+            TextView okBtn = dialog.findViewById(R.id.ok_button);
+            TextView cancel = dialog.findViewById(R.id.cancel_button);
+            TextView textMsg = dialog.findViewById(R.id.textMsg);
+            textMsg.setText("Are you sure, You want to remove this movie ?");
+            okBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    VideoDownloadTable task = taskList.get(getAdapterPosition());
+                    taskList.remove(getAdapterPosition());
+                    Ooops.getInstance().getDownloadManager().removeDownload(videosList.get(getAdapterPosition()).request.id);
+                    deleteTask(task);
+                    dialog.dismiss();
+                }
+            });
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
         }
 
         @OnClick(R.id.llDownloadResume)

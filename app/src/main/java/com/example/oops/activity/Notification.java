@@ -35,23 +35,23 @@ public class Notification extends AppCompatActivity {
         ButterKnife.bind(this);
         txtHeading.setText(getString(R.string.notification));
         imgBackPressed.setVisibility(View.VISIBLE);
-        switchButton.setChecked(Boolean.parseBoolean(AppCommon.getInstance(Notification.this).getNotificationObj()));
+        switchButton.setChecked(AppCommon.getInstance(Notification.this).getNotificationObj());
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                if (switchButton.isChecked()) {
+                AppCommon.getInstance(Notification.this).storeNotificationObject(isChecked);
+                /*if (switchButton.isChecked()) {
                     str1 = switchButton.getTextOn().toString();
                     showSnackbar(ll_notification,str1,Snackbar.LENGTH_SHORT);
-                    AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
+
                 } else {
                     str1 = switchButton.getTextOff().toString();
                     showSnackbar(ll_notification,str1,Snackbar.LENGTH_SHORT);
-                    AppCommon.getInstance(Notification.this).storeNotificationObject(str1);
+                    AppCommon.getInstance(Notification.this).storeNotificationObject(str1);*/
 
 
-                }
+                //}
             }
         });
     }

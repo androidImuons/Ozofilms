@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TEEVOREEL</string>
+    <string name="app_name">Ozofilms</string>
 
     <string name="download_start_error">Failed to start download</string>
     <!--Video Quality-->
@@ -50,11 +50,6 @@
     <string name="series">Series</string>
 
 
-
-
-
-
-
     <!--More Option-->
     <string name="subscribe">Subscribe</string>
     <string name="rate_us">Rate Us</string>
@@ -85,7 +80,7 @@
     <!--    Register-->
     <string name="register">REGISTER</string>
     <string name="name">Name:</string>
-    <string name="emailid">Email Id:</string>
+    <string name="emailid">User Id</string>
     <string name="country">Country:</string>
     <string name="ph_no">Ph.No:</string>
     <string name="agree_term_conditon"> I Agree the terms and condition</string>
@@ -181,6 +176,7 @@
     <string name="enter_valid_password">Please enter valid password</string>
     <string name="ChangePinSuccess">Change Pin Successfully</string>
     <string name="NoVideo">No Video available</string>
+    <string name="enter_otp">Enter OTP</string>
 
 
 </resources>

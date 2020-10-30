@@ -22,11 +22,11 @@ public class AppSetting extends AppCompatActivity {
     @BindView(R.id.txtHeading)
     AppCompatTextView txtHeading;
     @BindView(R.id.imgArrowProfile)
-    AppCompatImageView imgArrowProfile;
+    RelativeLayout imgArrowProfile;
     @BindView(R.id.imgArrowLanguage)
-    AppCompatImageView imgArrowLanguage;
+    RelativeLayout imgArrowLanguage;
     @BindView(R.id.imgArrowNotification)
-    AppCompatImageView imgArrowNotification;
+    RelativeLayout imgArrowNotification;
     @BindView(R.id.imgArrowVideoPlayBack)
     AppCompatImageView imgArrowVideoPlayBack;
     @BindView(R.id.imgArrowDownloads)

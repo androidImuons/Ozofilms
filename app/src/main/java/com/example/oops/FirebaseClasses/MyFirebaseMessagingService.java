@@ -14,6 +14,7 @@ import androidx.core.app.NotificationCompat;
 
 
 import com.example.oops.R;
+import com.example.oops.Utils.AppCommon;
 import com.example.oops.activity.Dashboard;
 import com.example.oops.fragment.HomeFragment;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -67,7 +68,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }*/
 
         // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
+        if (remoteMessage.getNotification() != null && AppCommon.getInstance(this).getNotificationObj()) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
             sendNotification(remoteMessage.getNotification());
         }

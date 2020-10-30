@@ -9,10 +9,10 @@
     <!--Profile-->
 
     <RelativeLayout
+        android:id="@+id/imgArrowProfile"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="25dp"
-
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="@string/profile"
@@ -32,10 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/imgArrowProfile"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"/>
 
 
     </RelativeLayout>
@@ -46,7 +44,7 @@
         android:id="@+id/changepassword"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
+        android:visibility="gone"
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -67,17 +65,17 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"/>
 
 
     </RelativeLayout>
-<!--Change Pin-->
+    <!--Change Pin-->
 
     <RelativeLayout
         android:id="@+id/changepin"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
+        android:visibility="gone"
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -98,17 +96,17 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"/>
 
 
     </RelativeLayout>
     <!--Language-->
 
     <RelativeLayout
+        android:id="@+id/imgArrowLanguage"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
-
+        android:visibility="gone"
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -116,7 +114,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-
             android:gravity="center_vertical"
             android:text="@string/language"
             android:textColor="@color/white"
@@ -127,20 +124,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/imgArrowLanguage"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"/>
 
 
     </RelativeLayout>
-<!--  Notification-->
+    <!--  Notification-->
 
     <RelativeLayout
+        android:id="@+id/imgArrowNotification"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-
-
         android:background="@drawable/text_background_strip">
 
         <com.example.oops.custom.OTTTextView
@@ -148,7 +143,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-
             android:gravity="center_vertical"
             android:text="@string/notification"
             android:textColor="@color/white"
@@ -159,74 +153,73 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/imgArrowNotification"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"/>
 
 
     </RelativeLayout>
 
-<!--  Video PlayBack  -->
+    <!--  Video PlayBack  -->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:visibility="gone"
-        android:background="@drawable/text_background_strip">
+        android:background="@drawable/text_background_strip"
+        android:visibility="gone">
 
         <com.example.oops.custom.OTTTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-            android:visibility="gone"
             android:gravity="center_vertical"
             android:text="@string/video_playback"
             android:textColor="@color/white"
+            android:visibility="gone"
 
             />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgArrowVideoPlayBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/imgArrowVideoPlayBack"
-            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>
-<!--Downloads-->
+    <!--Downloads-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:visibility="gone"
-        android:background="@drawable/text_background_strip">
+        android:background="@drawable/text_background_strip"
+        android:visibility="gone">
 
         <com.example.oops.custom.OTTTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_from_left"
-            android:visibility="gone"
             android:gravity="center_vertical"
             android:text="@string/downloads"
             android:textColor="@color/white"
+            android:visibility="gone"
 
             />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgArrowDownloads"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:id="@+id/imgArrowDownloads"
-            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margin_from_right"
-            android:src="@drawable/ic_next"></androidx.appcompat.widget.AppCompatImageView>
+            android:src="@drawable/ic_next"
+            android:visibility="gone"/>
 
 
     </RelativeLayout>

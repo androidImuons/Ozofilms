@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.oops.EntityClass.LoginEntity;
+import com.example.oops.EntityClass.OTPEntity;
 import com.example.oops.EntityClass.RegistrationEntity;
 import com.example.oops.R;
 import com.example.oops.ResponseClass.ForgotPassResponse;
@@ -115,11 +116,7 @@ public class Login extends Activity {
                     }
                 });
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        callbackManager = CallbackManager.Factory.create();
+
         //login_button.setReadPermissions(Arrays.asList(EMAIL));
 
         try {
@@ -137,28 +134,8 @@ public class Login extends Activity {
         }
     }
 
-    @OnClick(R.id.sign_in_button)
-    void setSignInButton() {
-        signIn();
-    }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
 
-    private void updateUI(GoogleSignInAccount acct) {
-        Log.i("data", String.valueOf(acct));
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            callSocialApi(personName, personEmail, personId);
-        }
-    }
 
     private void callSocialApi(String personName, String personEmail, String personId) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -241,12 +218,22 @@ public class Login extends Activity {
                     if (authResponse != null) {
                         Log.i("Response::", new Gson().toJson(authResponse));
                         if (authResponse.getSuccess() == 200) {
-                            AppCommon.getInstance(Login.this).setToken(authResponse.getData().getToken());
-                            AppCommon.getInstance(Login.this).setUserLogin(authResponse.getData().getUserId(), true);
-                            AppCommon.getInstance(Login.this).setId(authResponse.getData().getId());
-                            AppCommon.getInstance(Login.this).setUserObject(new Gson().toJson(authResponse.getData()));
-                            startActivity(new Intent(Login.this, Dashboard.class));
-                            finishAffinity();
+                            if(authResponse.getMsg().equals("OTP send on mobile number plz verify new device")){
+                                showSnackbar(ll_login,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
+                                OTPEntity otpEntity = new OTPEntity(authResponse.getData().getId() , authResponse.getData().getUserId() , "",fireBase);
+                                startActivity(new Intent(Login.this, OTPActivity.class)
+                                                .putExtra("data", new Gson().toJson(otpEntity))
+                                        );
+                            }else {
+                                AppCommon.getInstance(Login.this).setToken(authResponse.getData().getToken());
+                                AppCommon.getInstance(Login.this).setUserLogin(authResponse.getData().getUserId(), true);
+                                AppCommon.getInstance(Login.this).setId(authResponse.getData().getId());
+                                AppCommon.getInstance(Login.this).setUserObject(new Gson().toJson(authResponse.getData()));
+                                AppCommon.getInstance(Login.this).setDeviceId(fireBase);
+                                startActivity(new Intent(Login.this, Dashboard.class));
+                                finishAffinity();
+                            }
+
                             // callLoginApi(new LoginEntity(authResponse.getData().getUserId(), authResponse.getData().getPassword() , fireBase));
                         } else {
                             showSnackbar(ll_login,authResponse.getMsg(),Snackbar.LENGTH_SHORT);
@@ -275,9 +262,9 @@ public class Login extends Activity {
         String emailId = editTextUserName.getText().toString().trim();
         String pass = editTextPassWord.getText().toString().trim();
         if (emailId.isEmpty())
-            editTextUserName.setError("Please enter email id");
+            editTextUserName.setError("Please enter user id");
         else if (pass.isEmpty())
-            editTextPassWord.setError("Plese enter password");
+            editTextPassWord.setError("Please enter password");
         else
             callApi(emailId, pass);
     }
@@ -296,19 +283,7 @@ public class Login extends Activity {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
 
     private void callforgotApi(String emailName) {
         if (AppCommon.getInstance(this).isConnectingToInternet(this)) {
@@ -359,19 +334,7 @@ public class Login extends Activity {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            updateUI(null);
-        }
-    }
 
     public void showSnackbar(View view, String message, int duration) {
         Snackbar snackbar = Snackbar.make(view, message, duration);

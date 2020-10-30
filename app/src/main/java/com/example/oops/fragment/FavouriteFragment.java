@@ -86,6 +86,7 @@ public class FavouriteFragment extends Fragment {
         swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                commonFavModule.clear();
                 favouriteDataArrayList.clear();
                 callFavouriteApi();
             }
